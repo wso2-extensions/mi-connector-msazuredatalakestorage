@@ -1,0 +1,21 @@
+{
+  "connectorName" : "azureDataLake",
+  "connectionName" : "azureDataLake",
+  "title" : "Azure Data Lake Connector",
+    "help" : "The Azure Data Lake Connector allows you to access the Azure Data Lake Storage Service",
+    "elements" : [ {
+    "type" : "attribute",
+    "value" : {
+      "name": "connectionName1",
+      "displayName": "Connection Name New",
+      "inputType": "string",
+      "defaultValue": "AZURE_CONNECTION",
+      "required": "true",
+      "helpTip": "The name for the Azure Data Lake connection",
+      "validation": "nameWithoutSpecialCharactors"
+    }
+
+
+    }
+  ]
+}

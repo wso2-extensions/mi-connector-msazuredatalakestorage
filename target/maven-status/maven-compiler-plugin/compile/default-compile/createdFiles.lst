@@ -1,0 +1,8 @@
+org/wso2/carbon/connector/util/Error.class
+org/wso2/carbon/connector/operations/AzureConfig.class
+org/wso2/carbon/connector/connection/AzureStorageConnectionHandler.class
+org/wso2/carbon/connector/azureDataLakeConnector.class
+org/wso2/carbon/connector/util/AzureUtil.class
+org/wso2/carbon/connector/util/AzureConstants.class
+org/wso2/carbon/connector/connection/ConnectionConfiguration.class
+org/wso2/carbon/connector/exceptions/InvalidConfigurationException.class
