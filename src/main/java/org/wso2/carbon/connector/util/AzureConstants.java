@@ -49,7 +49,7 @@ public class AzureConstants {
     public static final String START_TAG_ERROR = "<jsonObject><result><success>false</success><description>";
     public static final String END_TAG_ERROR = "</description></result></jsonObject>";
     public static final String ERR_FILE_SYSTEM_ALREADY_EXISTS = "FILE_SYSTEM_ALREADY_EXISTS";
-    public static final String ERR_CONTAINER_DOES_NOT_EXIST = "CONTAINER_DOES_NOT_EXIST";
+    public static final String ERR_FILE_SYSTEM_DOES_NOT_EXIST = "FILE_SYSTEM_DOES_NOT_EXIST";
     public static final String ERR_UNKNOWN_ERROR_OCCURRED = "UNKNOWN_ERROR_OCCURRED";
     public static final String STATUS_SUCCESS = "SUCCESS";
     public static final String ERR_BLOB_DOES_NOT_EXIST = "BLOB_DOES_NOT_EXIST";

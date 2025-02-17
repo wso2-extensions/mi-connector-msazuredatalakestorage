@@ -8,3 +8,4 @@ org/wso2/carbon/connector/util/AzureConstants.class
 org/wso2/carbon/connector/operations/CreateFileSystem.class
 org/wso2/carbon/connector/connection/ConnectionConfiguration.class
 org/wso2/carbon/connector/exceptions/InvalidConfigurationException.class
+org/wso2/carbon/connector/operations/DeleteFileSystem.class

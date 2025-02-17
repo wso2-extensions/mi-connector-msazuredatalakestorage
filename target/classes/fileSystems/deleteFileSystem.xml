@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!--
    Copyright (c) 2018, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 
@@ -16,15 +15,10 @@
    specific language governing permissions and limitations
    under the License.
 -->
-<component name="fileSystems" type="synapse/template">
-    <subComponents>
-        <component name="createFileSystem">
-            <file>createFileSystem.xml</file>
-            <description>Creates a File System into the Azure Data Lake storage Gen2.</description>
-        </component>
-        <component name="deleteFileSystem">
-            <file>deleteFileSystem.xml</file>
-            <description>Deletes the File System from the Azure Data Lake storage Gen2.</description>
-        </component>
-    </subComponents>
-</component>
+<template xmlns="http://ws.apache.org/ns/synapse" name="deleteFileSystem">
+    <parameter name="fileSystemName" description="The name of the file system."/>
+    <sequence>
+        <property name="fileSystemName" expression="$func:fileSystemName"/>
+        <class name="org.wso2.carbon.connector.operations.DeleteFileSystem"/>
+    </sequence>
+</template>

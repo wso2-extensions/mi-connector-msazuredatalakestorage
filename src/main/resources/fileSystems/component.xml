@@ -22,5 +22,9 @@
             <file>createFileSystem.xml</file>
             <description>Creates a File System into the Azure Data Lake storage Gen2.</description>
         </component>
+        <component name="deleteFileSystem">
+            <file>deleteFileSystem.xml</file>
+            <description>Deletes the File System from the Azure Data Lake storage Gen2.</description>
+        </component>
     </subComponents>
 </component>
