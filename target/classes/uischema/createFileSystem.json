@@ -16,9 +16,9 @@
               "displayName": "Connection",
               "inputType": "connection",
               "allowedConnectionTypes": [
-                "msazurestorage"
+                "azureDataLake"
               ],
-              "defaultType": "connection.msazurestorage",
+              "defaultType": "connection.azureDataLake",
               "defaultValue": "",
               "required": "true",
               "helpTip": "Connection to be used"
@@ -32,12 +32,12 @@
                 {
                   "type": "attribute",
                   "value": {
-                    "name": "containerName",
-                    "displayName": "Container name",
+                    "name": "fileSystemName",
+                    "displayName": "File System name",
                     "inputType": "stringOrExpression",
                     "defaultValue": "",
                     "required": "true",
-                    "helpTip": "Name of the container to be created."
+                    "helpTip": "Name of the file system to be created."
                   }
                 }
               ]

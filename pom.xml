@@ -47,7 +47,7 @@
         <azure.identity.version>1.9.2</azure.identity.version>
         <skip-tests>true</skip-tests>
         <gson.version>2.10.1</gson.version>
-        <azure.netty.version>1.13.5</azure.netty.version>
+        <azure.netty.version>1.15.7</azure.netty.version>
         <azure.storage.version>12.22.0</azure.storage.version>
     </properties>
 
@@ -214,6 +214,7 @@
         </dependency>
 
 
+
         <dependency>
             <groupId>org.apache.synapse</groupId>
             <artifactId>synapse-nhttp-transport</artifactId>
@@ -224,6 +225,13 @@
             <artifactId>gson</artifactId>
             <version>${gson.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-core-http-netty</artifactId>
+            <version>${azure.netty.version}</version>
+        </dependency>
+
+
     </dependencies>
     <build>
         <plugins>

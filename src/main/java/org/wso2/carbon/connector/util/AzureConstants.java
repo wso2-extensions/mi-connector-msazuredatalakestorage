@@ -30,6 +30,7 @@ public class AzureConstants {
     public static final String ACCOUNT_KEY = "accountKey";
     public static final String PROTOCOL = "defaultEndpointsProtocol";
     public static final String DEFAULT_PROTOCOL = "http";
+    public static final String FILE_SYSTEM_NAME = "fileSystemName";
 
 
     public static final String ENDPOINT_PARAM = "DefaultEndpointsProtocol=http;AccountName=";
@@ -47,11 +48,13 @@ public class AzureConstants {
     public static final String METADATA = "metadata";
     public static final String START_TAG_ERROR = "<jsonObject><result><success>false</success><description>";
     public static final String END_TAG_ERROR = "</description></result></jsonObject>";
-    public static final String ERR_CONTAINER_ALREADY_EXISTS = "CONTAINER_ALREADY_EXISTS";
+    public static final String ERR_FILE_SYSTEM_ALREADY_EXISTS = "FILE_SYSTEM_ALREADY_EXISTS";
     public static final String ERR_CONTAINER_DOES_NOT_EXIST = "CONTAINER_DOES_NOT_EXIST";
     public static final String ERR_UNKNOWN_ERROR_OCCURRED = "UNKNOWN_ERROR_OCCURRED";
     public static final String STATUS_SUCCESS = "SUCCESS";
     public static final String ERR_BLOB_DOES_NOT_EXIST = "BLOB_DOES_NOT_EXIST";
+
+
     public static final String DFS_ENDPOINT_SUFFIX = ".dfs.core.windows.net";
 
     public static final String HTTPS_PROTOCOL = "https://";
@@ -62,7 +65,9 @@ public class AzureConstants {
     public static final String BLOB_DOWNLOAD_SUCCESSFUL = "BLOB_DOWNLOAD_SUCCESSFUL";
     public static final String METADATA_UPLOAD_FAILED = "METADATA_UPLOAD_FAILED";
     public static final String BLOB_DELETE_FAILED = "BLOB_DELETE_FAILED";
-    public static final String ERROR_LOG_PREFIX = "Azure Storage connector encountered an error: ";
+
+
+    public static final String ERROR_LOG_PREFIX = "Azure Data Lake Storage connector encountered an error: ";
     private AzureConstants() {
     }
 }

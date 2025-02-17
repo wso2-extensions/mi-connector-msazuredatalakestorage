@@ -19,7 +19,9 @@
 <connector>
     <component name="azureDataLake" package="org.wso2.carbon.connector" >
         <dependency component="config" />
+        <dependency component="fileSystems" />
         <description>WSO2 azureDataLake connector library</description>
     </component>
+    <displayName>Microsoft Azure Data Lake Gen2 Storage</displayName>
     <icon>icon/icon-small.gif</icon>
 </connector>
