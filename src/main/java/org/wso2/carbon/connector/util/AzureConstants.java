@@ -31,6 +31,8 @@ public class AzureConstants {
     public static final String PROTOCOL = "defaultEndpointsProtocol";
     public static final String DEFAULT_PROTOCOL = "http";
     public static final String FILE_SYSTEM_NAME = "fileSystemName";
+    public static final String NEW_FILE_SYSTEM_NAME = "newFileSystemName";
+    public static final String DIRECTORY_NAME = "directoryName";
 
 
     public static final String ENDPOINT_PARAM = "DefaultEndpointsProtocol=http;AccountName=";
@@ -38,7 +40,10 @@ public class AzureConstants {
     public static final String ACCOUNT_KEY_PARAM = "AccountKey=";
     public static final String PROTOCOL_KEY_PARAM = "DefaultEndpointsProtocol=";
     public static final String SEMICOLON = ";";
+
     public static final String NAMESPACE = "ns";
+    public static final String AZURE_NAMESPACE = "http://org.wso2.esbconnectors.azuredatalakeconnector";
+    public static final String FILE_SYSTEM = "fileSystem";
 
     public static final String RESULT = "result";
     public static final String START_TAG = "<jsonObject><result><success>";
@@ -50,6 +55,10 @@ public class AzureConstants {
     public static final String END_TAG_ERROR = "</description></result></jsonObject>";
     public static final String ERR_FILE_SYSTEM_ALREADY_EXISTS = "FILE_SYSTEM_ALREADY_EXISTS";
     public static final String ERR_FILE_SYSTEM_DOES_NOT_EXIST = "FILE_SYSTEM_DOES_NOT_EXIST";
+
+    public static final String ERR_DIRECTORY_ALREADY_EXISTS = "DIRECTORY_ALREADY_EXISTS";
+    public static final String ERR_DIRECTORY_DOES_NOT_EXIST = "DIRECTORY_DOES_NOT_EXIST";
+
     public static final String ERR_UNKNOWN_ERROR_OCCURRED = "UNKNOWN_ERROR_OCCURRED";
     public static final String STATUS_SUCCESS = "SUCCESS";
     public static final String ERR_BLOB_DOES_NOT_EXIST = "BLOB_DOES_NOT_EXIST";
