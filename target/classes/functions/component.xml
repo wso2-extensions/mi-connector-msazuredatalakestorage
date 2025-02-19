@@ -58,5 +58,9 @@
             <file>updateMetaData.xml</file>
             <description>Updates the metadata to the file</description>
         </component>
+        <component name="getMetadata">
+            <file>getMetadata.xml</file>
+            <description>Gets the metadata of the file</description>
+        </component>
     </subComponents>
 </component>

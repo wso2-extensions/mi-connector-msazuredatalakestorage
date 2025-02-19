@@ -10,6 +10,7 @@ org/wso2/carbon/connector/operations/ListOfFileSystems.class
 org/wso2/carbon/connector/util/ResultPayloadCreator.class
 org/wso2/carbon/connector/util/Error.class
 org/wso2/carbon/connector/operations/AzureConfig.class
+org/wso2/carbon/connector/operations/GetMetadata.class
 org/wso2/carbon/connector/connection/AzureStorageConnectionHandler.class
 org/wso2/carbon/connector/util/AzureUtil.class
 org/wso2/carbon/connector/operations/DeleteDirectory.class

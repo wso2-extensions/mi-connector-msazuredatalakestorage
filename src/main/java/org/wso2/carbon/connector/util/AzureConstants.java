@@ -34,6 +34,7 @@ public class AzureConstants {
     public static final String NEW_FILE_SYSTEM_NAME = "newFileSystemName";
     public static final String DIRECTORY_NAME = "directoryName";
     public static final String NEW_DIRECTORY_NAME = "newDirectoryName";
+    public static final String FILE_PATH = "filePath";
 
 
     public static final String ENDPOINT_PARAM = "DefaultEndpointsProtocol=http;AccountName=";
