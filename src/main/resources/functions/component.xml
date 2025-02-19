@@ -50,5 +50,9 @@
             <file>deleteFile.xml</file>
             <description>Deletes the File from the file system.</description>
         </component>
+        <component name = "renameFile">
+            <file>renameFile.xml</file>
+            <description>Renames the file with in the file system</description>
+        </component>
     </subComponents>
 </component>

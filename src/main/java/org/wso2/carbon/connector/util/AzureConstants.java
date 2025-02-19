@@ -50,6 +50,9 @@ public class AzureConstants {
     public static final String FINAL_CONTENT_TYPE = "finalContentType";
     public static final String TEXT_CONTENT = "textContent";
     public static final String FILE_PATH_TO_DELETE = "filePathToDelete";
+    public static final String FILE_PATH_TO_RENAME = "filePathToRename";
+    public static final String NEW_FILE_PATH = "newFilePath";
+    public static final  String NEW_FILE_SYSTEM_Name = "newFileSystemName";
 
 
     public static final String RESULT = "result";

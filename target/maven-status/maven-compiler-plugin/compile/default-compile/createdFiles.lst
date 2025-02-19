@@ -1,6 +1,7 @@
 org/wso2/carbon/connector/azureDataLakeConnector.class
 org/wso2/carbon/connector/operations/RenameDirectory.class
 org/wso2/carbon/connector/util/AzureConstants.class
+org/wso2/carbon/connector/operations/RenameFile.class
 org/wso2/carbon/connector/operations/CreateFileSystem.class
 org/wso2/carbon/connector/connection/ConnectionConfiguration.class
 org/wso2/carbon/connector/exceptions/InvalidConfigurationException.class
