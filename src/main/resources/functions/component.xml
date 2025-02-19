@@ -38,5 +38,17 @@
             <file>deleteDirectory.xml</file>
             <description>Deletes the directory from the file system.</description>
         </component>
+        <component name="renameDirectory">
+            <file>renameDirectory.xml</file>
+            <description>Renames the destination directory within the file system</description>
+        </component>
+        <component name="uploadFile">
+            <file>uploadFile.xml</file>
+            <description>Uploads the File to the directory path within the file system </description>
+        </component>
+        <component name="deleteFile">
+            <file>deleteFile.xml</file>
+            <description>Deletes the File from the file system.</description>
+        </component>
     </subComponents>
 </component>

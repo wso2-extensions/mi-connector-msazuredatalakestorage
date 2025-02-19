@@ -33,6 +33,7 @@ public class AzureConstants {
     public static final String FILE_SYSTEM_NAME = "fileSystemName";
     public static final String NEW_FILE_SYSTEM_NAME = "newFileSystemName";
     public static final String DIRECTORY_NAME = "directoryName";
+    public static final String NEW_DIRECTORY_NAME = "newDirectoryName";
 
 
     public static final String ENDPOINT_PARAM = "DefaultEndpointsProtocol=http;AccountName=";
@@ -44,6 +45,11 @@ public class AzureConstants {
     public static final String NAMESPACE = "ns";
     public static final String AZURE_NAMESPACE = "http://org.wso2.esbconnectors.azuredatalakeconnector";
     public static final String FILE_SYSTEM = "fileSystem";
+    public static final String LOCAL_FILE_PATH = "localFilePath";
+    public static final String FILE_PATH_TO_UPLOAD = "filePathToUpload";
+    public static final String FINAL_CONTENT_TYPE = "finalContentType";
+    public static final String TEXT_CONTENT = "textContent";
+
 
     public static final String RESULT = "result";
     public static final String START_TAG = "<jsonObject><result><success>";
@@ -58,6 +64,8 @@ public class AzureConstants {
 
     public static final String ERR_DIRECTORY_ALREADY_EXISTS = "DIRECTORY_ALREADY_EXISTS";
     public static final String ERR_DIRECTORY_DOES_NOT_EXIST = "DIRECTORY_DOES_NOT_EXIST";
+
+    public static final String ERR_FILE_DOES_NOT_UPLOAD = "FILE_DOES_NOT_UPLOAD";
 
     public static final String ERR_UNKNOWN_ERROR_OCCURRED = "UNKNOWN_ERROR_OCCURRED";
     public static final String STATUS_SUCCESS = "SUCCESS";

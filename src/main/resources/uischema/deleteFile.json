@@ -1,8 +1,8 @@
 {
-  "connectorName" : "azureDataLake" ,
-  "operationName" : "renameDirectory",
-    "title" : "Rename Directory",
-    "help" : "<h1>Rename Directory</h1> <b>This operation can be used to rename a directory.</b>",
+  "connectorName" : "azureDataLake",
+    "operationName" : "deleteFile",
+    "title" : "Delete File",
+    "help" : "<h1>Delete File</h1> <b>This operation can be used to delete a file.</b>",
     "elements" : [
         {
         "type" : "attributeGroup",
@@ -35,29 +35,18 @@
                         "inputType" : "stringOrExpression",
                         "defaultValue" : "",
                         "required" : "true",
-                        "helpTip" : "Name of the file system where the directory is located."
+                        "helpTip" : "Name of the file system where the file is located."
                     }
                     },
                     {
                     "type" : "attribute",
                     "value" : {
-                        "name" : "directoryName",
-                        "displayName" : "Destination Directory Name",
+                        "name" : "filePathToDelete",
+                        "displayName" : "File Path to Delete",
                         "inputType" : "stringOrExpression",
                         "defaultValue" : "",
                         "required" : "true",
-                        "helpTip" : "Path of the directory to be renamed."
-                    }
-                    },
-                    {
-                    "type" : "attribute",
-                    "value" : {
-                        "name" : "newDirectoryName",
-                        "displayName" : "New Destination Directory Name",
-                        "inputType" : "stringOrExpression",
-                        "defaultValue" : "",
-                        "required" : "true",
-                        "helpTip" : "New path of the directory."
+                        "helpTip" : "Path of the file to be deleted."
                     }
                     }
                 ]
