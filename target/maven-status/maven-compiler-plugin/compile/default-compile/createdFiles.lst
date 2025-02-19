@@ -13,4 +13,5 @@ org/wso2/carbon/connector/connection/AzureStorageConnectionHandler.class
 org/wso2/carbon/connector/util/AzureUtil.class
 org/wso2/carbon/connector/operations/DeleteDirectory.class
 org/wso2/carbon/connector/operations/CreateDirectory.class
+org/wso2/carbon/connector/operations/DeleteFile.class
 org/wso2/carbon/connector/operations/UploadFile.class

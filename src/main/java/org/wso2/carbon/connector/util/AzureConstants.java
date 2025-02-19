@@ -49,6 +49,7 @@ public class AzureConstants {
     public static final String FILE_PATH_TO_UPLOAD = "filePathToUpload";
     public static final String FINAL_CONTENT_TYPE = "finalContentType";
     public static final String TEXT_CONTENT = "textContent";
+    public static final String FILE_PATH_TO_DELETE = "filePathToDelete";
 
 
     public static final String RESULT = "result";
@@ -66,6 +67,8 @@ public class AzureConstants {
     public static final String ERR_DIRECTORY_DOES_NOT_EXIST = "DIRECTORY_DOES_NOT_EXIST";
 
     public static final String ERR_FILE_DOES_NOT_UPLOAD = "FILE_DOES_NOT_UPLOAD";
+
+    public static final String ERR_FILE_DOES_NOT_EXIST = "FILE_DOES_NOT_EXIST";
 
     public static final String ERR_UNKNOWN_ERROR_OCCURRED = "UNKNOWN_ERROR_OCCURRED";
     public static final String STATUS_SUCCESS = "SUCCESS";
