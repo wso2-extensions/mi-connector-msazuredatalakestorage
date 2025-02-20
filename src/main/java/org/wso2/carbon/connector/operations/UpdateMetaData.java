@@ -3,6 +3,7 @@ package org.wso2.carbon.connector.operations;
 import com.azure.storage.file.datalake.DataLakeFileClient;
 import com.azure.storage.file.datalake.DataLakeFileSystemClient;
 import com.azure.storage.file.datalake.DataLakeServiceClient;
+import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import org.apache.axiom.om.OMElement;
@@ -32,6 +33,7 @@ public class UpdateMetaData extends AbstractConnector {
         Object metadata = messageContext.getProperty(AzureConstants.METADATA);
 
         if (fileSystemName == null || filePathToAddMetaData == null || metadata == null) {
+            AzureUtil.setErrorPropertiesToMessage(messageContext, Error.MISSING_PARAMETERS, "Mandatory parameters [fileSystemName] or [filePathToAddMetaData] or [metaData] cannot be empty.");
             handleException("Mandatory parameters [fileSystemName] or [filePathToAddMetaData] or [metaData] cannot be empty.", messageContext);
         }
 
@@ -76,7 +78,10 @@ public class UpdateMetaData extends AbstractConnector {
         catch (InvalidConfigurationException e) {
             AzureUtil.setErrorPropertiesToMessage(messageContext, Error.INVALID_CONFIGURATION, e.getMessage());
             handleException(AzureConstants.ERROR_LOG_PREFIX + e.getMessage(), messageContext);
-        } catch (ConnectException e) {
+        }catch (DataLakeStorageException e) {
+            AzureUtil.setErrorPropertiesToMessage(messageContext, Error.DATA_LAKE_STORAGE_GEN2_ERROR, e.getMessage());
+            handleException(AzureConstants.ERROR_LOG_PREFIX + e.getMessage(), messageContext);
+        }  catch (ConnectException e) {
             AzureUtil.setErrorPropertiesToMessage(messageContext, Error.CONNECTION_ERROR, e.getMessage());
             handleException(AzureConstants.ERROR_LOG_PREFIX + e.getMessage(), messageContext);
         } catch (Exception e) {

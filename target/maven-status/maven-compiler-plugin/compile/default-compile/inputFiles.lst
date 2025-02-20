@@ -3,6 +3,7 @@
 /home/pasindusa/Documents/Micro Integrator/connectors/org.wso2.carbon.esb.connector.azureDataLake/src/main/java/org/wso2/carbon/connector/operations/RenameDirectory.java
 /home/pasindusa/Documents/Micro Integrator/connectors/org.wso2.carbon.esb.connector.azureDataLake/src/main/java/org/wso2/carbon/connector/operations/ListOfFileSystems.java
 /home/pasindusa/Documents/Micro Integrator/connectors/org.wso2.carbon.esb.connector.azureDataLake/src/main/java/org/wso2/carbon/connector/operations/DeleteFile.java
+/home/pasindusa/Documents/Micro Integrator/connectors/org.wso2.carbon.esb.connector.azureDataLake/src/main/java/org/wso2/carbon/connector/operations/ListPathsOfFileSystem.java
 /home/pasindusa/Documents/Micro Integrator/connectors/org.wso2.carbon.esb.connector.azureDataLake/src/main/java/org/wso2/carbon/connector/operations/CreateFileSystem.java
 /home/pasindusa/Documents/Micro Integrator/connectors/org.wso2.carbon.esb.connector.azureDataLake/src/main/java/org/wso2/carbon/connector/operations/CreateDirectory.java
 /home/pasindusa/Documents/Micro Integrator/connectors/org.wso2.carbon.esb.connector.azureDataLake/src/main/java/org/wso2/carbon/connector/operations/UpdateMetaData.java

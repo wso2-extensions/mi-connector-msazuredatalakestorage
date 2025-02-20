@@ -6,6 +6,7 @@ import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.file.datalake.DataLakeFileClient;
 import com.azure.storage.file.datalake.DataLakeFileSystemClient;
 import com.azure.storage.file.datalake.DataLakeServiceClient;
+import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
@@ -31,6 +32,7 @@ public class GetMetadata extends AbstractConnector {
         Object filePath = messageContext.getProperty(AzureConstants.FILE_PATH);
 
         if (fileSystemName == null || filePath == null) {
+            AzureUtil.setErrorPropertiesToMessage(messageContext, Error.MISSING_PARAMETERS, "Mandatory parameters [fileSystemName] or [filePath] cannot be empty.");
             handleException("Mandatory parameters [fileSystemName] or [filePath] cannot be empty.", messageContext);
         }
 
@@ -71,7 +73,10 @@ public class GetMetadata extends AbstractConnector {
         } catch (InvalidConfigurationException e) {
             AzureUtil.setErrorPropertiesToMessage(messageContext, Error.INVALID_CONFIGURATION, e.getMessage());
             handleException(AzureConstants.ERROR_LOG_PREFIX + e.getMessage(), messageContext);
-        } catch (ConnectException e) {
+        } catch (DataLakeStorageException e) {
+            AzureUtil.setErrorPropertiesToMessage(messageContext, Error.DATA_LAKE_STORAGE_GEN2_ERROR, e.getMessage());
+            handleException(AzureConstants.ERROR_LOG_PREFIX + e.getMessage(), messageContext);
+        }catch (ConnectException e) {
             AzureUtil.setErrorPropertiesToMessage(messageContext, Error.CONNECTION_ERROR, e.getMessage());
             handleException(AzureConstants.ERROR_LOG_PREFIX + e.getMessage(), messageContext);
         } catch (Exception e) {

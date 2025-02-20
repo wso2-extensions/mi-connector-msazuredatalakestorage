@@ -70,5 +70,9 @@
             <file>readFile.xml</file>
             <description>Reads the file</description>
         </component>
+        <component name="listPathsOfFileSystem">
+            <file>listPathsOfFileSystem.xml</file>
+            <description>Reads all paths of the file system</description>
+        </component>
     </subComponents>
 </component>

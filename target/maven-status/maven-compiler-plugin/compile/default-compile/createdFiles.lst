@@ -12,6 +12,7 @@ org/wso2/carbon/connector/operations/RenameDirectory.class
 org/wso2/carbon/connector/util/AzureConstants.class
 org/wso2/carbon/connector/connection/ConnectionConfiguration.class
 org/wso2/carbon/connector/exceptions/InvalidConfigurationException.class
+org/wso2/carbon/connector/operations/ListPathsOfFileSystem.class
 org/wso2/carbon/connector/util/ResultPayloadCreator.class
 org/wso2/carbon/connector/operations/DownloadFile.class
 org/wso2/carbon/connector/operations/GetMetadata.class

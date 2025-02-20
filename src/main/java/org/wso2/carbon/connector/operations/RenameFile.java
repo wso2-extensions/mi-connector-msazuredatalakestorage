@@ -3,6 +3,7 @@ package org.wso2.carbon.connector.operations;
 import com.azure.storage.file.datalake.DataLakeFileClient;
 import com.azure.storage.file.datalake.DataLakeFileSystemClient;
 import com.azure.storage.file.datalake.DataLakeServiceClient;
+import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import org.apache.axiom.om.OMElement;
 import org.apache.synapse.MessageContext;
 import org.wso2.carbon.connector.connection.AzureStorageConnectionHandler;
@@ -12,6 +13,7 @@ import org.wso2.carbon.connector.core.connection.ConnectionHandler;
 import org.wso2.carbon.connector.exceptions.InvalidConfigurationException;
 import org.wso2.carbon.connector.util.AzureConstants;
 import org.wso2.carbon.connector.util.AzureUtil;
+import org.wso2.carbon.connector.util.Error;
 import org.wso2.carbon.connector.util.ResultPayloadCreator;
 
 import javax.xml.stream.XMLStreamException;
@@ -27,6 +29,7 @@ public class RenameFile extends AbstractConnector {
         Object newFileSystemName = messageContext.getProperty(AzureConstants.NEW_FILE_SYSTEM_Name);
 
         if (fileSystemName == null || filePathToRename == null || newFilePath == null || newFileSystemName == null) {
+            AzureUtil.setErrorPropertiesToMessage(messageContext, Error.MISSING_PARAMETERS, "Mandatory parameters [fileSystemName] or [filePathToRename] or [newFilePath] or [newFileSystem] cannot be empty.");
             handleException("Mandatory parameters [fileSystemName] or [filePathToRename] or [newFilePath] or [newFileSystem] cannot be empty.", messageContext);
         }
 
@@ -53,13 +56,16 @@ public class RenameFile extends AbstractConnector {
             }
 
         } catch (InvalidConfigurationException e) {
-            // Set error properties to message context
+            AzureUtil.setErrorPropertiesToMessage(messageContext, Error.INVALID_CONFIGURATION, e.getMessage());
+            handleException(AzureConstants.ERROR_LOG_PREFIX + e.getMessage(), messageContext);
+        }catch (DataLakeStorageException e) {
+            AzureUtil.setErrorPropertiesToMessage(messageContext, Error.DATA_LAKE_STORAGE_GEN2_ERROR, e.getMessage());
             handleException(AzureConstants.ERROR_LOG_PREFIX + e.getMessage(), messageContext);
         } catch (ConnectException e) {
-            // Set error properties to message context
+            AzureUtil.setErrorPropertiesToMessage(messageContext, Error.CONNECTION_ERROR, e.getMessage());
             handleException(AzureConstants.ERROR_LOG_PREFIX + e.getMessage(), messageContext);
         } catch (Exception e) {
-            // Set error properties to message context
+            AzureUtil.setErrorPropertiesToMessage(messageContext, Error.GENERAL_ERROR, e.getMessage());
             handleException(AzureConstants.ERROR_LOG_PREFIX + e.getMessage(), messageContext);
         }
 

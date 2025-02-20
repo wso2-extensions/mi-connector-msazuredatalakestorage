@@ -59,6 +59,9 @@ public class AzureConstants {
     public static final String NEW_FILE_PATH = "newFilePath";
     public static final  String NEW_FILE_SYSTEM_Name = "newFileSystemName";
     public static final String FILE_PATH_TO_ADD_META_DATA = "filePathToAddMetaData";
+    public static final String PATHS = "paths";
+    public static final String PATH = "path";
+
 
 
 

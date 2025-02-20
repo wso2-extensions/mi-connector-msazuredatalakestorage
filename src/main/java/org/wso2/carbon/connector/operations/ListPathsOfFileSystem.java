@@ -1,6 +1,5 @@
 package org.wso2.carbon.connector.operations;
 
-import com.azure.storage.file.datalake.DataLakeFileClient;
 import com.azure.storage.file.datalake.DataLakeFileSystemClient;
 import com.azure.storage.file.datalake.DataLakeServiceClient;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
@@ -9,7 +8,6 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.synapse.MessageContext;
-import org.apache.synapse.core.axis2.Axis2MessageContext;
 import org.wso2.carbon.connector.connection.AzureStorageConnectionHandler;
 import org.wso2.carbon.connector.core.AbstractConnector;
 import org.wso2.carbon.connector.core.ConnectException;
@@ -22,64 +20,75 @@ import org.wso2.carbon.connector.util.ResultPayloadCreator;
 
 import javax.xml.stream.XMLStreamException;
 
-public class DownloadFile extends AbstractConnector {
+public class ListPathsOfFileSystem extends AbstractConnector {
 
     @Override
-    public void connect(MessageContext messageContext){
+    public void connect (MessageContext messageContext){
         Object fileSystemName = messageContext.getProperty(AzureConstants.FILE_SYSTEM_NAME);
-        Object filePathToDownload = messageContext.getProperty(AzureConstants.FILE_PATH_TO_DOWNLOAD);
-        Object downloadLocation = messageContext.getProperty(AzureConstants.DOWNLOAD_LOCATION);
 
-        if (fileSystemName == null || filePathToDownload == null || downloadLocation == null) {
-            AzureUtil.setErrorPropertiesToMessage(messageContext, Error.MISSING_PARAMETERS, "Mandatory parameters [fileSystemName] or [filePathToDownload] or [downloadLocation] cannot be empty.");
-            handleException("Mandatory parameters [fileSystemName] or [filePathToDownload] or [downloadLocation] cannot be empty.", messageContext);
+        if (fileSystemName == null){
+            AzureUtil.setErrorPropertiesToMessage(messageContext, Error.MISSING_PARAMETERS , "Mandatory parameter [fileSystemName] cannot be empty.");
+            handleException("Mandatory parameter [fileSystemName] cannot be empty.", messageContext);
         }
 
+        OMFactory factory = OMAbstractFactory.getOMFactory();
+        OMNamespace ns = factory.createOMNamespace(AzureConstants.AZURE_NAMESPACE, AzureConstants.NAMESPACE);
+        OMElement result = factory.createOMElement(AzureConstants.RESULT, ns);
+        ResultPayloadCreator.preparePayload(messageContext, result);
+        OMElement pathsElement = factory.createOMElement(AzureConstants.PATHS, ns);
+        result.addChild(pathsElement);
+
         ConnectionHandler handler = ConnectionHandler.getConnectionHandler();
-        boolean status = false;
+
 
         try{
             String connectionName = AzureUtil.getConnectionName(messageContext);
             AzureStorageConnectionHandler azureStorageConnectionHandler = (AzureStorageConnectionHandler) handler.getConnection(AzureConstants.CONNECTOR_NAME, connectionName);
             DataLakeServiceClient dataLakeServiceClient = azureStorageConnectionHandler.getDataLakeServiceClient();
             DataLakeFileSystemClient dataLakeFileSystemClient = dataLakeServiceClient.getFileSystemClient(fileSystemName.toString());
-            DataLakeFileClient dataLakeFileClient = dataLakeFileSystemClient.getFileClient(filePathToDownload.toString());
 
-            if (dataLakeFileClient.exists()) {
-                dataLakeFileClient.readToFile(downloadLocation.toString());
-                status = true;
+            if (dataLakeFileSystemClient.exists()){
+                dataLakeFileSystemClient.listPaths().forEach(pathItem -> {
+                    OMElement messageElement = factory.createOMElement(AzureConstants.PATH, ns);
+                    messageElement.setText(pathItem.getName());
+                    pathsElement.addChild(messageElement);
+                });
+            } else {
+                generateResults(messageContext , AzureConstants.ERR_FILE_SYSTEM_DOES_NOT_EXIST);
             }
-        } catch (InvalidConfigurationException e) {
+
+        } catch (InvalidConfigurationException e){
             AzureUtil.setErrorPropertiesToMessage(messageContext, Error.INVALID_CONFIGURATION, e.getMessage());
             handleException(AzureConstants.ERROR_LOG_PREFIX + e.getMessage(), messageContext);
         }catch (DataLakeStorageException e) {
             AzureUtil.setErrorPropertiesToMessage(messageContext, Error.DATA_LAKE_STORAGE_GEN2_ERROR, e.getMessage());
             handleException(AzureConstants.ERROR_LOG_PREFIX + e.getMessage(), messageContext);
-        } catch (ConnectException e) {
+        } catch (ConnectException e){
             AzureUtil.setErrorPropertiesToMessage(messageContext, Error.CONNECTION_ERROR, e.getMessage());
             handleException(AzureConstants.ERROR_LOG_PREFIX + e.getMessage(), messageContext);
-        } catch (Exception e) {
+        } catch (Exception e){
             AzureUtil.setErrorPropertiesToMessage(messageContext, Error.GENERAL_ERROR, e.getMessage());
             handleException(AzureConstants.ERROR_LOG_PREFIX + e.getMessage(), messageContext);
         }
 
 
-        generalResult(messageContext, status);
+        messageContext.getEnvelope().getBody().addChild(result);
+
+
+
+
+
+
     }
 
-    private void generalResult(MessageContext messageContext, boolean status){
-        String response = AzureUtil.generateResultPayload(status, !status ? AzureConstants.ERR_FILE_DOES_NOT_EXIST : "");
+    private void generateResults(MessageContext messageContext, String status) {
+        String response = AzureUtil.generateResultPayload(false, status);
         OMElement element = null;
-
-        try{
+        try {
             element = ResultPayloadCreator.performSearchMessages(response);
         } catch (XMLStreamException e) {
-            handleException("Error occurred while processing the response message", e, messageContext);
+            handleException("Unable to build the message.", e, messageContext);
         }
-
-        if (element != null) {
-            messageContext.getEnvelope().getBody().getFirstElement().detach();
-            messageContext.getEnvelope().getBody().addChild(element);
-        }
+        ResultPayloadCreator.preparePayload(messageContext, element);
     }
 }

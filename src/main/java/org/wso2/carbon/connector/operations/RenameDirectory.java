@@ -3,6 +3,7 @@ package org.wso2.carbon.connector.operations;
 import com.azure.storage.file.datalake.DataLakeDirectoryClient;
 import com.azure.storage.file.datalake.DataLakeFileSystemClient;
 import com.azure.storage.file.datalake.DataLakeServiceClient;
+import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import org.apache.axiom.om.OMElement;
 import org.apache.synapse.MessageContext;
 import org.wso2.carbon.connector.connection.AzureStorageConnectionHandler;
@@ -48,6 +49,9 @@ public class RenameDirectory extends AbstractConnector {
             }
         } catch (InvalidConfigurationException e) {
             AzureUtil.setErrorPropertiesToMessage(messageContext, Error.INVALID_CONFIGURATION, e.getMessage());
+            handleException(AzureConstants.ERROR_LOG_PREFIX + e.getMessage(), messageContext);
+        }catch (DataLakeStorageException e) {
+            AzureUtil.setErrorPropertiesToMessage(messageContext, Error.DATA_LAKE_STORAGE_GEN2_ERROR, e.getMessage());
             handleException(AzureConstants.ERROR_LOG_PREFIX + e.getMessage(), messageContext);
         } catch (ConnectException e) {
             AzureUtil.setErrorPropertiesToMessage(messageContext, Error.CONNECTION_ERROR, e.getMessage());
