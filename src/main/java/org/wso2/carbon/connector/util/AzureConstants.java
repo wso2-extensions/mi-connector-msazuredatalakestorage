@@ -35,6 +35,10 @@ public class AzureConstants {
     public static final String DIRECTORY_NAME = "directoryName";
     public static final String NEW_DIRECTORY_NAME = "newDirectoryName";
     public static final String FILE_PATH = "filePath";
+    public static final String FILE_PATH_TO_DOWNLOAD = "filePathToDownload";
+    public static final String DOWNLOAD_LOCATION = "downloadLocation";
+    public static final String CONTENT = "content";
+
 
 
     public static final String ENDPOINT_PARAM = "DefaultEndpointsProtocol=http;AccountName=";

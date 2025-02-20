@@ -1,8 +1,8 @@
 {
   "connectorName" : "azureDataLake",
-    "operationName" : "downloadFile",
-    "title" : "Download File",
-    "help" : "<h1>Download File</h1> <b>This operation can be used to download a file.</b>",
+    "operationName" : "readFile",
+    "title" : "Read File",
+    "help" : "<h1>Read File</h1> <b>This operation can be used to read a file.</b>",
     "elements" : [
         {
         "type" : "attributeGroup",
@@ -41,23 +41,12 @@
                     {
                     "type" : "attribute",
                     "value" : {
-                        "name" : "filePathToDownload",
-                        "displayName" : "File Path to Download",
+                        "name" : "filePath",
+                        "displayName" : "File Path",
                         "inputType" : "stringOrExpression",
                         "defaultValue" : "",
                         "required" : "true",
-                        "helpTip" : "Path of the file to be downloaded."
-                    }
-                    },
-                    {
-                    "type" : "attribute",
-                    "value" : {
-                        "name" : "downloadLocation",
-                        "displayName" : "Download Location",
-                        "inputType" : "stringOrExpression",
-                        "defaultValue" : "",
-                        "required" : "true",
-                        "helpTip" : "Location where the file is to be downloaded."
+                        "helpTip" : "Path of the file to be read."
                     }
                     }
                 ]

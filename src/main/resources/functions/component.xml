@@ -62,5 +62,13 @@
             <file>getMetadata.xml</file>
             <description>Gets the metadata of the file</description>
         </component>
+        <component name="downloadFile">
+            <file>downloadFile.xml</file>
+            <description>Downloads the file</description>
+        </component>
+        <component name="readFile">
+            <file>readFile.xml</file>
+            <description>Reads the file</description>
+        </component>
     </subComponents>
 </component>
