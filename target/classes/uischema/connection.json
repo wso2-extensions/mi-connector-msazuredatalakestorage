@@ -28,11 +28,26 @@
               {
                 "type": "attribute",
                 "value": {
+                  "name": "accountType",
+                  "displayName": "Account Type",
+                  "inputType": "combo",
+                  "defaultValue": "AccountKey",
+                  "comboValues": [
+                      "AccountKey",
+                      "ClientId"
+                    ],
+                  "helpTip": "The name of the azure storage account."
+                }
+              },
+              {
+                "type": "attribute",
+                "value": {
                   "name": "accountName",
                   "displayName": "Account name",
                   "inputType": "stringOrExpression",
                   "defaultValue": "",
-                  "helpTip": "The name of the azure storage account."
+                  "helpTip": "The name of the azure storage account.",
+                  "required": "true"
                 }
               },
               {
@@ -42,8 +57,13 @@
                   "displayName": "Account Key",
                   "inputType": "stringOrExpression",
                   "defaultValue": "",
-                  "required": "false",
-                  "helpTip": "The access key for the storage account."
+                  "required": "true",
+                  "helpTip": "The access key for the storage account.",
+                  "enableCondition" : [
+                    {
+                      "accountType" : "AccountKey"
+                    }
+                  ]
                 }
               },
               {
@@ -53,8 +73,13 @@
                   "displayName": "Client ID",
                   "inputType": "stringOrExpression",
                   "defaultValue": "",
-                  "required": "false",
-                  "helpTip": "The client ID of the application."
+                  "required": "true",
+                  "helpTip": "The client ID of the application.",
+                  "enableCondition" : [
+                    {
+                      "accountType" : "ClientId"
+                    }
+                  ]
                 }
               },
               {
@@ -64,8 +89,13 @@
                   "displayName": "Client Secret",
                   "inputType": "stringOrExpression",
                   "defaultValue": "",
-                  "required": "false",
-                  "helpTip": "The client secret of the application."
+                  "required": "true",
+                  "helpTip": "The client secret of the application.",
+                  "enableCondition" : [
+                    {
+                      "accountType" : "ClientId"
+                    }
+                  ]
                 }
               },
               {
@@ -75,8 +105,13 @@
                   "displayName": "Tenant ID",
                   "inputType": "stringOrExpression",
                   "defaultValue": "",
-                  "required": "false",
-                  "helpTip": "The tenant ID of the application."
+                  "required": "true",
+                  "helpTip": "The tenant ID of the application.",
+                  "enableCondition" : [
+                    {
+                      "accountType" : "ClientId"
+                    }
+                  ]
                 }
               },
               {
@@ -86,8 +121,13 @@
                   "displayName": "Default Endpoints Protocol",
                   "inputType": "stringOrExpression",
                   "defaultValue": "https",
-                  "required": "false",
-                  "helpTip": "The protocol (http or https) of the azure storage account."
+                  "required": "true",
+                  "helpTip": "The protocol (http or https) of the azure storage account.",
+                  "enableCondition" : [
+                    {
+                      "accountType" : "AccountKey"
+                    }
+                  ]
                 }
               }
             ]
