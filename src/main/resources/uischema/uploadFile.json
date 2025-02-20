@@ -50,6 +50,21 @@
                     }
                     },
                     {
+                      "type" : "attribute",
+                      "value" : {
+                          "name" : "inputType",
+                          "displayName" : "Input Type",
+                          "inputType" : "combo",
+                          "defaultValue" : "LocalFile",
+                          "required" : "true",
+                          "helpTip" : "Path of the file to be uploaded.",
+                          "comboValues": [
+                      "LocalFile",
+                      "TextContent"
+                    ]
+                      }
+                      },
+                    {
                     "type" : "attribute",
                     "value" : {
                         "name": "localFilePath",
@@ -57,7 +72,12 @@
                         "inputType" : "stringOrExpression",
                         "defaultValue" : "",
                         "required" : "false",
-                        "helpTip" : "File to be uploaded."
+                        "helpTip" : "File to be uploaded.",
+                        "enableCondition": [
+                          {
+                            "inputType": "LocalFile"
+                          }
+                        ]
                     }
                     },
                   {
@@ -79,7 +99,12 @@
                       "inputType": "stringOrExpression",
                       "defaultValue": "",
                       "required": "false",
-                      "helpTip": "Text content to be uploaded (without using a file)."
+                      "helpTip": "Text content to be uploaded (without using a file).",
+                      "enableCondition": [
+                        {
+                          "inputType": "TextContent"
+                        }
+                      ]
                     }
                   },
                   {
