@@ -17,6 +17,8 @@
 -->
 <template xmlns="http://ws.apache.org/ns/synapse" name="createFileSystem">
     <parameter name="fileSystemName" description="The name of the file system."/>
+    <parameter name="responseVariable" description="Response variable name"/>
+    <parameter name="overwriteBody" description="Replace the Message Body in Message Context with the response of the operation."/>
     <sequence>
         <property name="fileSystemName" expression="$func:fileSystemName"/>
         <class name="org.wso2.carbon.connector.operations.CreateFileSystem"/>

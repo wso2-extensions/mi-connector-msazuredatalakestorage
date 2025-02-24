@@ -1,103 +1,68 @@
+/*
+ *  Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ *
+ *  WSO2 LLC. licenses this file to you under the Apache License,
+ *  Version 2.0 (the "License"); you may not use this file except
+ *  in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an
+ *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *  KIND, either express or implied.  See the License for the
+ *  specific language governing permissions and limitations
+ *  under the License.
+ */
+
 package org.wso2.carbon.connector.operations;
 
-import com.azure.storage.blob.BlobClient;
-import com.azure.storage.blob.BlobContainerClient;
-import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.file.datalake.DataLakeFileClient;
 import com.azure.storage.file.datalake.DataLakeFileSystemClient;
 import com.azure.storage.file.datalake.DataLakeServiceClient;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
-import org.apache.axiom.om.OMAbstractFactory;
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
+
 import org.apache.synapse.MessageContext;
 import org.wso2.carbon.connector.connection.AzureStorageConnectionHandler;
-import org.wso2.carbon.connector.core.AbstractConnector;
+
 import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.connector.core.connection.ConnectionHandler;
-import org.wso2.carbon.connector.exceptions.InvalidConfigurationException;
-import org.wso2.carbon.connector.util.AzureConstants;
-import org.wso2.carbon.connector.util.AzureUtil;
-import org.wso2.carbon.connector.util.ResultPayloadCreator;
+import org.wso2.carbon.connector.util.*;
 import org.wso2.carbon.connector.util.Error;
 
-import javax.xml.stream.XMLStreamException;
+import java.util.Map;
 
-public class GetMetadata extends AbstractConnector {
+/**
+ * Implements the get metadata operation.
+ */
+public class GetMetadata extends AbstractAzureMediator {
 
     @Override
-    public void connect(MessageContext messageContext) {
-        Object fileSystemName = messageContext.getProperty(AzureConstants.FILE_SYSTEM_NAME);
-        Object filePath = messageContext.getProperty(AzureConstants.FILE_PATH);
+    public void execute(MessageContext messageContext, String responseVariable, Boolean overwriteBody) {
+        String connectionName = getProperty(messageContext, AzureConstants.CONNECTION_NAME, String.class, false);
+        String fileSystemName = getMediatorParameter(messageContext, AzureConstants.FILE_SYSTEM_NAME, String.class, false);
+        String filePath = getMediatorParameter(messageContext, AzureConstants.FILE_PATH, String.class, false);
 
-        if (fileSystemName == null || filePath == null) {
-            AzureUtil.setErrorPropertiesToMessage(messageContext, Error.MISSING_PARAMETERS, "Mandatory parameters [fileSystemName] or [filePath] cannot be empty.");
-            handleException("Mandatory parameters [fileSystemName] or [filePath] cannot be empty.", messageContext);
-        }
-
-        // Connection handler
         ConnectionHandler handler = ConnectionHandler.getConnectionHandler();
 
-        OMFactory factory = OMAbstractFactory.getOMFactory();
-        OMNamespace ns = factory.createOMNamespace(AzureConstants.AZURE_NAMESPACE, AzureConstants.NAMESPACE);
-        OMElement result = factory.createOMElement(AzureConstants.RESULT, ns);
-        ResultPayloadCreator.preparePayload(messageContext, result);
-        OMElement metadataElement = factory.createOMElement(AzureConstants.METADATA, ns);
-        result.addChild(metadataElement);
-
         try {
-            String connectionName = AzureUtil.getConnectionName(messageContext);
-            AzureStorageConnectionHandler azureStorageConnectionHandler = (AzureStorageConnectionHandler)
-                    handler.getConnection(AzureConstants.CONNECTOR_NAME, connectionName);
+            AzureStorageConnectionHandler azureStorageConnectionHandler = (AzureStorageConnectionHandler) handler.getConnection(AzureConstants.CONNECTOR_NAME, connectionName);
             DataLakeServiceClient dataLakeServiceClient = azureStorageConnectionHandler.getDataLakeServiceClient();
-            DataLakeFileSystemClient dataLakeFileSystemClient = dataLakeServiceClient.getFileSystemClient(fileSystemName.toString());
+            DataLakeFileSystemClient dataLakeFileSystemClient = dataLakeServiceClient.getFileSystemClient(fileSystemName);
+            DataLakeFileClient dataLakeFileClient = dataLakeFileSystemClient.getFileClient(filePath);
 
-            if (dataLakeFileSystemClient.exists()) {
-                DataLakeFileClient dataLakeFileClient = dataLakeFileSystemClient.getFileClient(filePath.toString());
+            Map<String, String> metadata;
+            metadata = dataLakeFileClient.getProperties().getMetadata();
 
-                if (dataLakeFileClient.exists()) {
-                    dataLakeFileClient.getProperties().getMetadata().forEach((key, value) -> {
-                        OMElement messageElement = factory.createOMElement(key, ns);
-                        messageElement.setText(value);
-                        metadataElement.addChild(messageElement);
-                        result.addChild(metadataElement);
-                    });
-                } else {
-                    generateResults(messageContext, AzureConstants.ERR_FILE_DOES_NOT_EXIST);
-                }
-            } else {
-                generateResults(messageContext, AzureConstants.ERR_FILE_SYSTEM_DOES_NOT_EXIST);
-            }
-
-        } catch (InvalidConfigurationException e) {
-            AzureUtil.setErrorPropertiesToMessage(messageContext, Error.INVALID_CONFIGURATION, e.getMessage());
-            handleException(AzureConstants.ERROR_LOG_PREFIX + e.getMessage(), messageContext);
+            handleConnectorResponse(messageContext, responseVariable, overwriteBody, metadata, null, null);
+        } catch (ConnectException e) {
+            handleConnectorException(Error.CONNECTION_ERROR, messageContext, e);
         } catch (DataLakeStorageException e) {
-            AzureUtil.setErrorPropertiesToMessage(messageContext, Error.DATA_LAKE_STORAGE_GEN2_ERROR, e.getMessage());
-            handleException(AzureConstants.ERROR_LOG_PREFIX + e.getMessage(), messageContext);
-        }catch (ConnectException e) {
-            AzureUtil.setErrorPropertiesToMessage(messageContext, Error.CONNECTION_ERROR, e.getMessage());
-            handleException(AzureConstants.ERROR_LOG_PREFIX + e.getMessage(), messageContext);
-        } catch (Exception e) {
-            AzureUtil.setErrorPropertiesToMessage(messageContext, Error.GENERAL_ERROR, e.getMessage());
-            handleException(AzureConstants.ERROR_LOG_PREFIX + e.getMessage(), messageContext);
+            handleConnectorException(Error.DATA_LAKE_STORAGE_GEN2_ERROR, messageContext, e);
+        }catch ( Exception e) {
+            handleConnectorException(Error.GENERAL_ERROR, messageContext, e);
         }
-
-        messageContext.getEnvelope().getBody().addChild(result);
-
-
-
     }
 
-    private void generateResults(MessageContext messageContext, String status) {
-        String response = AzureUtil.generateResultPayload(false, status);
-        OMElement element = null;
-        try {
-            element = ResultPayloadCreator.performSearchMessages(response);
-        } catch (XMLStreamException e) {
-            handleException("Unable to build the message.", e, messageContext);
-        }
-        ResultPayloadCreator.preparePayload(messageContext, element);
-    }
 }

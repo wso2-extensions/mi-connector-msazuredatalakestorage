@@ -18,9 +18,15 @@
 <template xmlns="http://ws.apache.org/ns/synapse" name="deleteDirectory">
     <parameter name="fileSystemName" description="The name of the file system."/>
     <parameter name="directoryName" description="The name of the directory to be deleted."/>
+    <parameter name="responseVariable" description="Response variable name"/>
+    <parameter name="overwriteBody" description="Replace the Message Body in Message Context with the response of the operation."/>
+    <parameter name="timeout" description="The timeout for the operation."/>
+    <parameter name="deleteContents" description="Delete the contents of the directory."/>
     <sequence>
         <property name="fileSystemName" expression="$func:fileSystemName"/>
         <property name="directoryName" expression="$func:directoryName"/>
+        <property name="timeout" expression="$func:timeout"/>
+        <property name="deleteContents" expression="$func:deleteContents"/>
         <class name="org.wso2.carbon.connector.operations.DeleteDirectory"/>
     </sequence>
 </template>

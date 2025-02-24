@@ -15,10 +15,14 @@
    specific language governing permissions and limitations
    under the License.
 -->
-<template xmlns="http://ws.apache.org/ns/synapse" name="listPathsOfFileSystem">
-    <parameter name="fileSystemName" description="The name of the file system."/>
+<template xmlns="http://ws.apache.org/ns/synapse" name="listFileSystems">
+    <parameter name="responseVariable" description="Response variable name"/>
+    <parameter name="overwriteBody" description="Replace the Message Body in Message Context with the response of the operation."/>
+    <parameter name="prefix" description="The prefix of the file system name."/>
+    <parameter name="timeout" description="The timeout for the operation."/>
     <sequence>
-        <property name="fileSystemName" expression="$func:fileSystemName"/>
-        <class name="org.wso2.carbon.connector.operations.ListPathsOfFileSystem"/>
+        <property name="prefix" expression="$func:prefix"/>
+        <property name="timeout" expression="$func:timeout"/>
+        <class name="org.wso2.carbon.connector.operations.ListFileSystems"/>
     </sequence>
 </template>

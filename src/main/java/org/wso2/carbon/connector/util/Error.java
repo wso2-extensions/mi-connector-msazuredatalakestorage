@@ -1,17 +1,17 @@
 /*
- *  Copyright (c) 2023, WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
+ *  Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  *  WSO2 LLC. licenses this file to you under the Apache License,
  *  Version 2.0 (the "License"); you may not use this file except
  *  in compliance with the License.
  *  You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- *  KIND, either express or implied. See the License for the
+ *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
  *  under the License.
  */
@@ -33,7 +33,13 @@ public enum Error {
     FILE_PERMISSION_ERROR("700708", "MS_AZURE_DATALAKE_GEN2:FILE_PERMISSION_ERROR"),
     GENERAL_ERROR("700709", "MS_AZURE_DATALAKE_GEN2:GENERAL_ERROR"),
     FILE_SYSTEM_DOES_NOT_EXIST("700710", "MS_AZURE_DATALAKE_GEN2:FILE_SYSTEM_DOES_NOT_EXIST"),
-    INVALID_JSON("700711", "MS_AZURE_DATALAKE_GEN2:INVALID_JSON"),;
+    INVALID_JSON("700711", "MS_AZURE_DATALAKE_GEN2:INVALID_JSON"),
+    TIMEOUT_ERROR("700712", "MS_AZURE_DATALAKE_GEN2:TIMEOUT_ERROR"),
+    DIRECTORY_NOT_FOUND_ERROR("700713", "MS_AZURE_DATALAKE_GEN2:DIRECTORY_NOT_FOUND_ERROR"),
+    FILE_DOES_NOT_EXIST("700714", "MS_AZURE_DATALAKE_GEN2:FILE_DOES_NOT_EXIST"),
+    No_SUCH_ALGORITHM("700715", "MS_AZURE_DATALAKE_GEN2:No_SUCH_ALGORITHM"),
+    IO_EXCEPTION("700716", "MS_AZURE_DATALAKE_GEN2:IO_EXCEPTION");
+
     private final String code;
     private final String message;
 

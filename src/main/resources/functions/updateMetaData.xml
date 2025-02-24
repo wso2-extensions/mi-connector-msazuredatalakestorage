@@ -19,10 +19,15 @@
     <parameter name="fileSystemName" description="The name of the file system."/>
     <parameter name="filePathToAddMetaData" description="The name of the container."/>
     <parameter name="metadata" description="The metadata to be added."/>
+    <parameter name="timeout" description="The timeout for the operation."/>
+    <parameter name="responseVariable" description="Response variable name"/>
+    <parameter name="overwriteBody" description="Replace the Message Body in Message Context with the response of the operation."/>
+
     <sequence>
         <property name="fileSystemName" expression="$func:fileSystemName"/>
         <property name="filePathToAddMetaData" expression="$func:filePathToAddMetaData"/>
         <property name="metadata" expression="$func:metadata"/>
+        <property name="timeout" expression="$func:timeout"/>
         <class name="org.wso2.carbon.connector.operations.UpdateMetaData"/>
     </sequence>
 </template>

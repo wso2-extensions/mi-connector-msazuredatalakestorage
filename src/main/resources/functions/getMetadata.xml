@@ -18,6 +18,9 @@
 <template xmlns="http://ws.apache.org/ns/synapse" name="getMetadata">
     <parameter name="fileSystemName" description="The name of the file system."/>
     <parameter name="filePath" description="The path of the file."/>
+    <parameter name="responseVariable" description="Response variable name"/>
+    <parameter name="overwriteBody" description="Replace the Message Body in Message Context with the response of the operation."/>
+
     <sequence>
         <property name="fileSystemName" expression="$func:fileSystemName"/>
         <property name="filePath" expression="$func:filePath"/>

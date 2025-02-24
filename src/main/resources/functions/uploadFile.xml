@@ -22,13 +22,44 @@
     <parameter name="finalContentType" description="The path to the file to be uploaded."/>
     <parameter name="textContent" description="The path to the file to be uploaded."/>
     <parameter name="metadata" description="The path to the file to be uploaded."/>
+    <parameter name="timeout" description="The timeout for the operation."/>
+    <parameter name="responseVariable" description="Response variable name"/>
+    <parameter name="overwriteBody" description="Replace the Message Body in Message Context with the response of the operation."/>
+    <parameter name="leaseId" description="This request will succeed only if the provided leaseId matches the actual lease on the resource"/>
+    <parameter name="ifUnmodifiedSince" description="The operation will be performed only if the resource has not been modified since the specified time."/>
+    <parameter name="ifMatch" description="The operation will be performed only if the resource's ETag matches the specified ETag value."/>
+    <parameter name="ifModifiedSince" description="The operation will be performed only if the resource has been modified since the specified time."/>
+    <parameter name="ifNoneMatch" description="The operation will be performed only if the resource's ETag does not match the specified ETag value."/>
+    <parameter name="contentLanguage" description="The language of the content."/>
+    <parameter name="contentType" description="The MIME content type of the content."/>
+    <parameter name="contentEncoding" description="Defines the encoding type"/>
+    <parameter name="contentDisposition" description="The value of the Content-Disposition response header."/>
+    <parameter name="cacheControl" description="The value of the Cache-Control response header."/>
+    <parameter name="blockSize" description="The size of the block in MB."/>
+    <parameter name="maxSingleUploadSize" description="The maximum size of a single upload in bytes."/>
+    <parameter name="maxConcurrency" description="The maximum number of blocks that can be uploaded in parallel."/>
+
     <sequence>
         <property name="fileSystemName" expression="$func:fileSystemName"/>
         <property name="filePathToUpload" expression="$func:filePathToUpload"/>
         <property name="localFilePath" expression="$func:localFilePath"/>
-        <property name="finalContentType" expression="$func:finalContentType"/>
         <property name="textContent" expression="$func:textContent"/>
         <property name="metadata" expression="$func:metadata"/>
+        <property name="timeout" expression="$func:timeout"/>
+        <property name="leaseId" expression="$func:leaseId"/>
+        <property name="ifUnmodifiedSince" expression="$func:ifUnmodifiedSince"/>
+        <property name="ifMatch" expression="$func:ifMatch"/>
+        <property name="ifModifiedSince" expression="$func:ifModifiedSince"/>
+        <property name="ifNoneMatch" expression="$func:ifNoneMatch"/>
+        <property name="contentLanguage" expression="$func:contentLanguage"/>
+        <property name="contentType" expression="$func:contentType"/>
+        <property name="contentEncoding" expression="$func:contentEncoding"/>
+        <property name="contentDisposition" expression="$func:contentDisposition"/>
+        <property name="cacheControl" expression="$func:cacheControl"/>
+        <property name="blockSize" expression="$func:blockSize"/>
+        <property name="maxSingleUploadSize" expression="$func:maxSingleUploadSize"/>
+        <property name="maxConcurrency" expression="$func:maxConcurrency"/>
+
         <class name="org.wso2.carbon.connector.operations.UploadFile"/>
     </sequence>
 </template>

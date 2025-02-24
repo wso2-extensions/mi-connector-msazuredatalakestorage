@@ -26,8 +26,8 @@
             <file>deleteFileSystem.xml</file>
             <description>Deletes the File System from the Azure Data Lake storage Gen2.</description>
         </component>
-        <component name="listOfFileSystems">
-            <file>listOfFileSystems.xml</file>
+        <component name="listFileSystems">
+            <file>listFileSystems.xml</file>
             <description>Gets the list of all File Systems.</description>
         </component>
         <component name="createDirectory">
@@ -70,8 +70,8 @@
             <file>readFile.xml</file>
             <description>Reads the file</description>
         </component>
-        <component name="listPathsOfFileSystem">
-            <file>listPathsOfFileSystem.xml</file>
+        <component name="listPaths">
+            <file>listPaths.xml</file>
             <description>Reads all paths of the file system</description>
         </component>
     </subComponents>

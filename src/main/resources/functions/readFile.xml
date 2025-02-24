@@ -18,9 +18,19 @@
 <template xmlns="http://ws.apache.org/ns/synapse" name="readFile">
     <parameter name="fileSystemName" description="The name of the file system."/>
     <parameter name="filePath" description="The path of the file."/>
+    <parameter name="responseVariable" description="Response variable name"/>
+    <parameter name="overwriteBody" description="Replace the Message Body in Message Context with the response of the operation."/>
+    <parameter name="timeout" description="The timeout for the operation."/>
+    <parameter name="count" description="The number of bytes to read."/>
+    <parameter name="offset" description="The offset to start reading from."/>
+    <parameter name="maxRetryRequests" description="The maximum number of retry requests."/>
     <sequence>
         <property name="fileSystemName" expression="$func:fileSystemName"/>
         <property name="filePath" expression="$func:filePath"/>
+        <property name="timeout" expression="$func:timeout"/>
+        <property name="count" expression="$func:count"/>
+        <property name="offset" expression="$func:offset"/>
+        <property name="maxRetryRequests" expression="$func:maxRetryRequests"/>
         <class name="org.wso2.carbon.connector.operations.ReadFile"/>
     </sequence>
 </template>

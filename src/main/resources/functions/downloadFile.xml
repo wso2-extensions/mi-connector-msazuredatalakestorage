@@ -19,6 +19,9 @@
     <parameter name="fileSystemName" description="The name of the file system."/>
     <parameter name="filePathToDownload" description="The path of the file"/>
     <parameter name="downloadLocation" description="The destination path to save the downloaded file."/>
+    <parameter name="responseVariable" description="Response variable name"/>
+    <parameter name="overwriteBody" description="Replace the Message Body in Message Context with the response of the operation."/>
+    <parameter name="overwrite" description="Overwrite the file if it already exists."/>
     <sequence>
         <property name="fileSystemName" expression="$func:fileSystemName"/>
         <property name="filePathToDownload" expression="$func:filePathToDownload"/>

@@ -19,10 +19,16 @@
     <parameter name="fileSystemName" description="The name of the file system."/>
     <parameter name="directoryName" description="The name of the directory."/>
     <parameter name="newDirectoryName" description="The new name of the directory."/>
+    <parameter name="responseVariable" description="Response variable name"/>
+    <parameter name="overwriteBody" description="Replace the Message Body in Message Context with the response of the operation."/>
+    <parameter name="timeout" description="The timeout for the operation."/>
+    <parameter name="newFileSystemName" description="The name of the new file system."/>
     <sequence>
         <property name="fileSystemName" expression="$func:fileSystemName"/>
         <property name="directoryName" expression="$func:directoryName"/>
         <property name="newDirectoryName" expression="$func:newDirectoryName"/>
+        <property name="newFileSystemName" expression="$func:newFileSystemName"/>
+        <property name="timeout" expression="$func:timeout"/>
         <class name="org.wso2.carbon.connector.operations.RenameDirectory"/>
     </sequence>
 </template>

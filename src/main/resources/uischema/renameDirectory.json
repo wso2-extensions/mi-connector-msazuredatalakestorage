@@ -50,6 +50,17 @@
                     }
                     },
                     {
+                        "type" : "attribute",
+                        "value" : {
+                            "name" : "newFileSystemName",
+                            "displayName" : "New File System Name",
+                            "inputType" : "stringOrExpression",
+                            "defaultValue" : "",
+                            "required" : "true",
+                            "helpTip" : "Name of the new file system where the directory is to be moved."
+                        }
+                    },
+                    {
                     "type" : "attribute",
                     "value" : {
                         "name" : "newDirectoryName",
@@ -59,12 +70,54 @@
                         "required" : "true",
                         "helpTip" : "New path of the directory."
                     }
+                    },
+                    {
+                        "type" : "attribute",
+                        "value" : {
+                            "name" : "timeout",
+                            "displayName" : "Timeout",
+                            "inputType" : "stringOrExpression",
+                            "defaultValue" : "",
+                            "required" : "false",
+                            "helpTip" : "Time in milliseconds after which the operation will time out."
+                        }
                     }
+
                 ]
                 }
             }
             ]
         }
+        },
+        {
+            "type": "attributeGroup",
+            "value": {
+                "groupName": "Response",
+                "elements": [
+                    {
+                        "type": "attribute",
+                        "value": {
+                            "name": "responseVariable",
+                            "displayName": "Response Variable Name",
+                            "inputType": "string",
+                            "deriveResponseVariable": true,
+                            "required": "true",
+                            "helpTip": "Name of the variable to which the output of the operation should be assigned"
+                        }
+                    },
+                    {
+                        "type": "attribute",
+                        "value": {
+                            "name": "overwriteBody",
+                            "displayName": "Overwrite Message Body",
+                            "inputType": "checkbox",
+                            "defaultValue": "false",
+                            "helpTip": "Replace the Message Body in Message Context with the response of the operation (This will remove the payload from the above variable).",
+                            "required": "false"
+                        }
+                    }
+                ]
+            }
         }
     ]
 }

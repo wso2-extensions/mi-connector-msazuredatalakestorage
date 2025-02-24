@@ -20,7 +20,7 @@
     <subComponents> 
 		<component name="init" >
 	    		<file>init.xml</file>
-	    		<description>Init Init operation for ms azure data lake storage gen2 connector.</description>
+	    		<description>Init operation for MS Azure data lake storage gen2 connector.</description>
 				<hidden>true</hidden>
 		</component>
     </subComponents>    

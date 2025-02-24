@@ -1,0 +1,13 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "hostName": "localhost",
+            "port": 5005,
+            "request": "attach",
+            "type": "java",
+            "name": "Debug (Attach) - Remote",
+            "projectName": "azure"
+        }
+    ]
+}

@@ -18,10 +18,9 @@
 
 package org.wso2.carbon.connector.operations;
 
-import com.azure.storage.file.datalake.DataLakeFileClient;
-import com.azure.storage.file.datalake.DataLakeFileSystemClient;
 import com.azure.storage.file.datalake.DataLakeServiceClient;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
+import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
 
 import org.apache.synapse.MessageContext;
 
@@ -31,42 +30,38 @@ import org.wso2.carbon.connector.core.connection.ConnectionHandler;
 import org.wso2.carbon.connector.util.*;
 import org.wso2.carbon.connector.util.Error;
 
-import java.io.UncheckedIOException;
+
+
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Implements the download file operation.
+ * Implements the list of file systems operation.
  */
-public class DownloadFile extends AbstractAzureMediator {
-
+public class ListFileSystems extends AbstractAzureMediator {
     @Override
     public void execute(MessageContext messageContext, String responseVariable, Boolean overwriteBody) {
         String connectionName = getProperty(messageContext, AzureConstants.CONNECTION_NAME, String.class, false);
-        String fileSystemName = getMediatorParameter(messageContext, AzureConstants.FILE_SYSTEM_NAME, String.class, false);
-        String filePath = getMediatorParameter(messageContext, AzureConstants.FILE_PATH_TO_DOWNLOAD, String.class, false);
-        String downloadFilePath = getMediatorParameter(messageContext, AzureConstants.DOWNLOAD_LOCATION, String.class, false);
-        Boolean overwrite = getMediatorParameter(messageContext, AzureConstants.OVERWRITE, Boolean.class, true);
+        String prefix = getMediatorParameter(messageContext, AzureConstants.PREFIX, String.class, true);
+        Integer timeout = getMediatorParameter(messageContext, AzureConstants.TIMEOUT, Integer.class, true);
 
         ConnectionHandler handler = ConnectionHandler.getConnectionHandler();
+        List<String> fileSystems = new ArrayList<>();
 
         try {
             AzureStorageConnectionHandler azureStorageConnectionHandler = (AzureStorageConnectionHandler) handler.getConnection(AzureConstants.CONNECTOR_NAME, connectionName);
             DataLakeServiceClient dataLakeServiceClient = azureStorageConnectionHandler.getDataLakeServiceClient();
-            DataLakeFileSystemClient dataLakeFileSystemClient = dataLakeServiceClient.getFileSystemClient(fileSystemName);
-            DataLakeFileClient dataLakeFileClient = dataLakeFileSystemClient.getFileClient(filePath);
-            dataLakeFileClient.readToFile(downloadFilePath, overwrite);
-            handleConnectorResponse(messageContext,responseVariable,overwriteBody,true, null, null);
-
+            dataLakeServiceClient.listFileSystems(
+                    new ListFileSystemsOptions().setPrefix(prefix) , timeout != null ? Duration.ofSeconds(timeout.longValue()) : null)
+            .forEach(fileSystem -> fileSystems.add(fileSystem.getName()));
         } catch (ConnectException e) {
             handleConnectorException(Error.CONNECTION_ERROR, messageContext, e);
         } catch (DataLakeStorageException e) {
-            handleConnectorException(Error.DATA_LAKE_STORAGE_GEN2_ERROR , messageContext , e);
-        } catch ( UncheckedIOException e){
-            handleConnectorException(Error.FILE_IO_ERROR, messageContext, e);
-        } catch ( Exception e){
-            handleConnectorException(Error.GENERAL_ERROR, messageContext, e);
+            handleConnectorException(Error.DATA_LAKE_STORAGE_GEN2_ERROR, messageContext, e);
+        } catch (RuntimeException e) {
+            handleConnectorException(Error.TIMEOUT_ERROR, messageContext, e);
         }
-
+        handleConnectorResponse(messageContext, responseVariable, overwriteBody, fileSystems, null, null);
     }
-
-
 }
