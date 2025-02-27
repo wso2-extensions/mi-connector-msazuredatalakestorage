@@ -21,24 +21,20 @@ package org.wso2.carbon.connector.operations;
 import com.azure.core.http.rest.Response;
 import com.azure.storage.file.datalake.DataLakeFileClient;
 import com.azure.storage.file.datalake.DataLakeServiceClient;
+import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
-import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import org.apache.axiom.om.OMElement;
-import org.apache.commons.lang.StringUtils;
 import org.apache.synapse.MessageContext;
 import org.wso2.carbon.connector.connection.AzureStorageConnectionHandler;
-import org.wso2.carbon.connector.core.AbstractConnector;
 import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.connector.core.connection.ConnectionHandler;
-import org.wso2.carbon.connector.exceptions.InvalidConfigurationException;
-import org.wso2.carbon.connector.util.*;
+import org.wso2.carbon.connector.util.AbstractAzureMediator;
+import org.wso2.carbon.connector.util.AzureConstants;
 import org.wso2.carbon.connector.util.Error;
+import org.wso2.carbon.connector.util.Utils;
 
-import javax.xml.stream.XMLStreamException;
 import java.time.Duration;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Implements the update meta data operation.
@@ -47,36 +43,49 @@ public class UpdateMetaData extends AbstractAzureMediator {
 
     @Override
     public void execute(MessageContext messageContext, String responseVariable, Boolean overwriteBody) {
+
         String connectionName = getProperty(messageContext, AzureConstants.CONNECTION_NAME, String.class, false);
-        String fileSystemName = getMediatorParameter(messageContext, AzureConstants.FILE_SYSTEM_NAME, String.class, false);
-        String filePathToAddMetaData = getMediatorParameter(messageContext, AzureConstants.FILE_PATH_TO_ADD_META_DATA, String.class, false);
+        String fileSystemName =
+                getMediatorParameter(messageContext, AzureConstants.FILE_SYSTEM_NAME, String.class, false);
+        String filePathToAddMetaData =
+                getMediatorParameter(messageContext, AzureConstants.FILE_PATH_TO_ADD_META_DATA, String.class, false);
+        String ifMatch = getMediatorParameter(messageContext, AzureConstants.IF_MATCH, String.class, true);
+        String ifModifiedSince =
+                getMediatorParameter(messageContext, AzureConstants.IF_MODIFIED_SINCE, String.class, true);
+        String ifNoneMatch = getMediatorParameter(messageContext, AzureConstants.IF_NONE_MATCH, String.class, true);
         String metadata = getMediatorParameter(messageContext, AzureConstants.METADATA, String.class, false);
-        Integer timeout = getMediatorParameter(messageContext, AzureConstants.TIMEOUT, Integer.class , true);
+        Integer timeout = getMediatorParameter(messageContext, AzureConstants.TIMEOUT, Integer.class, true);
+        String leaseId = getMediatorParameter(messageContext, AzureConstants.LEASE_ID, String.class, true);
+        String ifUnmodifiedSince =
+                getMediatorParameter(messageContext, AzureConstants.IF_UNMODIFIED_SINCE, String.class, true);
 
         ConnectionHandler handler = ConnectionHandler.getConnectionHandler();
 
         try {
-            AzureStorageConnectionHandler azureStorageConnectionHandler = (AzureStorageConnectionHandler) handler.getConnection(AzureConstants.CONNECTOR_NAME, connectionName);
+            AzureStorageConnectionHandler azureStorageConnectionHandler =
+                    (AzureStorageConnectionHandler) handler.getConnection(AzureConstants.CONNECTOR_NAME,
+                            connectionName);
             DataLakeServiceClient dataLakeServiceClient = azureStorageConnectionHandler.getDataLakeServiceClient();
-            DataLakeFileClient dataLakeFileClient = dataLakeServiceClient.getFileSystemClient(fileSystemName).getFileClient(filePathToAddMetaData);
+            DataLakeFileClient dataLakeFileClient =
+                    dataLakeServiceClient.getFileSystemClient(fileSystemName).getFileClient(filePathToAddMetaData);
 
+            DataLakeRequestConditions requestConditions = getRequestConditions(leaseId, ifMatch, ifModifiedSince,
+                    ifNoneMatch, ifUnmodifiedSince);
             HashMap<String, String> metadataMap = new HashMap<>();
 
             String metadataString = metadata != null ? metadata : "";
 
-            Utils.addDataToMapFromJsonString(metadataString , metadataMap);
+            Utils.addDataToMapFromJsonString(metadataString, metadataMap);
 
             Response<?> response = dataLakeFileClient.setMetadataWithResponse(
                     metadataMap,
-                    null,
+                    requestConditions,
                     timeout != null ? Duration.ofSeconds(timeout.longValue()) : null,
-                    null
-            );
+                    null);
 
-
-            if(response.getStatusCode() == 200){
+            if (response.getStatusCode() == 200) {
                 handleConnectorResponse(messageContext, responseVariable, overwriteBody, true, null, null);
-            }else{
+            } else {
                 handleConnectorResponse(messageContext, responseVariable, overwriteBody, false, null, null);
             }
 
@@ -98,6 +107,5 @@ public class UpdateMetaData extends AbstractAzureMediator {
 
         }
     }
-
 
 }

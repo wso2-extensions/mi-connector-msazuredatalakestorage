@@ -1,70 +1,193 @@
 {
-  "connectorName" : "azureDataLake" ,
-    "operationName" : "createDirectory",
-    "title" : "Create Directory",
-    "help" : "<h1>Create Directory</h1> <b>This operation can be used to create a new directory.</b>",
-    "elements" : [
+    "connectorName": "azureDataLake",
+    "operationName": "createDirectory",
+    "title": "Create Directory",
+    "help": "<h1>Create Directory</h1> <b>This operation can be used to create a new directory.</b>",
+    "elements": [
         {
-        "type" : "attributeGroup",
-        "value" : {
-            "groupName" : "General",
-            "elements" : [
-            {
-                "type" : "attribute",
-                "value" : {
-                "name" : "configRef",
-                "displayName" : "Connection",
-                "inputType" : "connection",
-                "allowedConnectionTypes" : [ "azureDataLake" ],
-                "defaultType" : "connection.azureDataLake",
-                "defaultValue" : "",
-                "required" : "true",
-                "helpTip" : "Connection to be used"
-                }
-            },
-            {
-                "type" : "attributeGroup",
-                "value" : {
-                "groupName" : "Basic",
-                "elements" : [
+            "type": "attributeGroup",
+            "value": {
+                "groupName": "General",
+                "elements": [
                     {
-                    "type" : "attribute",
-                    "value" : {
-                        "name" : "fileSystemName",
-                        "displayName" : "File System name",
-                        "inputType" : "stringOrExpression",
-                        "defaultValue" : "",
-                        "required" : "true",
-                        "helpTip" : "Name of the file system where the directory will be created."
-                    }
+                        "type": "attribute",
+                        "value": {
+                            "name": "configRef",
+                            "displayName": "Connection",
+                            "inputType": "connection",
+                            "allowedConnectionTypes": [
+                                "azureDataLake"
+                            ],
+                            "defaultType": "connection.azureDataLake",
+                            "defaultValue": "",
+                            "required": "true",
+                            "helpTip": "Connection to be used"
+                        }
                     },
                     {
-                    "type" : "attribute",
-                    "value" : {
-                        "name" : "directoryName",
-                        "displayName" : "Directory Name",
-                        "inputType" : "stringOrExpression",
-                        "defaultValue" : "",
-                        "required" : "true",
-                        "helpTip" : "Path of the directory to be created."
-                    }
-                    },
-                    {
-                        "type" : "attribute",
-                        "value" : {
-                            "name" : "overwrite",
-                            "displayName" : "Overwrite Directory",
-                            "inputType" : "checkbox",
-                            "defaultValue" : "false",
-                            "required" : "false",
-                            "helpTip" : "If checked, the directory will be overwritten if it already exists."
+                        "type": "attributeGroup",
+                        "value": {
+                            "groupName": "Basic",
+                            "elements": [
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "fileSystemName",
+                                        "displayName": "File System name",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "true",
+                                        "helpTip": "Name of the file system where the directory will be created."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "directoryName",
+                                        "displayName": "Directory Name",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "true",
+                                        "helpTip": "Path of the directory to be created."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "metadata",
+                                        "displayName": "Metadata",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "false",
+                                        "helpTip": "Key value list of metadata."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "contentLanguage",
+                                        "displayName": "Content Language",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "en-US",
+                                        "required": "false",
+                                        "helpTip": "The language of the content."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "contentType",
+                                        "displayName": "Content Type",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "false",
+                                        "helpTip": "The MIME content type of the content."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "contentEncoding",
+                                        "displayName": "Content Encoding",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "false",
+                                        "helpTip": "Defines the encoding type (e.g., \"gzip\", \"UTF-8\")."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "contentDisposition",
+                                        "displayName": "Content Disposition",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "false",
+                                        "helpTip": "The value of the Content-Disposition response header."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "cacheControl",
+                                        "displayName": "Cache Control",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "false",
+                                        "helpTip": "The value of the Cache-Control response header."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "timeout",
+                                        "displayName": "Timeout(seconds)",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "false",
+                                        "helpTip": "Time in seconds to wait for the operation to complete."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "permissions",
+                                        "displayName": "Permissions",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "false",
+                                        "helpTip": "Permissions to be set on the directory."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "umask",
+                                        "displayName": "Umask",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "false",
+                                        "helpTip": "The umask to be set on the directory."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "sourceLeaseId",
+                                        "displayName": "Source Lease Id",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "false",
+                                        "helpTip": "The lease ID specified for the source directory."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "group",
+                                        "displayName": "Group",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "false",
+                                        "helpTip": "The group to be set on the directory."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "owner",
+                                        "displayName": "Owner",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "false",
+                                        "helpTip": "The owner to be set on the directory."
+                                    }
+                                }
+                            ]
                         }
                     }
                 ]
-                }
             }
-            ]
-        }
         },
         {
             "type": "attributeGroup",

@@ -1,59 +1,61 @@
 {
-  "connectorName" : "azureDataLake",
-    "operationName" : "getMetadata",
-    "title" : "Get Metadata",
-    "help" : "<h1>Get Metadata</h1> <b>This operation can be used to get metadata for a file.</b>",
-    "elements" : [
+    "connectorName": "azureDataLake",
+    "operationName": "getMetadata",
+    "title": "Get Metadata",
+    "help": "<h1>Get Metadata</h1> <b>This operation can be used to get metadata for a file.</b>",
+    "elements": [
         {
-        "type" : "attributeGroup",
-        "value" : {
-            "groupName" : "General",
-            "elements" : [
-            {
-                "type" : "attribute",
-                "value" : {
-                "name" : "configRef",
-                "displayName" : "Connection",
-                "inputType" : "connection",
-                "allowedConnectionTypes" : [ "azureDataLake" ],
-                "defaultType" : "connection.azureDataLake",
-                "defaultValue" : "",
-                "required" : "true",
-                "helpTip" : "Connection to be used"
-                }
-            },
-            {
-                "type" : "attributeGroup",
-                "value" : {
-                "groupName" : "Basic",
-                "elements" : [
+            "type": "attributeGroup",
+            "value": {
+                "groupName": "General",
+                "elements": [
                     {
-                    "type" : "attribute",
-                    "value" : {
-                        "name" : "fileSystemName",
-                        "displayName" : "File System name",
-                        "inputType" : "stringOrExpression",
-                        "defaultValue" : "",
-                        "required" : "true",
-                        "helpTip" : "Name of the file system where the file is located."
-                    }
+                        "type": "attribute",
+                        "value": {
+                            "name": "configRef",
+                            "displayName": "Connection",
+                            "inputType": "connection",
+                            "allowedConnectionTypes": [
+                                "azureDataLake"
+                            ],
+                            "defaultType": "connection.azureDataLake",
+                            "defaultValue": "",
+                            "required": "true",
+                            "helpTip": "Connection to be used"
+                        }
                     },
                     {
-                    "type" : "attribute",
-                    "value" : {
-                        "name" : "filePath",
-                        "displayName" : "File Path",
-                        "inputType" : "stringOrExpression",
-                        "defaultValue" : "",
-                        "required" : "true",
-                        "helpTip" : "Path of the file for which metadata is to be fetched."
-                    }
+                        "type": "attributeGroup",
+                        "value": {
+                            "groupName": "Basic",
+                            "elements": [
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "fileSystemName",
+                                        "displayName": "File System name",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "true",
+                                        "helpTip": "Name of the file system where the file is located."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "filePath",
+                                        "displayName": "File Path",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "true",
+                                        "helpTip": "Path of the file for which metadata is to be fetched."
+                                    }
+                                }
+                            ]
+                        }
                     }
                 ]
-                }
             }
-            ]
-        }
         },
         {
             "type": "attributeGroup",
@@ -85,6 +87,5 @@
                 ]
             }
         }
-
     ]
 }

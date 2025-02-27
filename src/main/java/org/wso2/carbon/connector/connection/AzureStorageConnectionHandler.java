@@ -21,16 +21,14 @@ package org.wso2.carbon.connector.connection;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.storage.file.datalake.DataLakeServiceClient;
+import com.azure.storage.file.datalake.DataLakeServiceClientBuilder;
 import org.apache.commons.lang.StringUtils;
 import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.connector.core.connection.Connection;
 import org.wso2.carbon.connector.core.connection.ConnectionConfig;
-import org.wso2.carbon.connector.exceptions.InvalidConfigurationException;
-import com.azure.storage.file.datalake.DataLakeServiceClient;
-import com.azure.storage.file.datalake.DataLakeServiceClientBuilder;
 import org.wso2.carbon.connector.util.AbstractAzureMediator;
 import org.wso2.carbon.connector.util.AzureConstants;
-import org.wso2.carbon.connector.util.AzureUtil;
 
 /**
  * Azure Storage Connection Handler
@@ -41,6 +39,7 @@ public class AzureStorageConnectionHandler implements Connection {
     private DataLakeServiceClient dataLakeServiceClient;
 
     public AzureStorageConnectionHandler(ConnectionConfiguration fsConfig) {
+
         this.connectionConfig = fsConfig;
     }
 
@@ -59,6 +58,7 @@ public class AzureStorageConnectionHandler implements Connection {
      * @return an instance of ConnectionConfiguration
      */
     public ConnectionConfiguration getConnectionConfig() {
+
         return connectionConfig;
     }
 
@@ -82,6 +82,7 @@ public class AzureStorageConnectionHandler implements Connection {
      */
     private DataLakeServiceClient createNewDataLakeServiceClientInstance(ConnectionConfiguration config)
             throws ConnectException {
+
         String clientId = config.getClientID();
         String clientSecret = config.getClientSecret();
         String tenantId = config.getTenantID();
@@ -105,7 +106,8 @@ public class AzureStorageConnectionHandler implements Connection {
         } else if (StringUtils.isNotEmpty(accountName) && StringUtils.isNotEmpty(accountKey)) {
             return new DataLakeServiceClientBuilder()
                     .httpClient(new NettyAsyncHttpClientBuilder().build())
-                    .connectionString(AbstractAzureMediator.getStorageConnectionString(accountName, accountKey, endpointProtocol))
+                    .connectionString(
+                            AbstractAzureMediator.getStorageConnectionString(accountName, accountKey, endpointProtocol))
                     .buildClient();
         } else {
             throw new ConnectException("Missing authentication parameters.");
@@ -113,12 +115,13 @@ public class AzureStorageConnectionHandler implements Connection {
     }
 
     @Override
-    public void connect(ConnectionConfig connectionConfig) throws ConnectException {
+    public void connect(ConnectionConfig connectionConfig){
 
     }
+
     @Override
     public void close() {
-      // Close the connection
+        // Close the connection
     }
 
 }

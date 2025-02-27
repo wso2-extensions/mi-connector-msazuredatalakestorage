@@ -1,0 +1,28 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "title": "Get Metadata",
+    "description": "Get metadata for a file.",
+    "properties": {
+        "payload": {
+            "type": "object",
+            "description": "Metadata for the file.",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "key": {
+                        "type": "string",
+                        "description": "Metadata key."
+                    },
+                    "value": {
+                        "type": "string",
+                        "description": "Metadata value."
+                    }
+                }
+            }
+        },
+        "required": [
+            "payload"
+        ],
+        "additionalProperties": false
+    }

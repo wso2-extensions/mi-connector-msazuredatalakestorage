@@ -1,81 +1,204 @@
 {
-  "connectorName" : "azureDataLake",
-    "operationName" : "downloadFile",
-    "title" : "Download File",
-    "help" : "<h1>Download File</h1> <b>This operation can be used to download a file.</b>",
-    "elements" : [
+    "connectorName": "azureDataLake",
+    "operationName": "downloadFile",
+    "title": "Download File",
+    "help": "<h1>Download File</h1> <b>This operation can be used to download a file.</b>",
+    "elements": [
         {
-        "type" : "attributeGroup",
-        "value" : {
-            "groupName" : "General",
-            "elements" : [
-            {
-                "type" : "attribute",
-                "value" : {
-                "name" : "configRef",
-                "displayName" : "Connection",
-                "inputType" : "connection",
-                "allowedConnectionTypes" : [ "azureDataLake" ],
-                "defaultType" : "connection.azureDataLake",
-                "defaultValue" : "",
-                "required" : "true",
-                "helpTip" : "Connection to be used"
-                }
-            },
-            {
-                "type" : "attributeGroup",
-                "value" : {
-                "groupName" : "Basic",
-                "elements" : [
+            "type": "attributeGroup",
+            "value": {
+                "groupName": "General",
+                "elements": [
                     {
-                    "type" : "attribute",
-                    "value" : {
-                        "name" : "fileSystemName",
-                        "displayName" : "File System name",
-                        "inputType" : "stringOrExpression",
-                        "defaultValue" : "",
-                        "required" : "true",
-                        "helpTip" : "Name of the file system where the file is located."
-                    }
+                        "type": "attribute",
+                        "value": {
+                            "name": "configRef",
+                            "displayName": "Connection",
+                            "inputType": "connection",
+                            "allowedConnectionTypes": [
+                                "azureDataLake"
+                            ],
+                            "defaultType": "connection.azureDataLake",
+                            "defaultValue": "",
+                            "required": "true",
+                            "helpTip": "Connection to be used"
+                        }
                     },
                     {
-                    "type" : "attribute",
-                    "value" : {
-                        "name" : "filePathToDownload",
-                        "displayName" : "File Path to Download",
-                        "inputType" : "stringOrExpression",
-                        "defaultValue" : "",
-                        "required" : "true",
-                        "helpTip" : "Path of the file to be downloaded."
-                    }
-                    },
-                    {
-                    "type" : "attribute",
-                    "value" : {
-                        "name" : "downloadLocation",
-                        "displayName" : "Download Location",
-                        "inputType" : "stringOrExpression",
-                        "defaultValue" : "",
-                        "required" : "true",
-                        "helpTip" : "Location where the file is to be downloaded."
-                    }
-                    },
-                    {
-                        "type" : "attribute",
-                        "value" : {
-                            "name" : "overwrite",
-                            "displayName" : "Overwrite File",
-                            "inputType" : "checkbox",
-                            "defaultValue" : "false",
-                            "required" : "false",
-                            "helpTip" : "If checked, the file will be overwritten if it already exists."
+                        "type": "attributeGroup",
+                        "value": {
+                            "groupName": "Basic",
+                            "elements": [
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "fileSystemName",
+                                        "displayName": "File System name",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "true",
+                                        "helpTip": "Name of the file system where the file is located."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "filePathToDownload",
+                                        "displayName": "File Path to Download",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "true",
+                                        "helpTip": "Path of the file to be downloaded."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "downloadLocation",
+                                        "displayName": "Download Location",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "true",
+                                        "helpTip": "Location where the file is to be downloaded."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "leaseId",
+                                        "displayName": "Lease Id",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "false",
+                                        "helpTip": "This request will succeed only if the provided leaseId matches the actual lease on the resource"
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "ifUnmodifiedSince",
+                                        "displayName": "If Unmodified Since",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "false",
+                                        "helpTip": "The operation will be performed only if the resource has not been modified since the specified time."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "ifMatch",
+                                        "displayName": "If Match(ETag)",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "false",
+                                        "helpTip": "The operation will be performed only if the resource's ETag matches the specified ETag value."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "ifModifiedSince",
+                                        "displayName": "If Modified Since",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "false",
+                                        "helpTip": "The operation will be performed only if the resource has been modified since the specified time."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "ifNoneMatch",
+                                        "displayName": "If None Match(ETag)",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "false",
+                                        "helpTip": "The operation will be performed only if the resource's ETag does not match the specified ETag value."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "blockSize",
+                                        "displayName": "Block Size(MB)",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "false",
+                                        "helpTip": "The size of the block in MB."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "maxConcurrency",
+                                        "displayName": "Max Concurrency",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "false",
+                                        "helpTip": "The maximum number of blocks that can be uploaded in parallel."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "timeout",
+                                        "displayName": "Timeout",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "false",
+                                        "helpTip": "Time in milliseconds after which the operation will time out."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "offset",
+                                        "displayName": "Offset",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "false",
+                                        "helpTip": "Offset(byte) from where the file is to be read."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "count",
+                                        "displayName": "Count",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "false",
+                                        "helpTip": "Number of bytes to be read."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "maxRetryRequests",
+                                        "displayName": "Max Retry Requests",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "false",
+                                        "helpTip": "Maximum number of retry requests."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "rangeGetContentMd5",
+                                        "displayName": "Range Get Content MD5",
+                                        "inputType": "checkbox",
+                                        "defaultValue": "false",
+                                        "required": "false",
+                                        "helpTip": "Indicates if the content-MD5 header should be returned for a range GET request."
+                                    }
+                                }
+                            ]
                         }
                     }
                 ]
-                }
             }
-            ]
-        }
         },
         {
             "type": "attributeGroup",
@@ -107,6 +230,5 @@
                 ]
             }
         }
-
     ]
 }

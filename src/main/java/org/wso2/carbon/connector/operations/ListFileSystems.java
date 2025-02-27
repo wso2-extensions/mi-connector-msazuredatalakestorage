@@ -20,41 +20,74 @@ package org.wso2.carbon.connector.operations;
 
 import com.azure.storage.file.datalake.DataLakeServiceClient;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
+import com.azure.storage.file.datalake.models.FileSystemListDetails;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
-
 import org.apache.synapse.MessageContext;
-
 import org.wso2.carbon.connector.connection.AzureStorageConnectionHandler;
 import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.connector.core.connection.ConnectionHandler;
-import org.wso2.carbon.connector.util.*;
+import org.wso2.carbon.connector.util.AbstractAzureMediator;
+import org.wso2.carbon.connector.util.AzureConstants;
 import org.wso2.carbon.connector.util.Error;
-
-
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Implements the list of file systems operation.
  */
 public class ListFileSystems extends AbstractAzureMediator {
+
     @Override
     public void execute(MessageContext messageContext, String responseVariable, Boolean overwriteBody) {
-        String connectionName = getProperty(messageContext, AzureConstants.CONNECTION_NAME, String.class, false);
-        String prefix = getMediatorParameter(messageContext, AzureConstants.PREFIX, String.class, true);
-        Integer timeout = getMediatorParameter(messageContext, AzureConstants.TIMEOUT, Integer.class, true);
+
+        String connectionName =
+                getProperty(messageContext, AzureConstants.CONNECTION_NAME, String.class, false);
+        String prefix =
+                getMediatorParameter(messageContext, AzureConstants.PREFIX, String.class, true);
+        Integer timeout =
+                getMediatorParameter(messageContext, AzureConstants.TIMEOUT, Integer.class, true);
+        Integer maxResultsPerPage =
+                getMediatorParameter(messageContext, AzureConstants.MAX_RESULTS_PER_PAGE, Integer.class, true);
+        Boolean retrieveDeleted =
+                getMediatorParameter(messageContext, AzureConstants.RETRIEVE_DELETED, Boolean.class, true);
+        Boolean retrieveMetadata =
+                getMediatorParameter(messageContext, AzureConstants.RETRIEVE_METADATA, Boolean.class, true);
 
         ConnectionHandler handler = ConnectionHandler.getConnectionHandler();
-        List<String> fileSystems = new ArrayList<>();
+
+        Map<String, Object> fileSystemsWithMetadata = new HashMap<>();
+
+        List<String> fileSystemNames = new ArrayList<>();
 
         try {
-            AzureStorageConnectionHandler azureStorageConnectionHandler = (AzureStorageConnectionHandler) handler.getConnection(AzureConstants.CONNECTOR_NAME, connectionName);
+            AzureStorageConnectionHandler azureStorageConnectionHandler =
+                    (AzureStorageConnectionHandler) handler.getConnection(AzureConstants.CONNECTOR_NAME,
+                            connectionName);
             DataLakeServiceClient dataLakeServiceClient = azureStorageConnectionHandler.getDataLakeServiceClient();
             dataLakeServiceClient.listFileSystems(
-                    new ListFileSystemsOptions().setPrefix(prefix) , timeout != null ? Duration.ofSeconds(timeout.longValue()) : null)
-            .forEach(fileSystem -> fileSystems.add(fileSystem.getName()));
+                            new ListFileSystemsOptions().setPrefix(prefix).setMaxResultsPerPage(maxResultsPerPage)
+                                    .setDetails(
+                                            new FileSystemListDetails().setRetrieveDeleted(retrieveDeleted)
+                                                    .setRetrieveMetadata(retrieveMetadata)),
+                            timeout != null ? Duration.ofSeconds(timeout.longValue()) : null)
+                    .forEach(fileSystem -> {
+
+                        if (retrieveMetadata) {
+                            fileSystemsWithMetadata.put(fileSystem.getName(),
+                                    fileSystem.getMetadata() != null ? fileSystem.getMetadata() : new HashMap<>());
+                        } else {
+                            fileSystemNames.add(fileSystem.getName());
+                        }
+
+                    });
+
+            handleConnectorResponse(messageContext, responseVariable, overwriteBody,
+                    retrieveMetadata ? fileSystemsWithMetadata : fileSystemNames, null, null);
+
         } catch (ConnectException e) {
             handleConnectorException(Error.CONNECTION_ERROR, messageContext, e);
         } catch (DataLakeStorageException e) {
@@ -62,6 +95,6 @@ public class ListFileSystems extends AbstractAzureMediator {
         } catch (RuntimeException e) {
             handleConnectorException(Error.TIMEOUT_ERROR, messageContext, e);
         }
-        handleConnectorResponse(messageContext, responseVariable, overwriteBody, fileSystems, null, null);
+
     }
 }

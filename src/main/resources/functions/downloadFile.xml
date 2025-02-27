@@ -1,17 +1,17 @@
 <!--
-   Copyright (c) 2018, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ 	Copyright (c) 2025, WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 
-   WSO2 Inc. licenses this file to you under the Apache License,
-   Version 2.0 (the "License"); you may not use this file except
-   in compliance with the License.
-   You may obtain a copy of the License at
+    WSO2 LLC. licenses this file to you under the Apache License,
+    Version 2.0 (the "License"); you may not use this file except
+    in compliance with the License.
+    You may obtain a copy of the License at
 
-   http://www.apache.org/licenses/LICENSE-2.0
+      http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing,
    software distributed under the License is distributed on an
    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-   KIND, either express or implied. See the License for the
+   KIND, either express or implied.  See the License for the
    specific language governing permissions and limitations
    under the License.
 -->
@@ -20,12 +20,44 @@
     <parameter name="filePathToDownload" description="The path of the file"/>
     <parameter name="downloadLocation" description="The destination path to save the downloaded file."/>
     <parameter name="responseVariable" description="Response variable name"/>
-    <parameter name="overwriteBody" description="Replace the Message Body in Message Context with the response of the operation."/>
-    <parameter name="overwrite" description="Overwrite the file if it already exists."/>
+    <parameter name="overwriteBody"
+               description="Replace the Message Body in Message Context with the response of the operation."/>
+    <parameter name="timeout" description="The timeout for the operation."/>
+    <parameter name="leaseId" description="The lease ID of the file."/>
+    <parameter name="ifUnmodifiedSince"
+               description="The operation will be performed only if the resource has not been modified since the specified time."/>
+    <parameter name="ifMatch"
+               description="The operation will be performed only if the resource's ETag matches the specified ETag value."/>
+    <parameter name="ifModifiedSince"
+               description="The operation will be performed only if the resource has been modified since the specified time."/>
+    <parameter name="ifNoneMatch"
+               description="The operation will be performed only if the resource's ETag does not match the specified ETag value."/>
+    <parameter name="blockSize" description="The size of the block in MB."/>
+    <parameter name="maxSingleDownloadSize" description="The maximum size of a single download in bytes."/>
+    <parameter name="maxConcurrency" description="The maximum number of blocks that can be downloaded in parallel."/>
+    <parameter name="offset" description="The offset in bytes from where the download should start."/>
+    <parameter name="count" description="The number of bytes to be downloaded."/>
+    <parameter name="maxRetryRequests" description="The maximum number of retry requests."/>
+    <parameter name="rangeGetContentMd5"
+               description="Whether the contentMD5 for the specified file range should be returned."/>
+
     <sequence>
         <property name="fileSystemName" expression="$func:fileSystemName"/>
         <property name="filePathToDownload" expression="$func:filePathToDownload"/>
         <property name="downloadLocation" expression="$func:downloadLocation"/>
+        <property name="timeout" expression="$func:timeout"/>
+        <property name="leaseId" expression="$func:leaseId"/>
+        <property name="ifUnmodifiedSince" expression="$func:ifUnmodifiedSince"/>
+        <property name="ifMatch" expression="$func:ifMatch"/>
+        <property name="ifModifiedSince" expression="$func:ifModifiedSince"/>
+        <property name="ifNoneMatch" expression="$func:ifNoneMatch"/>
+        <property name="blockSize" expression="$func:blockSize"/>
+        <property name="maxConcurrency" expression="$func:maxConcurrency"/>
+        <property name="offset" expression="$func:offset"/>
+        <property name="count" expression="$func:count"/>
+        <property name="maxRetryRequests" expression="$func:maxRetryRequests"/>
+        <property name="rangeGetContentMd5" expression="$func:rangeGetContentMd5"/>
+
         <class name="org.wso2.carbon.connector.operations.DownloadFile"/>
     </sequence>
 </template>

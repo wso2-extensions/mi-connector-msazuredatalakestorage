@@ -1,12 +1,12 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
     "type": "object",
-    "title": "Create File System",
-    "description": "Create a new file system.",
+    "title": "Rename File",
+    "description": "Rename a file.",
     "properties": {
         "payload": {
-            "type": "boolean",
-            "description": "Whether to create the file system or not."
+            "type": "string",
+            "description": "The content of the file."
         }
     },
     "required": [

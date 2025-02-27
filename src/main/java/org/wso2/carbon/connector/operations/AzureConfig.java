@@ -22,13 +22,12 @@ import org.apache.synapse.ManagedLifecycle;
 import org.apache.synapse.MessageContext;
 import org.apache.synapse.SynapseException;
 import org.apache.synapse.core.SynapseEnvironment;
-import org.wso2.carbon.connector.core.AbstractConnector;
 import org.wso2.carbon.connector.connection.AzureStorageConnectionHandler;
 import org.wso2.carbon.connector.connection.ConnectionConfiguration;
+import org.wso2.carbon.connector.core.AbstractConnector;
 import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.connector.core.connection.ConnectionHandler;
 import org.wso2.carbon.connector.core.util.ConnectorUtils;
-import org.wso2.carbon.connector.exceptions.InvalidConfigurationException;
 import org.wso2.carbon.connector.util.AzureConstants;
 import org.wso2.carbon.connector.util.Error;
 
@@ -44,12 +43,14 @@ public class AzureConfig extends AbstractConnector implements ManagedLifecycle {
 
     @Override
     public void destroy() {
+
         ConnectionHandler.getConnectionHandler().
                 shutdownConnections(AzureConstants.CONNECTOR_NAME);
     }
 
     @Override
     public void connect(MessageContext messageContext) {
+
         String connectorName = AzureConstants.CONNECTOR_NAME;
         String connectionName;
         try {
@@ -69,10 +70,10 @@ public class AzureConfig extends AbstractConnector implements ManagedLifecycle {
             }
         } catch (ConnectException e) {
             this.log.error(Error.CONNECTION_ERROR.getErrorMessage(), e);
-            messageContext.setProperty("ERROR_CODE", Error.CONNECTION_ERROR .getErrorCode());
+            messageContext.setProperty("ERROR_CODE", Error.CONNECTION_ERROR.getErrorCode());
             messageContext.setProperty("ERROR_MESSAGE", Error.CONNECTION_ERROR.getErrorMessage());
             throw new SynapseException(Error.CONNECTION_ERROR.getErrorMessage(), e);
-        } catch ( Exception e){
+        } catch (Exception e) {
             this.log.error(Error.GENERAL_ERROR.getErrorMessage(), e);
             messageContext.setProperty("ERROR_CODE", Error.GENERAL_ERROR.getErrorCode());
             messageContext.setProperty("ERROR_MESSAGE", Error.GENERAL_ERROR.getErrorMessage());
@@ -85,10 +86,10 @@ public class AzureConfig extends AbstractConnector implements ManagedLifecycle {
      *
      * @param msgContext Message context
      * @return Connection configuration
-     * @throws InvalidConfigurationException Invalid configuration exception
+     * @throws ConnectException If an error occurs while getting the connection configuration
      */
     private ConnectionConfiguration getConnectionConfigFromContext(MessageContext msgContext)
-            throws Exception {
+            throws ConnectException {
 
         String connectionName = (String) ConnectorUtils.
                 lookupTemplateParamater(msgContext, AzureConstants.CONNECTION_NAME);

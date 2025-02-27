@@ -20,7 +20,6 @@ package org.wso2.carbon.connector.connection;
 
 import org.apache.commons.lang3.StringUtils;
 import org.wso2.carbon.connector.core.ConnectException;
-import org.wso2.carbon.connector.exceptions.InvalidConfigurationException;
 
 /**
  * Connection Configuration
@@ -36,10 +35,12 @@ public class ConnectionConfiguration {
     private String endpointProtocol;
 
     public String getConnectionName() {
+
         return connectionName;
     }
 
     public void setConnectionName(String connectionName) throws ConnectException {
+
         if (StringUtils.isNotBlank(connectionName)) {
             this.connectionName = connectionName;
         } else {
@@ -48,38 +49,47 @@ public class ConnectionConfiguration {
     }
 
     public String getAccountName() {
+
         return accountName;
     }
 
     public void setAccountName(String accountName) {
+
         this.accountName = accountName;
     }
 
     public String getAccountKey() {
+
         return accountKey;
     }
 
     public void setAccountKey(String accountKey) {
+
         this.accountKey = accountKey;
     }
 
     public String getClientID() {
+
         return clientID;
     }
 
     public void setClientID(String clientID) {
+
         this.clientID = clientID;
     }
 
     public String getClientSecret() {
+
         return clientSecret;
     }
 
     public void setClientSecret(String clientSecret) {
+
         this.clientSecret = clientSecret;
     }
 
     public String getTenantID() {
+
         return tenantID;
     }
 
@@ -89,12 +99,13 @@ public class ConnectionConfiguration {
     }
 
     public String getEndpointProtocol() {
+
         return endpointProtocol;
     }
 
     public void setEndpointProtocol(String endpointProtocol) {
+
         this.endpointProtocol = endpointProtocol;
     }
-
 
 }

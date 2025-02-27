@@ -18,14 +18,11 @@
 
 package org.wso2.carbon.connector.util;
 
-import ca.uhn.hl7v2.model.v21.datatype.ST;
-import org.bouncycastle.pqc.crypto.util.PQCOtherInfoGenerator;
-import org.jruby.compiler.DAGBuilder;
-
 /**
  * This class contains the azure connector specific constants.
  */
 public class AzureConstants {
+
     public static final String CONNECTOR_NAME = "azureDataLake";
     public static final String CONNECTION_NAME = "name";
     public static final String ACCOUNT_NAME = "accountName";
@@ -40,44 +37,26 @@ public class AzureConstants {
     public static final String FILE_PATH = "filePath";
     public static final String FILE_PATH_TO_DOWNLOAD = "filePathToDownload";
     public static final String DOWNLOAD_LOCATION = "downloadLocation";
-    public static final String CONTENT = "content";
     public static final String ACCOUNT_NAME_PARAM = "AccountName=";
     public static final String ACCOUNT_KEY_PARAM = "AccountKey=";
     public static final String PROTOCOL_KEY_PARAM = "DefaultEndpointsProtocol=";
     public static final String SEMICOLON = ";";
-    public static final String NAMESPACE = "ns";
-    public static final String AZURE_NAMESPACE = "http://org.wso2.esbconnectors.azuredatalakeconnector";
-    public static final String FILE_SYSTEM = "fileSystem";
     public static final String LOCAL_FILE_PATH = "localFilePath";
     public static final String FILE_PATH_TO_UPLOAD = "filePathToUpload";
-    public static final String FINAL_CONTENT_TYPE = "finalContentType";
     public static final String TEXT_CONTENT = "textContent";
     public static final String FILE_PATH_TO_DELETE = "filePathToDelete";
     public static final String FILE_PATH_TO_RENAME = "filePathToRename";
     public static final String NEW_FILE_PATH = "newFilePath";
-
     public static final String FILE_PATH_TO_ADD_META_DATA = "filePathToAddMetaData";
-
     public static final String PATH = "path";
-
-    public static final String START_TAG = "<jsonObject><result><success>";
-    public static final String END_TAG = "</success></result></jsonObject>";
-    public static final String EMPTY_RESULT_TAG = "<result></></result>";
     public static final String METADATA = "metadata";
-    public static final String START_TAG_ERROR = "<jsonObject><result><success>false</success><description>";
-    public static final String END_TAG_ERROR = "</description></result></jsonObject>";
     public static final String DFS_ENDPOINT_SUFFIX = ".dfs.core.windows.net";
     public static final String HTTPS_PROTOCOL = "https://";
-    public static final String PROPERTY_ERROR_CODE = "ERROR_CODE";
-    public static final String PROPERTY_ERROR_MESSAGE = "ERROR_MESSAGE";
-    public static final String PROPERTY_ERROR_DETAIL = "ERROR_DETAIL";
     public static final String RESPONSE_VARIABLE = "responseVariable";
     public static final String OVERWRITE_BODY = "overwriteBody";
     public static final String JSON_CONTENT_TYPE = "application/json";
     public static final String TIMEOUT = "timeout";
     public static final String PREFIX = "prefix";
-    public static final String OVERWRITE = "overwrite";
-    public static final String DELETE_CONTENTS = "deleteContents";
     public static final String RECURSIVE = "recursive";
     public static final String MAX_RESULTS = "maxResults";
     public static final String COUNT = "count";
@@ -95,9 +74,28 @@ public class AzureConstants {
     public static final String CONTENT_DISPOSITION = "contentDisposition";
     public static final String CACHE_CONTROL = "cacheControl";
     public static final String BLOCK_SIZE = "blockSize";
-    public static final String MAX_SINGLE_UPLAOD_SIZE = "maxSingleUploadSize";
+    public static final String MAX_SINGLE_UPLOAD_SIZE = "maxSingleUploadSize";
     public static final String MAX_CONCURRENCY = "maxConcurrency";
+    public static final String PERMISSIONS = "permissions";
+    public static final String UMASK = "umask";
+    public static final String OWNER = "owner";
+    public static final String GROUP = "group";
+    public static final String SOURCE_LEASE_ID = "sourceLeaseId";
+    public static final String RANGE_GET_CONTENT_MD5 = "rangeGetContentMd5";
+    public static final String MAX_RESULTS_PER_PAGE = "maxResultsPerPage";
+    public static final String RETRIEVE_DELETED = "retrieveDeleted";
+    public static final String RETRIEVE_METADATA = "retrieveMetadata";
+    public static final String DESTINATION_LEASE_ID = "destinationLeaseId";
+    public static final String SOURCE_IF_MATCH = "sourceIfMatch";
+    public static final String SOURCE_IF_NONE_MATCH = "sourceIfNoneMatch";
+    public static final String SOURCE_IF_MODIFIED_SINCE = "sourceIfModifiedSince";
+    public static final String SOURCE_IF_UNMODIFIED_SINCE = "sourceIfUnmodifiedSince";
+    public static final String DESTINATION_IF_MATCH = "destinationIfMatch";
+    public static final String DESTINATION_IF_NONE_MATCH = "destinationIfNoneMatch";
+    public static final String DESTINATION_IF_MODIFIED_SINCE = "destinationIfModifiedSince";
+    public static final String DESTINATION_IF_UNMODIFIED_SINCE = "destinationIfUnmodifiedSince";
 
     private AzureConstants() {
+
     }
 }

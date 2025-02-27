@@ -1,29 +1,82 @@
+/*
+ *  Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ *
+ *  WSO2 LLC. licenses this file to you under the Apache License,
+ *  Version 2.0 (the "License"); you may not use this file except
+ *  in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an
+ *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *  KIND, either express or implied.  See the License for the
+ *  specific language governing permissions and limitations
+ *  under the License.
+ */
 package org.wso2.carbon.connector.util;
 
+import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.google.gson.JsonParser;
 import org.apache.axis2.AxisFault;
 import org.apache.synapse.MessageContext;
 import org.apache.synapse.SynapseException;
 import org.apache.synapse.commons.json.JsonUtil;
 import org.apache.synapse.core.axis2.Axis2MessageContext;
-import org.wso2.carbon.connector.core.AbstractConnector;
 import org.apache.synapse.data.connector.ConnectorResponse;
 import org.apache.synapse.data.connector.DefaultConnectorResponse;
+import org.wso2.carbon.connector.core.AbstractConnector;
 
-
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Abstract Azure Mediator class to handle common operations.
+ */
 public abstract class AbstractAzureMediator extends AbstractConnector {
+
+    @SuppressWarnings("unchecked")
+    public static <T> T parse(String value, Class<T> type) throws IllegalArgumentException {
+
+        if (type == Integer.class) {
+            return (T) Integer.valueOf(value);
+        } else if (type == Double.class) {
+            return (T) Double.valueOf(value);
+        } else if (type == Boolean.class) {
+            return (T) Boolean.valueOf(value);
+        } else if (type == String.class) {
+            return (T) value;
+        } else {
+            throw new IllegalArgumentException("Unsupported type: " + type);
+        }
+    }
+
+    /**
+     * Get the connection string for the storage account.
+     *
+     * @param accountName Storage account name.
+     * @param accountKey  Storage account key.
+     * @param protocol    Protocol.
+     * @return Connection string.
+     */
+    public static String getStorageConnectionString(String accountName, String accountKey, String protocol) {
+
+        return AzureConstants.PROTOCOL_KEY_PARAM + protocol + AzureConstants.SEMICOLON +
+                AzureConstants.ACCOUNT_NAME_PARAM + accountName + AzureConstants.SEMICOLON
+                + AzureConstants.ACCOUNT_KEY_PARAM + accountKey;
+    }
 
     abstract public void execute(MessageContext messageContext, String responseVariable, Boolean overwriteBody);
 
     @Override
-    public void connect(MessageContext messageContext){
+    public void connect(MessageContext messageContext) {
+
         String responseVariable = getMediatorParameter(
                 messageContext, AzureConstants.RESPONSE_VARIABLE, String.class, false
-        );
+                                                      );
         Boolean overwriteBody = getMediatorParameter(
                 messageContext, AzureConstants.OVERWRITE_BODY, Boolean.class, false);
         execute(messageContext, responseVariable, overwriteBody);
@@ -44,7 +97,7 @@ public abstract class AbstractAzureMediator extends AbstractConnector {
         } catch (IllegalArgumentException e) {
             handleException(String.format(
                     "Parameter %s is not of type %s", parameterName, type.getName()
-            ), messageContext);
+                                         ), messageContext);
         }
 
         return null;
@@ -65,25 +118,32 @@ public abstract class AbstractAzureMediator extends AbstractConnector {
         } catch (IllegalArgumentException e) {
             handleException(String.format(
                     "Property %s is not of type %s", propertyName, type.getName()
-            ), messageContext);
+                                         ), messageContext);
         }
 
         return null;
     }
 
-    @SuppressWarnings("unchecked")
-    public static <T> T parse(String value, Class<T> type) throws IllegalArgumentException {
-        if (type == Integer.class) {
-            return (T) Integer.valueOf(value);
-        } else if (type == Double.class) {
-            return (T) Double.valueOf(value);
-        } else if (type == Boolean.class) {
-            return (T) Boolean.valueOf(value);
-        } else if (type == String.class) {
-            return (T) value;
-        } else {
-            throw new IllegalArgumentException("Unsupported type: " + type);
-        }
+    /**
+     * Get DataLakeRequestConditions object.
+     *
+     * @param messageContext    MessageContext.
+     * @param leaseId           Lease ID.
+     * @param ifMatch           If-Match.
+     * @param ifNoneMatch       If-None-Match.
+     * @param ifModifiedSince   If-Modified-Since.
+     * @param ifUnmodifiedSince If-Unmodified-Since.
+     * @return DataLakeRequestConditions object.
+     */
+    protected DataLakeRequestConditions getRequestConditions(String leaseId, String ifMatch, String ifNoneMatch,
+                                                             String ifModifiedSince, String ifUnmodifiedSince) {
+
+        return new DataLakeRequestConditions()
+                .setLeaseId(leaseId)
+                .setIfMatch(ifMatch)
+                .setIfModifiedSince(ifModifiedSince != null ? OffsetDateTime.parse(ifModifiedSince) : null)
+                .setIfNoneMatch(ifNoneMatch)
+                .setIfUnmodifiedSince(ifUnmodifiedSince != null ? OffsetDateTime.parse(ifUnmodifiedSince) : null);
     }
 
     protected void handleConnectorResponse(MessageContext messageContext, String responseVariable,
@@ -115,16 +175,19 @@ public abstract class AbstractAzureMediator extends AbstractConnector {
         }
 
         if (overwriteBody != null && overwriteBody) {
-            org.apache.axis2.context.MessageContext axisMsgCtx = ((Axis2MessageContext) messageContext).getAxis2MessageContext();
+            org.apache.axis2.context.MessageContext axisMsgCtx =
+                    ((Axis2MessageContext) messageContext).getAxis2MessageContext();
             try {
                 JsonUtil.getNewJsonPayload(axisMsgCtx, jsonString, true, true);
             } catch (AxisFault e) {
                 handleException("Error setting response payload", e, messageContext);
             }
-            
-            axisMsgCtx.setProperty(org.apache.axis2.Constants.Configuration.MESSAGE_TYPE, AzureConstants.JSON_CONTENT_TYPE);
-            axisMsgCtx.setProperty(org.apache.axis2.Constants.Configuration.CONTENT_TYPE, AzureConstants.JSON_CONTENT_TYPE);
-        }else {
+
+            axisMsgCtx.setProperty(org.apache.axis2.Constants.Configuration.MESSAGE_TYPE,
+                    AzureConstants.JSON_CONTENT_TYPE);
+            axisMsgCtx.setProperty(org.apache.axis2.Constants.Configuration.CONTENT_TYPE,
+                    AzureConstants.JSON_CONTENT_TYPE);
+        } else {
             response.setPayload(output);
         }
         response.setHeaders(headers);
@@ -133,6 +196,7 @@ public abstract class AbstractAzureMediator extends AbstractConnector {
     }
 
     public void handleConnectorException(Error code, MessageContext mc, Throwable e) {
+
         this.log.error(code.getErrorMessage(), e);
 
         mc.setProperty("ERROR_CODE", code.getErrorCode());
@@ -141,17 +205,12 @@ public abstract class AbstractAzureMediator extends AbstractConnector {
     }
 
     public void handleConnectorException(Error code, MessageContext mc) {
+
         this.log.error(code.getErrorMessage());
 
         mc.setProperty("ERROR_CODE", code.getErrorCode());
         mc.setProperty("ERROR_MESSAGE", code.getErrorMessage());
         throw new SynapseException(code.getErrorMessage());
-    }
-
-    public static String getStorageConnectionString(String accountName, String accountKey, String protocol) {
-        return AzureConstants.PROTOCOL_KEY_PARAM + protocol + AzureConstants.SEMICOLON +
-                AzureConstants.ACCOUNT_NAME_PARAM + accountName + AzureConstants.SEMICOLON
-                + AzureConstants.ACCOUNT_KEY_PARAM + accountKey;
     }
 
 }

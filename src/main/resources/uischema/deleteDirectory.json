@@ -1,81 +1,138 @@
 {
-  "connectorName" : "azureDataLake" ,
-    "operationName" : "deleteDirectory",
-    "title" : "Delete Directory",
-    "help" : "<h1>Delete Directory</h1> <b>This operation can be used to delete a directory.</b>",
-    "elements" : [
+    "connectorName": "azureDataLake",
+    "operationName": "deleteDirectory",
+    "title": "Delete Directory",
+    "help": "<h1>Delete Directory</h1> <b>This operation can be used to delete a directory.</b>",
+    "elements": [
         {
-        "type" : "attributeGroup",
-        "value" : {
-            "groupName" : "General",
-            "elements" : [
-            {
-                "type" : "attribute",
-                "value" : {
-                "name" : "configRef",
-                "displayName" : "Connection",
-                "inputType" : "connection",
-                "allowedConnectionTypes" : [ "azureDataLake" ],
-                "defaultType" : "connection.azureDataLake",
-                "defaultValue" : "",
-                "required" : "true",
-                "helpTip" : "Connection to be used"
-                }
-            },
-            {
-                "type" : "attributeGroup",
-                "value" : {
-                "groupName" : "Basic",
-                "elements" : [
+            "type": "attributeGroup",
+            "value": {
+                "groupName": "General",
+                "elements": [
                     {
-                    "type" : "attribute",
-                    "value" : {
-                        "name" : "fileSystemName",
-                        "displayName" : "File System name",
-                        "inputType" : "stringOrExpression",
-                        "defaultValue" : "",
-                        "required" : "true",
-                        "helpTip" : "Name of the file system where the directory is located."
-                    }
-                    },
-                    {
-                    "type" : "attribute",
-                    "value" : {
-                        "name" : "directoryName",
-                        "displayName" : "Directory Name",
-                        "inputType" : "stringOrExpression",
-                        "defaultValue" : "",
-                        "required" : "true",
-                        "helpTip" : "Path of the directory to be deleted."
-                    }
-                    },
-                    {
-                        "type" : "attribute",
-                        "value" : {
-                            "name" : "timeout",
-                            "displayName" : "Timeout",
-                            "inputType" : "stringOrExpression",
-                            "defaultValue" : "",
-                            "required" : "false",
-                            "helpTip" : "Time in seconds after which the operation will time out."
+                        "type": "attribute",
+                        "value": {
+                            "name": "configRef",
+                            "displayName": "Connection",
+                            "inputType": "connection",
+                            "allowedConnectionTypes": [
+                                "azureDataLake"
+                            ],
+                            "defaultType": "connection.azureDataLake",
+                            "defaultValue": "",
+                            "required": "true",
+                            "helpTip": "Connection to be used"
                         }
                     },
                     {
-                        "type" : "attribute",
-                        "value" : {
-                            "name" : "deleteContents",
-                            "displayName" : "Delete Contents",
-                            "inputType" : "checkbox",
-                            "defaultValue" : "false",
-                            "required" : "false",
-                            "helpTip" : "If checked, the contents of the directory will be deleted."
+                        "type": "attributeGroup",
+                        "value": {
+                            "groupName": "Basic",
+                            "elements": [
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "fileSystemName",
+                                        "displayName": "File System name",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "true",
+                                        "helpTip": "Name of the file system where the directory is located."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "directoryName",
+                                        "displayName": "Directory Name",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "true",
+                                        "helpTip": "Path of the directory to be deleted."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "timeout",
+                                        "displayName": "Timeout",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "false",
+                                        "helpTip": "Time in seconds after which the operation will time out."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "recursive",
+                                        "displayName": "Recursive",
+                                        "inputType": "checkbox",
+                                        "defaultValue": "false",
+                                        "required": "false",
+                                        "helpTip": "If checked, the contents of the directory will be deleted."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "leaseId",
+                                        "displayName": "Lease Id",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "false",
+                                        "helpTip": "This request will succeed only if the provided leaseId matches the actual lease on the resource"
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "ifUnmodifiedSince",
+                                        "displayName": "If Unmodified Since",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "false",
+                                        "helpTip": "The operation will be performed only if the resource has not been modified since the specified time."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "ifMatch",
+                                        "displayName": "If Match(ETag)",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "false",
+                                        "helpTip": "The operation will be performed only if the resource's ETag matches the specified ETag value."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "ifModifiedSince",
+                                        "displayName": "If Modified Since",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "false",
+                                        "helpTip": "The operation will be performed only if the resource has been modified since the specified time."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "ifNoneMatch",
+                                        "displayName": "If None Match(ETag)",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "false",
+                                        "helpTip": "The operation will be performed only if the resource's ETag does not match the specified ETag value."
+                                    }
+                                }
+                            ]
                         }
                     }
                 ]
-                }
             }
-            ]
-        }
         },
         {
             "type": "attributeGroup",
