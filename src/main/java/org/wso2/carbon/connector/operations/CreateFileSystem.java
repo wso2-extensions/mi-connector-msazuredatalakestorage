@@ -48,10 +48,7 @@ public class CreateFileSystem extends AbstractAzureMediator {
         String metadata = getMediatorParameter(messageContext, AzureConstants.METADATA, String.class, true);
         HashMap<String, String> metadataMap = new HashMap<>();
         if (metadata != null){
-            this.log.info("Metadata Map: " + metadataMap);
-            this.log.info("Metadata String: " + metadata);
             Utils.addDataToMapFromJsonString(metadata, metadataMap);
-            this.log.info("Metadata Map: " + metadataMap);
         }
         ConnectionHandler handler = ConnectionHandler.getConnectionHandler();
         try {

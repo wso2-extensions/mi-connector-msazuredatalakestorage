@@ -105,6 +105,7 @@ public class AzureConstants {
     public static final String FILE_PATH_TO_FLUSH = "filePathToFlush";
     public static final String FILE_LENGTH = "fileLength";
     public static final String UNCOMMITTED_DATA_RETAINED = "uncommittedDataRetained";
+    public static final String SAS_TOKEN = "sasToken";
     private AzureConstants() {
 
     }

@@ -25,6 +25,7 @@
     <parameter name="clientId" description="The client ID of the application."/>
     <parameter name="clientSecret" description="The client secret of the application."/>
     <parameter name="tenantId" description="The tenant ID of the application."/>
+    <parameter name="sasToken" description="The shared access signature token."/>
     <sequence>
         <property name="name" expression="$func:name"/>
         <class name="org.wso2.carbon.connector.operations.AzureConfig"/>

@@ -105,6 +105,8 @@ public class AzureConfig extends AbstractConnector implements ManagedLifecycle {
                 lookupTemplateParamater(msgContext, AzureConstants.CLIENT_SECRET);
         String tenantId = (String) ConnectorUtils.
                 lookupTemplateParamater(msgContext, AzureConstants.TENANT_ID);
+        String sasToken = (String) ConnectorUtils.
+                lookupTemplateParamater(msgContext, AzureConstants.SAS_TOKEN);
 
         ConnectionConfiguration connectionConfig = new ConnectionConfiguration();
         connectionConfig.setConnectionName(connectionName);
@@ -114,6 +116,7 @@ public class AzureConfig extends AbstractConnector implements ManagedLifecycle {
         connectionConfig.setClientID(clientId);
         connectionConfig.setClientSecret(clientSecret);
         connectionConfig.setTenantID(tenantId);
+        connectionConfig.setSasToken(sasToken);
         return connectionConfig;
     }
 }

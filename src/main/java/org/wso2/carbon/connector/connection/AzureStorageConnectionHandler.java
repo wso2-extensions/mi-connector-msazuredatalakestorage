@@ -89,6 +89,7 @@ public class AzureStorageConnectionHandler implements Connection {
         String accountName = config.getAccountName();
         String accountKey = config.getAccountKey();
         String endpointProtocol = config.getEndpointProtocol();
+        String sasToken = config.getSasToken();
 
         if (StringUtils.isNotEmpty(clientId) && StringUtils.isNotEmpty(clientSecret)
                 && StringUtils.isNotEmpty(tenantId) && StringUtils.isNotEmpty(accountName)) {
@@ -109,7 +110,14 @@ public class AzureStorageConnectionHandler implements Connection {
                     .connectionString(
                             AbstractAzureMediator.getStorageConnectionString(accountName, accountKey, endpointProtocol))
                     .buildClient();
-        } else {
+        } else if ( StringUtils.isNotEmpty(sasToken) && StringUtils.isNotEmpty(accountName)) {
+            return new DataLakeServiceClientBuilder()
+                    .httpClient(new NettyAsyncHttpClientBuilder().build())
+                    .endpoint(AzureConstants.HTTPS_PROTOCOL + accountName + AzureConstants.DFS_ENDPOINT_SUFFIX)
+                    .sasToken(sasToken)
+                    .buildClient();
+        }
+        else {
             throw new ConnectException("Missing authentication parameters.");
         }
     }

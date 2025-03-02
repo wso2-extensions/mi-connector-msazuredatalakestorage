@@ -16,7 +16,9 @@
                             "displayName": "Connection",
                             "inputType": "connection",
                             "allowedConnectionTypes": [
-                                "azureDataLake"
+                                "SAS",
+                                "OAuth2",
+                                "key"
                             ],
                             "defaultType": "connection.azureDataLake",
                             "defaultValue": "",
