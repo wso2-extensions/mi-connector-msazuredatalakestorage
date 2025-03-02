@@ -22,7 +22,6 @@ import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.file.datalake.DataLakeFileClient;
 import com.azure.storage.file.datalake.DataLakeFileSystemClient;
 import com.azure.storage.file.datalake.DataLakeServiceClient;
-import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
@@ -58,18 +57,11 @@ public class UploadFile extends AbstractAzureMediator {
                 getMediatorParameter(messageContext, AzureConstants.FILE_PATH_TO_UPLOAD, String.class, false);
         String inputType = getMediatorParameter(messageContext, AzureConstants.INPUT_TYPE, String.class, false);
         String localFilePath =
-                getMediatorParameter(messageContext, AzureConstants.LOCAL_FILE_PATH, String.class, !inputType.equals(AzureConstants.L_LOCAL_FILE_PATH));
+                getMediatorParameter(messageContext, AzureConstants.LOCAL_FILE_PATH, String.class,
+                        !inputType.equals(AzureConstants.L_LOCAL_FILE_PATH));
         String textContent =
-                getMediatorParameter(messageContext, AzureConstants.TEXT_CONTENT, String.class, !inputType.equals(AzureConstants.L_TEXT_CONTENT));
-        String metadata = getMediatorParameter(messageContext, AzureConstants.METADATA, String.class, true);
-        Integer timeout = getMediatorParameter(messageContext, AzureConstants.TIMEOUT, Integer.class, true);
-        String leaseId = getMediatorParameter(messageContext, AzureConstants.LEASE_ID, String.class, true);
-        String ifUnmodifiedSince =
-                getMediatorParameter(messageContext, AzureConstants.IF_UNMODIFIED_SINCE, String.class, true);
-        String ifMatch = getMediatorParameter(messageContext, AzureConstants.IF_MATCH, String.class, true);
-        String ifModifiedSince =
-                getMediatorParameter(messageContext, AzureConstants.IF_MODIFIED_SINCE, String.class, true);
-        String ifNoneMatch = getMediatorParameter(messageContext, AzureConstants.IF_NONE_MATCH, String.class, true);
+                getMediatorParameter(messageContext, AzureConstants.TEXT_CONTENT, String.class,
+                        true);
         String contentLanguage =
                 getMediatorParameter(messageContext, AzureConstants.CONTENT_LANGUAGE, String.class, true);
         String contentType = getMediatorParameter(messageContext, AzureConstants.CONTENT_TYPE, String.class, true);
@@ -83,6 +75,8 @@ public class UploadFile extends AbstractAzureMediator {
                 getMediatorParameter(messageContext, AzureConstants.MAX_SINGLE_UPLOAD_SIZE, Integer.class, true);
         Integer maxConcurrency =
                 getMediatorParameter(messageContext, AzureConstants.MAX_CONCURRENCY, Integer.class, true);
+        String metadata = getMediatorParameter(messageContext, AzureConstants.METADATA, String.class, true);
+        Integer timeout = getMediatorParameter(messageContext, AzureConstants.TIMEOUT, Integer.class, true);
 
         Long maxSingleUploadSizeL =
                 maxSingleUploadSize != null ? maxSingleUploadSize.longValue() * 1024L * 1024L : null;
@@ -104,21 +98,18 @@ public class UploadFile extends AbstractAzureMediator {
                     .setMaxConcurrency(maxConcurrency)
                     .setMaxSingleUploadSizeLong(maxSingleUploadSizeL);
 
+            HashMap<String, String> metadataMap = new HashMap<>();
+
+            if (metadata != null && !metadata.isEmpty()) {
+                Utils.addDataToMapFromJsonString(metadata, metadataMap);
+            }
+
             PathHttpHeaders headers = new PathHttpHeaders()
                     .setCacheControl(cacheControl)
                     .setContentType(contentType)
                     .setContentDisposition(contentDisposition)
                     .setContentEncoding(contentEncoding)
                     .setContentLanguage(contentLanguage);
-
-            DataLakeRequestConditions requestConditions = getRequestConditions(leaseId, ifMatch,
-                    ifModifiedSince, ifNoneMatch, ifUnmodifiedSince);
-
-            HashMap<String, String> metadataMap = new HashMap<>();
-
-            if (metadata != null && !metadata.isEmpty()) {
-                Utils.addDataToMapFromJsonString(metadata, metadataMap);
-            }
 
             if (localFilePath != null && textContent == null) {
                 byte[] fileContent = Files.readAllBytes(Paths.get(localFilePath));
@@ -128,7 +119,7 @@ public class UploadFile extends AbstractAzureMediator {
                         parallelTransferOptions,
                         headers.setContentMd5(MessageDigest.getInstance("MD5").digest(fileContent)),
                         metadataMap,
-                        requestConditions,
+                        null,
                         timeout != null ? Duration.ofSeconds(timeout.longValue()) : null,
                         null);
             } else if (textContent != null && localFilePath == null) {
@@ -137,19 +128,17 @@ public class UploadFile extends AbstractAzureMediator {
                                 .setHeaders(headers.setContentMd5(
                                         MessageDigest.getInstance("MD5").digest(textContent.getBytes())))
                                 .setParallelTransferOptions(parallelTransferOptions)
-                                .setMetadata(metadataMap).setRequestConditions(requestConditions),
+                                .setMetadata(metadataMap),
                         timeout != null ? Duration.ofSeconds(timeout.longValue()) : null,
-                        null
-                                                     );
+                        null );
             }
 
             handleConnectorResponse(messageContext, responseVariable, overwriteBody, true, null, null);
         } catch (DataLakeStorageException e) {
             handleConnectorException(Error.DATA_LAKE_STORAGE_GEN2_ERROR, messageContext, e);
-        } catch (ConnectException e){
+        } catch (ConnectException e) {
             handleConnectorException(Error.CONNECTION_ERROR, messageContext, e);
-        }
-        catch (NoSuchAlgorithmException e) {
+        } catch (NoSuchAlgorithmException e) {
             handleConnectorException(Error.No_SUCH_ALGORITHM, messageContext, e);
         } catch (IOException e) {
             handleConnectorException(Error.IO_EXCEPTION, messageContext, e);

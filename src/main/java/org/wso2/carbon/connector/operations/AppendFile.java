@@ -21,7 +21,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
+/**
+ * Implements the append file operation.
+ */
 public class AppendFile extends AbstractAzureMediator {
 
     @Override
@@ -51,6 +56,7 @@ public class AppendFile extends AbstractAzureMediator {
         ConnectionHandler handler = ConnectionHandler.getConnectionHandler();
 
         LeaseAction leaseActionConstant = getLeaseAction(leaseAction);
+        long appendSize = 0;
         Response<?> response = null;
 
         try {
@@ -77,6 +83,7 @@ public class AppendFile extends AbstractAzureMediator {
                                 .setLeaseDuration(leaseDuration),
                         timeout != null ? Duration.ofSeconds(timeout.longValue()) : null,
                         null);
+                appendSize = textContent.length();
             } else if (localFilePath != null && textContent == null) {
                 Path filePath = Paths.get(localFilePath);
                 byte[] fileContent = Files.readAllBytes(filePath);
@@ -92,12 +99,17 @@ public class AppendFile extends AbstractAzureMediator {
                         ,
                         timeout != null ? Duration.ofSeconds(timeout.longValue()) : null,
                         null);
+                appendSize = Files.size(filePath);
             }
 
+            Map<String, Object> attributes = new HashMap<>();
+
+            attributes.put("appendSize", appendSize);
+
             if (response != null && response.getStatusCode() == 202) {
-                handleConnectorResponse(messageContext, responseVariable, overwriteBody, true, null, null);
+                handleConnectorResponse(messageContext, responseVariable, overwriteBody, true, null, attributes);
             } else {
-                handleConnectorResponse(messageContext, responseVariable, overwriteBody, false, null, null);
+                handleConnectorResponse(messageContext, responseVariable, overwriteBody, false, null, attributes);
             }
 
         } catch (DataLakeStorageException e) {

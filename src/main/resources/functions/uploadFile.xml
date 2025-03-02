@@ -17,7 +17,8 @@
 -->
 <template xmlns="http://ws.apache.org/ns/synapse" name="uploadFile">
     <parameter name="fileSystemName" description="The name of the file system."/>
-    <parameter name="filePathToUpload" description="The destination path in the file system where the file will be uploaded."/>
+    <parameter name="filePathToUpload"
+               description="The destination path in the file system where the file will be uploaded."/>
     <parameter name="localFilePath" description="The local file path of the file to be uploaded."/>
     <parameter name="textContent" description="Text content to be uploaded instead of a file."/>
     <parameter name="metadata" description="The metadata of the file "/>
@@ -25,16 +26,6 @@
     <parameter name="responseVariable" description="Response variable name"/>
     <parameter name="overwriteBody"
                description="Replace the Message Body in Message Context with the response of the operation."/>
-    <parameter name="leaseId"
-               description="This request will succeed only if the provided leaseId matches the actual lease on the resource"/>
-    <parameter name="ifUnmodifiedSince"
-               description="The operation will be performed only if the resource has not been modified since the specified time."/>
-    <parameter name="ifMatch"
-               description="The operation will be performed only if the resource's ETag matches the specified ETag value."/>
-    <parameter name="ifModifiedSince"
-               description="The operation will be performed only if the resource has been modified since the specified time."/>
-    <parameter name="ifNoneMatch"
-               description="The operation will be performed only if the resource's ETag does not match the specified ETag value."/>
     <parameter name="contentLanguage" description="The language of the content."/>
     <parameter name="contentType" description="The MIME content type of the content."/>
     <parameter name="contentEncoding" description="Defines the encoding type"/>
@@ -51,11 +42,6 @@
         <property name="textContent" expression="$func:textContent"/>
         <property name="metadata" expression="$func:metadata"/>
         <property name="timeout" expression="$func:timeout"/>
-        <property name="leaseId" expression="$func:leaseId"/>
-        <property name="ifUnmodifiedSince" expression="$func:ifUnmodifiedSince"/>
-        <property name="ifMatch" expression="$func:ifMatch"/>
-        <property name="ifModifiedSince" expression="$func:ifModifiedSince"/>
-        <property name="ifNoneMatch" expression="$func:ifNoneMatch"/>
         <property name="contentLanguage" expression="$func:contentLanguage"/>
         <property name="contentType" expression="$func:contentType"/>
         <property name="contentEncoding" expression="$func:contentEncoding"/>

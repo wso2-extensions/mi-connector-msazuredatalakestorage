@@ -18,6 +18,9 @@ import org.wso2.carbon.connector.util.Error;
 
 import java.time.Duration;
 
+/**
+ * Implements the flush file operation.
+ */
 public class FlushFile extends AbstractAzureMediator {
 
     @Override
@@ -45,7 +48,7 @@ public class FlushFile extends AbstractAzureMediator {
         String leaseId = getMediatorParameter(messageContext, AzureConstants.LEASE_ID, String.class, true);
         String proposedLeaseId =
                 getMediatorParameter(messageContext, AzureConstants.PROPOSED_LEASE_ID, String.class, true);
-        Integer fileLength = getMediatorParameter(messageContext, AzureConstants.FILE_LENGTH, Integer.class, true);
+        Long fileLength = getMediatorParameter(messageContext, AzureConstants.FILE_LENGTH, Long.class, true);
         Integer timeout = getMediatorParameter(messageContext, AzureConstants.TIMEOUT, Integer.class, true);
         String leaseAction = getMediatorParameter(messageContext, AzureConstants.LEASE_ACTION, String.class, true);
         Integer leaseDuration =
@@ -69,7 +72,7 @@ public class FlushFile extends AbstractAzureMediator {
             long fileSizeBefore = dataLakeFileClient.getProperties().getFileSize();
 
             Response<?> response = dataLakeFileClient.flushWithResponse(
-                    fileSizeBefore + fileLength.longValue(),
+                    fileSizeBefore + fileLength,
                     new DataLakeFileFlushOptions().setUncommittedDataRetained(uncommittedDataRetained)
                             .setRequestConditions(
                                     getRequestConditions(leaseId, ifMatch, ifNoneMatch, ifModifiedSince,

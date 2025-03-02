@@ -61,7 +61,7 @@
                                         "inputType": "stringOrExpression",
                                         "defaultValue": "",
                                         "required": "true",
-                                        "helpTip": "Length of the file to flush in integer form."
+                                        "helpTip": "Length of the file to flush."
                                     }
                                 },
                                 {

@@ -7,10 +7,21 @@
         "payload": {
             "type": "boolean",
             "description": "Whether to append the file or not."
+        },
+        "attributes": {
+            "type": "object",
+            "description": "The file size of the file to be appended.",
+            "properties": {
+                "appendSize": {
+                    "type": "integer",
+                    "description": "The file size of the file to be appended."
+                }
+            }
         }
     },
     "required": [
-        "payload"
+        "payload",
+        "attributes"
     ],
     "additionalProperties": false
 }

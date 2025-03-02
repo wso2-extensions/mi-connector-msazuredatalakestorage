@@ -36,7 +36,7 @@ import java.time.Duration;
 /**
  * Implements the delete directory operation.
  */
-public class RenameDirectory extends AbstractAzureMediator {
+public class  RenameDirectory extends AbstractAzureMediator {
 
     @Override
     public void execute(MessageContext messageContext, String responseVariable, Boolean overwriteBody) {
