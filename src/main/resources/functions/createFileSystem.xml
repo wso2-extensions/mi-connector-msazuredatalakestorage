@@ -19,6 +19,7 @@
     <parameter name="fileSystemName" description="The name of the file system."/>
     <parameter name="timeout" description="The timeout for the operation."/>
     <parameter name="metadata" description="The path to the file to be uploaded."/>
+    <parameter name="accessType" description="The public access type of the file system."/>
     <parameter name="responseVariable" description="Response variable name"/>
     <parameter name="overwriteBody"
                description="Replace the Message Body in Message Context with the response of the operation."/>

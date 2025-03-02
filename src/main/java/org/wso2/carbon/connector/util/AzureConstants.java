@@ -106,6 +106,7 @@ public class AzureConstants {
     public static final String FILE_LENGTH = "fileLength";
     public static final String UNCOMMITTED_DATA_RETAINED = "uncommittedDataRetained";
     public static final String SAS_TOKEN = "sasToken";
+    public static final String ACCESS_TYPE = "accessType";
     private AzureConstants() {
 
     }

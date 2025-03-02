@@ -64,6 +64,22 @@
                                         "required": "false",
                                         "helpTip": "Metadata to be added to the file system."
                                     }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "accessType",
+                                        "displayName": "Public Access Type",
+                                        "inputType": "combo",
+                                        "defaultValue": "NONE",
+                                        "required": "false",
+                                        "comboValues": [
+                                            "NONE",
+                                            "BLOB",
+                                            "CONTAINER"
+                                        ],
+                                        "helpTip": "The type of public access to be set on the file system."
+                                    }
                                 }
                             ]
                         }

@@ -47,6 +47,19 @@ public class CreateFileSystem extends AbstractAzureMediator {
                 getMediatorParameter(messageContext, AzureConstants.FILE_SYSTEM_NAME, String.class, false);
         Integer timeout = getMediatorParameter(messageContext, AzureConstants.TIMEOUT, Integer.class, true);
         String metadata = getMediatorParameter(messageContext, AzureConstants.METADATA, String.class, true);
+        String accessType = getMediatorParameter(messageContext, AzureConstants.ACCESS_TYPE, String.class, true);
+
+        PublicAccessType publicAccessType = null;
+
+        switch (accessType) {
+            case "BLOB":
+                publicAccessType = PublicAccessType.BLOB;
+                break;
+            case "CONTAINER":
+                publicAccessType = PublicAccessType.CONTAINER;
+                break;
+        }
+
         HashMap<String, String> metadataMap = new HashMap<>();
         if (metadata != null){
             Utils.addDataToMapFromJsonString(metadata, metadataMap);
@@ -60,7 +73,7 @@ public class CreateFileSystem extends AbstractAzureMediator {
             DataLakeFileSystemClient dataLakeFileSystemClient =
                     dataLakeServiceClient.getFileSystemClient(fileSystemName != null ? fileSystemName : "");
             Response<?> response = dataLakeFileSystemClient.createIfNotExistsWithResponse(
-                    metadata != null ? metadataMap : null, null, timeout != null ? Duration.ofSeconds(timeout.longValue()) : null, null);
+                    metadata != null ? metadataMap : null, publicAccessType, timeout != null ? Duration.ofSeconds(timeout.longValue()) : null, null);
             if (response.getStatusCode() == 201) {
                 handleConnectorResponse(messageContext, responseVariable, overwriteBody, true, null,
                         null);
