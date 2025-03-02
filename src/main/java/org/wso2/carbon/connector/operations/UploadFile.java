@@ -28,6 +28,7 @@ import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
 import org.apache.synapse.MessageContext;
 import org.wso2.carbon.connector.connection.AzureStorageConnectionHandler;
+import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.connector.core.connection.ConnectionHandler;
 import org.wso2.carbon.connector.util.AbstractAzureMediator;
 import org.wso2.carbon.connector.util.AzureConstants;
@@ -55,10 +56,11 @@ public class UploadFile extends AbstractAzureMediator {
                 getMediatorParameter(messageContext, AzureConstants.FILE_SYSTEM_NAME, String.class, false);
         String filePathToUpload =
                 getMediatorParameter(messageContext, AzureConstants.FILE_PATH_TO_UPLOAD, String.class, false);
+        String inputType = getMediatorParameter(messageContext, AzureConstants.INPUT_TYPE, String.class, false);
         String localFilePath =
-                getMediatorParameter(messageContext, AzureConstants.LOCAL_FILE_PATH, String.class, false);
+                getMediatorParameter(messageContext, AzureConstants.LOCAL_FILE_PATH, String.class, !inputType.equals(AzureConstants.L_LOCAL_FILE_PATH));
         String textContent =
-                getMediatorParameter(messageContext, AzureConstants.TEXT_CONTENT, String.class, localFilePath != null);
+                getMediatorParameter(messageContext, AzureConstants.TEXT_CONTENT, String.class, !inputType.equals(AzureConstants.L_TEXT_CONTENT));
         String metadata = getMediatorParameter(messageContext, AzureConstants.METADATA, String.class, true);
         Integer timeout = getMediatorParameter(messageContext, AzureConstants.TIMEOUT, Integer.class, true);
         String leaseId = getMediatorParameter(messageContext, AzureConstants.LEASE_ID, String.class, true);
@@ -118,7 +120,7 @@ public class UploadFile extends AbstractAzureMediator {
                 Utils.addDataToMapFromJsonString(metadata, metadataMap);
             }
 
-            if (localFilePath != null) {
+            if (localFilePath != null && textContent == null) {
                 byte[] fileContent = Files.readAllBytes(Paths.get(localFilePath));
 
                 dataLakeFileClient.uploadFromFileWithResponse(
@@ -128,9 +130,8 @@ public class UploadFile extends AbstractAzureMediator {
                         metadataMap,
                         requestConditions,
                         timeout != null ? Duration.ofSeconds(timeout.longValue()) : null,
-                        null
-                                                             );
-            } else if (textContent != null) {
+                        null);
+            } else if (textContent != null && localFilePath == null) {
                 dataLakeFileClient.uploadWithResponse(
                         new FileParallelUploadOptions(BinaryData.fromString(textContent))
                                 .setHeaders(headers.setContentMd5(
@@ -145,7 +146,10 @@ public class UploadFile extends AbstractAzureMediator {
             handleConnectorResponse(messageContext, responseVariable, overwriteBody, true, null, null);
         } catch (DataLakeStorageException e) {
             handleConnectorException(Error.DATA_LAKE_STORAGE_GEN2_ERROR, messageContext, e);
-        } catch (NoSuchAlgorithmException e) {
+        } catch (ConnectException e){
+            handleConnectorException(Error.CONNECTION_ERROR, messageContext, e);
+        }
+        catch (NoSuchAlgorithmException e) {
             handleConnectorException(Error.No_SUCH_ALGORITHM, messageContext, e);
         } catch (IOException e) {
             handleConnectorException(Error.IO_EXCEPTION, messageContext, e);

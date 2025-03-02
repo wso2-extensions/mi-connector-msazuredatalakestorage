@@ -74,5 +74,13 @@
             <file>listPaths.xml</file>
             <description>Reads all paths of the file system</description>
         </component>
+        <component name="appendFile">
+            <file>appendFile.xml</file>
+            <description>Appends files to the existing file</description>
+        </component>
+        <component name="flushFile">
+            <file>flushFile.xml</file>
+            <description>Flushes files to the existing file</description>
+        </component>
     </subComponents>
 </component>

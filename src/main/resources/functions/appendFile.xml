@@ -15,35 +15,40 @@
    specific language governing permissions and limitations
    under the License.
 -->
-<template xmlns="http://ws.apache.org/ns/synapse" name="updateMetaData">
+<template xmlns="http://ws.apache.org/ns/synapse" name="appendFile">
     <parameter name="fileSystemName" description="The name of the file system."/>
-    <parameter name="filePathToAddMetaData" description=""/>
-    <parameter name="metadata" description="The metadata to be added."/>
+    <parameter name="filePathToAppend"
+               description="The path of the file in the file system where data will be appended."/>
+    <parameter name="inputType" description="The input type. Either 'local' or 'text'."/>
+    <parameter name="localFilePath" description="The local file path containing the data to be appended."/>
+    <parameter name="textContent" description="Text content to append directly instead of reading from a file."/>
     <parameter name="timeout" description="The timeout for the operation."/>
     <parameter name="responseVariable" description="Response variable name"/>
     <parameter name="overwriteBody"
                description="Replace the Message Body in Message Context with the response of the operation."/>
-
-    <parameter name="leaseId"
+    <parameter name="flush"
                description="This request will succeed only if the provided leaseId matches the actual lease on the resource"/>
-    <parameter name="ifUnmodifiedSince"
+    <parameter name="leaseId"
                description="The operation will be performed only if the resource has not been modified since the specified time."/>
-    <parameter name="ifMatch"
+    <parameter name="leaseAction"
                description="The operation will be performed only if the resource's ETag matches the specified ETag value."/>
-    <parameter name="ifModifiedSince"
+    <parameter name="leaseDuration"
                description="The operation will be performed only if the resource has been modified since the specified time."/>
-    <parameter name="ifNoneMatch"
-               description="The operation will be performed only if the resource's ETag does not match the specified ETag value."/>
+    <parameter name="proposedLeaseId"
+                description="A proposed lease ID that can be set when acquiring or changing a lease."/>
+
     <sequence>
         <property name="fileSystemName" expression="$func:fileSystemName"/>
-        <property name="filePathToAddMetaData" expression="$func:filePathToAddMetaData"/>
-        <property name="metadata" expression="$func:metadata"/>
+        <property name="filePathToAppend" expression="$func:filePathToAppend"/>
+        <property name="localFilePath" expression="$func:localFilePath"/>
+        <property name="textContent" expression="$func:textContent"/>
         <property name="timeout" expression="$func:timeout"/>
-        <property name="leaseId" expression="$func:leaseId"/>
-        <property name="ifUnmodifiedSince" expression="$func:ifUnmodifiedSince"/>
-        <property name="ifMatch" expression="$func:ifMatch"/>
-        <property name="ifModifiedSince" expression="$func:ifModifiedSince"/>
-        <property name="ifNoneMatch" expression="$func:ifNoneMatch"/>
-        <class name="org.wso2.carbon.connector.operations.UpdateMetaData"/>
+        <property name="flush" expression="$func:leaseId"/>
+        <property name="leaseId" expression="$func:ifUnmodifiedSince"/>
+        <property name="leaseAction" expression="$func:ifMatch"/>
+        <property name="leaseDuration" expression="$func:ifModifiedSince"/>
+        <property name="proposedLeaseId" expression="$func:proposedLeaseId"/>
+
+        <class name="org.wso2.carbon.connector.operations.AppendFile"/>
     </sequence>
 </template>

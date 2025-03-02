@@ -18,6 +18,7 @@
 package org.wso2.carbon.connector.util;
 
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
+import com.azure.storage.file.datalake.models.LeaseAction;
 import com.google.gson.JsonParser;
 import org.apache.axis2.AxisFault;
 import org.apache.synapse.MessageContext;
@@ -127,7 +128,6 @@ public abstract class AbstractAzureMediator extends AbstractConnector {
     /**
      * Get DataLakeRequestConditions object.
      *
-     * @param messageContext    MessageContext.
      * @param leaseId           Lease ID.
      * @param ifMatch           If-Match.
      * @param ifNoneMatch       If-None-Match.
@@ -211,6 +211,28 @@ public abstract class AbstractAzureMediator extends AbstractConnector {
         mc.setProperty("ERROR_CODE", code.getErrorCode());
         mc.setProperty("ERROR_MESSAGE", code.getErrorMessage());
         throw new SynapseException(code.getErrorMessage());
+    }
+
+    public LeaseAction getLeaseAction(String leaseAction) {
+
+        LeaseAction leaseActionConstant = null;
+
+        switch (leaseAction) {
+            case "Acquire":
+                leaseActionConstant = LeaseAction.ACQUIRE;
+                break;
+            case "Auto Renew":
+                leaseActionConstant = LeaseAction.AUTO_RENEW;
+                break;
+            case "Acquire Release":
+                leaseActionConstant = LeaseAction.ACQUIRE_RELEASE;
+                break;
+            case "Release":
+                leaseActionConstant = LeaseAction.RELEASE;
+                break;
+        }
+
+        return leaseActionConstant;
     }
 
 }

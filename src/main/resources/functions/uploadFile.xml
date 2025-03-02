@@ -17,11 +17,10 @@
 -->
 <template xmlns="http://ws.apache.org/ns/synapse" name="uploadFile">
     <parameter name="fileSystemName" description="The name of the file system."/>
-    <parameter name="filePathToUpload" description="The name of the container."/>
-    <parameter name="localFilePath" description="The name of the blob."/>
-    <parameter name="finalContentType" description="The path to the file to be uploaded."/>
-    <parameter name="textContent" description="The path to the file to be uploaded."/>
-    <parameter name="metadata" description="The path to the file to be uploaded."/>
+    <parameter name="filePathToUpload" description="The destination path in the file system where the file will be uploaded."/>
+    <parameter name="localFilePath" description="The local file path of the file to be uploaded."/>
+    <parameter name="textContent" description="Text content to be uploaded instead of a file."/>
+    <parameter name="metadata" description="The metadata of the file "/>
     <parameter name="timeout" description="The timeout for the operation."/>
     <parameter name="responseVariable" description="Response variable name"/>
     <parameter name="overwriteBody"
@@ -44,7 +43,7 @@
     <parameter name="blockSize" description="The size of the block in MB."/>
     <parameter name="maxSingleUploadSize" description="The maximum size of a single upload in bytes."/>
     <parameter name="maxConcurrency" description="The maximum number of blocks that can be uploaded in parallel."/>
-
+    <parameter name="inputType" description="The input type. Either 'local' or 'text'."/>
     <sequence>
         <property name="fileSystemName" expression="$func:fileSystemName"/>
         <property name="filePathToUpload" expression="$func:filePathToUpload"/>

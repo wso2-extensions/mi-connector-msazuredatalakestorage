@@ -1,0 +1,63 @@
+<!--
+ 	Copyright (c) 2025, WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
+
+    WSO2 LLC. licenses this file to you under the Apache License,
+    Version 2.0 (the "License"); you may not use this file except
+    in compliance with the License.
+    You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing,
+   software distributed under the License is distributed on an
+   "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+   KIND, either express or implied.  See the License for the
+   specific language governing permissions and limitations
+   under the License.
+-->
+<template xmlns="http://ws.apache.org/ns/synapse" name="flushFile">
+    <parameter name="fileSystemName" description="The name of the file system."/>
+    <parameter name="filePathToFlush" description="The path of the file in the file system to flush."/>
+    <parameter name="fileLength" description="The length of the file to flush."/>
+    <parameter name="contentLanguage" description="The content language of the file to flush."/>
+    <parameter name="contentType" description="The content type of the file to flush."/>
+    <parameter name="contentEncoding" description="The content encoding of the file to flush."/>
+    <parameter name="contentDisposition" description="The content disposition of the file to flush."/>
+    <parameter name="cacheControl" description="The cache control of the file to flush."/>
+    <parameter name="leaseId" description="The lease ID of the file to flush."/>
+    <parameter name="ifUnmodifiedSince" description="The time since which the file has not been modified."/>
+    <parameter name="ifMatch" description="The ETag value of the file to flush."/>
+    <parameter name="ifModifiedSince" description="The time since which the file has been modified."/>
+    <parameter name="ifNoneMatch" description="The ETag value of the file to flush."/>
+    <parameter name="uncommittedDataRetained" description="Whether to retain uncommitted data."/>
+    <parameter name="leaseAction" description="The lease action to perform."/>
+    <parameter name="timeout" description="The timeout for the operation."/>
+    <parameter name="responseVariable" description="Response variable name"/>
+    <parameter name="overwriteBody" description="Replace the Message Body in Message Context with the response of the operation."/>
+    <parameter name="leaseDuration" description="The duration of the lease."/>
+    <parameter name="proposedLeaseId" description="The proposed lease ID."/>
+
+
+    <sequence>
+        <property name="fileSystemName" expression="$func:fileSystemName"/>
+        <property name="filePathToFlush" expression="$func:filePathToFlush"/>
+        <property name="fileLength" expression="$func:fileLength"/>
+        <property name="contentLanguage" expression="$func:contentLanguage"/>
+        <property name="contentType" expression="$func:contentType"/>
+        <property name="contentEncoding" expression="$func:contentEncoding"/>
+        <property name="contentDisposition" expression="$func:contentDisposition"/>
+        <property name="cacheControl" expression="$func:cacheControl"/>
+        <property name="leaseId" expression="$func:leaseId"/>
+        <property name="ifUnmodifiedSince" expression="$func:ifUnmodifiedSince"/>
+        <property name="ifMatch" expression="$func:ifMatch"/>
+        <property name="ifModifiedSince" expression="$func:ifModifiedSince"/>
+        <property name="ifNoneMatch" expression="$func:ifNoneMatch"/>
+        <property name="uncommittedDataRetained" expression="$func:uncommittedDataRetained"/>
+        <property name="leaseAction" expression="$func:leaseAction"/>
+        <property name="timeout" expression="$func:timeout"/>
+        <property name="leaseDuration" expression="$func:leaseDuration"/>
+        <property name="proposedLeaseId" expression="$func:proposedLeaseId"/>
+
+        <class name="org.wso2.carbon.connector.operations.FlushFile"/>
+    </sequence>
+</template>

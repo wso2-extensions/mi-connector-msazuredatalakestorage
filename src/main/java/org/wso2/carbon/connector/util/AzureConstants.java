@@ -94,7 +94,17 @@ public class AzureConstants {
     public static final String DESTINATION_IF_NONE_MATCH = "destinationIfNoneMatch";
     public static final String DESTINATION_IF_MODIFIED_SINCE = "destinationIfModifiedSince";
     public static final String DESTINATION_IF_UNMODIFIED_SINCE = "destinationIfUnmodifiedSince";
-
+    public static final String FILE_PATH_TO_APPEND = "filePathToAppend";
+    public static final String FLUSH = "flush";
+    public static final String LEASE_ACTION = "leaseAction";
+    public static final String LEASE_DURATION = "leaseDuration";
+    public static final String INPUT_TYPE = "inputType";
+    public static final String L_TEXT_CONTENT= "Text Content";
+    public static final String L_LOCAL_FILE_PATH = "Local File";
+    public static final String PROPOSED_LEASE_ID = "proposedLeaseId";
+    public static final String FILE_PATH_TO_FLUSH = "filePathToFlush";
+    public static final String FILE_LENGTH = "fileLength";
+    public static final String UNCOMMITTED_DATA_RETAINED = "uncommittedDataRetained";
     private AzureConstants() {
 
     }

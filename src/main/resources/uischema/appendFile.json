@@ -1,8 +1,8 @@
 {
     "connectorName": "azureDataLake",
-    "operationName": "uploadFile",
-    "title": "Upload File",
-    "help": "<h1>Upload File</h1> <b>This operation can be used to upload a file.</b>",
+    "operationName": "appendFile",
+    "title": "Append File",
+    "help": "<h1>Append File</h1> <b>This operation can be used to append a file.</b>",
     "elements": [
         {
             "type": "attributeGroup",
@@ -43,12 +43,12 @@
                                 {
                                     "type": "attribute",
                                     "value": {
-                                        "name": "filePathToUpload",
-                                        "displayName": "File Path to Upload",
+                                        "name": "filePathToAppend",
+                                        "displayName": "File Path to Append",
                                         "inputType": "stringOrExpression",
                                         "defaultValue": "",
                                         "required": "true",
-                                        "helpTip": "Path of the file to be uploaded."
+                                        "helpTip": "Path of the file to be appended."
                                     }
                                 },
                                 {
@@ -101,12 +101,12 @@
                                 {
                                     "type": "attribute",
                                     "value": {
-                                        "name": "metadata",
-                                        "displayName": "Metadata",
-                                        "inputType": "stringOrExpression",
-                                        "defaultValue": "",
+                                        "name": "flush",
+                                        "displayName": "Flush",
+                                        "inputType": "checkbox",
+                                        "defaultValue": "false",
                                         "required": "false",
-                                        "helpTip": "Key value list of metadata."
+                                        "helpTip": "Flush the data to the file after appending."
                                     }
                                 },
                                 {
@@ -123,144 +123,52 @@
                                 {
                                     "type": "attribute",
                                     "value": {
-                                        "name": "ifUnmodifiedSince",
-                                        "displayName": "If Unmodified Since",
-                                        "inputType": "stringOrExpression",
-                                        "defaultValue": "",
+                                        "name": "leaseAction",
+                                        "displayName": "Lease Action",
+                                        "inputType": "combo",
+                                        "defaultValue": "None",
                                         "required": "false",
-                                        "helpTip": "The operation will be performed only if the resource has not been modified since the specified time."
+                                        "helpTip": "The lease action to perform on the file.",
+                                        "comboValues": [
+                                            "None",
+                                            "Acquire",
+                                            "Auto Renew",
+                                            "Acquire Release",
+                                            "Release"
+                                        ]
                                     }
                                 },
                                 {
                                     "type": "attribute",
                                     "value": {
-                                        "name": "ifMatch",
-                                        "displayName": "If Match(ETag)",
+                                        "name": "leaseDuration",
+                                        "displayName": "Lease Duration",
                                         "inputType": "stringOrExpression",
                                         "defaultValue": "",
                                         "required": "false",
-                                        "helpTip": "The operation will be performed only if the resource's ETag matches the specified ETag value."
+                                        "helpTip": "The lease duration in seconds."
                                     }
                                 },
                                 {
                                     "type": "attribute",
                                     "value": {
-                                        "name": "ifModifiedSince",
-                                        "displayName": "If Modified Since",
+                                        "name": "proposedLeaseId",
+                                        "displayName": "Proposed Lease Id",
                                         "inputType": "stringOrExpression",
                                         "defaultValue": "",
                                         "required": "false",
-                                        "helpTip": "The operation will be performed only if the resource has been modified since the specified time."
-                                    }
-                                },
-                                {
-                                    "type": "attribute",
-                                    "value": {
-                                        "name": "ifNoneMatch",
-                                        "displayName": "If None Match(ETag)",
-                                        "inputType": "stringOrExpression",
-                                        "defaultValue": "",
-                                        "required": "false",
-                                        "helpTip": "The operation will be performed only if the resource's ETag does not match the specified ETag value."
-                                    }
-                                },
-                                {
-                                    "type": "attribute",
-                                    "value": {
-                                        "name": "contentLanguage",
-                                        "displayName": "Content Language",
-                                        "inputType": "stringOrExpression",
-                                        "defaultValue": "en-US",
-                                        "required": "false",
-                                        "helpTip": "The language of the content."
-                                    }
-                                },
-                                {
-                                    "type": "attribute",
-                                    "value": {
-                                        "name": "contentType",
-                                        "displayName": "Content Type",
-                                        "inputType": "stringOrExpression",
-                                        "defaultValue": "",
-                                        "required": "false",
-                                        "helpTip": "The MIME content type of the content."
-                                    }
-                                },
-                                {
-                                    "type": "attribute",
-                                    "value": {
-                                        "name": "contentEncoding",
-                                        "displayName": "Content Encoding",
-                                        "inputType": "stringOrExpression",
-                                        "defaultValue": "",
-                                        "required": "false",
-                                        "helpTip": "Defines the encoding type (e.g., \"gzip\", \"UTF-8\")."
-                                    }
-                                },
-                                {
-                                    "type": "attribute",
-                                    "value": {
-                                        "name": "contentDisposition",
-                                        "displayName": "Content Disposition",
-                                        "inputType": "stringOrExpression",
-                                        "defaultValue": "",
-                                        "required": "false",
-                                        "helpTip": "The value of the Content-Disposition response header."
-                                    }
-                                },
-                                {
-                                    "type": "attribute",
-                                    "value": {
-                                        "name": "cacheControl",
-                                        "displayName": "Cache Control",
-                                        "inputType": "stringOrExpression",
-                                        "defaultValue": "",
-                                        "required": "false",
-                                        "helpTip": "The value of the Cache-Control response header."
-                                    }
-                                },
-                                {
-                                    "type": "attribute",
-                                    "value": {
-                                        "name": "blockSize",
-                                        "displayName": "Block Size(MB)",
-                                        "inputType": "stringOrExpression",
-                                        "defaultValue": "",
-                                        "required": "false",
-                                        "helpTip": "The size of the block in MB."
-                                    }
-                                },
-                                {
-                                    "type": "attribute",
-                                    "value": {
-                                        "name": "maxSingleUploadSize",
-                                        "displayName": "Max Single Upload Size(MB)",
-                                        "inputType": "stringOrExpression",
-                                        "defaultValue": "",
-                                        "required": "false",
-                                        "helpTip": "The maximum size of a single upload in bytes."
-                                    }
-                                },
-                                {
-                                    "type": "attribute",
-                                    "value": {
-                                        "name": "maxConcurrency",
-                                        "displayName": "Max Concurrency",
-                                        "inputType": "stringOrExpression",
-                                        "defaultValue": "",
-                                        "required": "false",
-                                        "helpTip": "The maximum number of blocks that can be uploaded in parallel."
+                                        "helpTip": "A proposed lease ID that can be set when acquiring or changing a lease."
                                     }
                                 },
                                 {
                                     "type": "attribute",
                                     "value": {
                                         "name": "timeout",
-                                        "displayName": "Timeout",
+                                        "displayName": "Timeout(seconds)",
                                         "inputType": "stringOrExpression",
                                         "defaultValue": "",
                                         "required": "false",
-                                        "helpTip": "Time in milliseconds after which the operation will time out."
+                                        "helpTip": "Time in seconds after which the operation will time out."
                                     }
                                 }
                             ]

@@ -1,8 +1,8 @@
 {
     "connectorName": "azureDataLake",
-    "operationName": "uploadFile",
-    "title": "Upload File",
-    "help": "<h1>Upload File</h1> <b>This operation can be used to upload a file.</b>",
+    "operationName": "flushFile",
+    "title": "Flush File",
+    "help": "<h1>Flush File</h1> <b>This operation can be used to flush a file.</b>",
     "elements": [
         {
             "type": "attributeGroup",
@@ -37,131 +37,29 @@
                                         "inputType": "stringOrExpression",
                                         "defaultValue": "",
                                         "required": "true",
-                                        "helpTip": "Name of the file system where the file will be uploaded."
+                                        "helpTip": "Name of the file system where the file is located."
                                     }
                                 },
                                 {
                                     "type": "attribute",
                                     "value": {
-                                        "name": "filePathToUpload",
-                                        "displayName": "File Path to Upload",
+                                        "name": "filePathToFlush",
+                                        "displayName": "File Path to Flush",
                                         "inputType": "stringOrExpression",
                                         "defaultValue": "",
                                         "required": "true",
-                                        "helpTip": "Path of the file to be uploaded."
+                                        "helpTip": "Path of the file to flush."
                                     }
                                 },
                                 {
                                     "type": "attribute",
                                     "value": {
-                                        "name": "inputType",
-                                        "displayName": "Input Type",
-                                        "inputType": "combo",
-                                        "defaultValue": "Local File",
+                                        "name": "fileLength",
+                                        "displayName": "File Length",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
                                         "required": "true",
-                                        "helpTip": "Path of the file to be uploaded.",
-                                        "comboValues": [
-                                            "Local File",
-                                            "Text Content"
-                                        ]
-                                    }
-                                },
-                                {
-                                    "type": "attribute",
-                                    "value": {
-                                        "name": "localFilePath",
-                                        "displayName": "Local File Path",
-                                        "inputType": "stringOrExpression",
-                                        "defaultValue": "",
-                                        "required": "false",
-                                        "helpTip": "File to be uploaded.",
-                                        "enableCondition": [
-                                            {
-                                                "inputType": "Local File"
-                                            }
-                                        ]
-                                    }
-                                },
-                                {
-                                    "type": "attribute",
-                                    "value": {
-                                        "name": "textContent",
-                                        "displayName": "Text Content",
-                                        "inputType": "stringOrExpression",
-                                        "defaultValue": "",
-                                        "required": "false",
-                                        "helpTip": "Text content to be uploaded (without using a file).",
-                                        "enableCondition": [
-                                            {
-                                                "inputType": "Text Content"
-                                            }
-                                        ]
-                                    }
-                                },
-                                {
-                                    "type": "attribute",
-                                    "value": {
-                                        "name": "metadata",
-                                        "displayName": "Metadata",
-                                        "inputType": "stringOrExpression",
-                                        "defaultValue": "",
-                                        "required": "false",
-                                        "helpTip": "Key value list of metadata."
-                                    }
-                                },
-                                {
-                                    "type": "attribute",
-                                    "value": {
-                                        "name": "leaseId",
-                                        "displayName": "Lease Id",
-                                        "inputType": "stringOrExpression",
-                                        "defaultValue": "",
-                                        "required": "false",
-                                        "helpTip": "This request will succeed only if the provided leaseId matches the actual lease on the resource"
-                                    }
-                                },
-                                {
-                                    "type": "attribute",
-                                    "value": {
-                                        "name": "ifUnmodifiedSince",
-                                        "displayName": "If Unmodified Since",
-                                        "inputType": "stringOrExpression",
-                                        "defaultValue": "",
-                                        "required": "false",
-                                        "helpTip": "The operation will be performed only if the resource has not been modified since the specified time."
-                                    }
-                                },
-                                {
-                                    "type": "attribute",
-                                    "value": {
-                                        "name": "ifMatch",
-                                        "displayName": "If Match(ETag)",
-                                        "inputType": "stringOrExpression",
-                                        "defaultValue": "",
-                                        "required": "false",
-                                        "helpTip": "The operation will be performed only if the resource's ETag matches the specified ETag value."
-                                    }
-                                },
-                                {
-                                    "type": "attribute",
-                                    "value": {
-                                        "name": "ifModifiedSince",
-                                        "displayName": "If Modified Since",
-                                        "inputType": "stringOrExpression",
-                                        "defaultValue": "",
-                                        "required": "false",
-                                        "helpTip": "The operation will be performed only if the resource has been modified since the specified time."
-                                    }
-                                },
-                                {
-                                    "type": "attribute",
-                                    "value": {
-                                        "name": "ifNoneMatch",
-                                        "displayName": "If None Match(ETag)",
-                                        "inputType": "stringOrExpression",
-                                        "defaultValue": "",
-                                        "required": "false",
-                                        "helpTip": "The operation will be performed only if the resource's ETag does not match the specified ETag value."
+                                        "helpTip": "Length of the file to flush in integer form."
                                     }
                                 },
                                 {
@@ -222,45 +120,118 @@
                                 {
                                     "type": "attribute",
                                     "value": {
-                                        "name": "blockSize",
-                                        "displayName": "Block Size(MB)",
+                                        "name": "leaseId",
+                                        "displayName": "Lease Id",
                                         "inputType": "stringOrExpression",
                                         "defaultValue": "",
                                         "required": "false",
-                                        "helpTip": "The size of the block in MB."
+                                        "helpTip": "This request will succeed only if the provided leaseId matches the actual lease on the resource"
                                     }
                                 },
                                 {
                                     "type": "attribute",
                                     "value": {
-                                        "name": "maxSingleUploadSize",
-                                        "displayName": "Max Single Upload Size(MB)",
+                                        "name": "ifUnmodifiedSince",
+                                        "displayName": "If Unmodified Since",
                                         "inputType": "stringOrExpression",
                                         "defaultValue": "",
                                         "required": "false",
-                                        "helpTip": "The maximum size of a single upload in bytes."
+                                        "helpTip": "The operation will be performed only if the resource has not been modified since the specified time."
                                     }
                                 },
                                 {
                                     "type": "attribute",
                                     "value": {
-                                        "name": "maxConcurrency",
-                                        "displayName": "Max Concurrency",
+                                        "name": "ifMatch",
+                                        "displayName": "If Match(ETag)",
                                         "inputType": "stringOrExpression",
                                         "defaultValue": "",
                                         "required": "false",
-                                        "helpTip": "The maximum number of blocks that can be uploaded in parallel."
+                                        "helpTip": "The operation will be performed only if the resource's ETag matches the specified ETag value."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "ifModifiedSince",
+                                        "displayName": "If Modified Since",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "false",
+                                        "helpTip": "The operation will be performed only if the resource has been modified since the specified time."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "ifNoneMatch",
+                                        "displayName": "If None Match(ETag)",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "false",
+                                        "helpTip": "The operation will be performed only if the resource's ETag does not match the specified ETag value."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "uncommittedDataRetained",
+                                        "displayName": "Uncommitted Data Retained",
+                                        "inputType": "checkbox",
+                                        "defaultValue": "false",
+                                        "required": "false",
+                                        "helpTip": "Indicates whether uncommitted data is retained."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "leaseAction",
+                                        "displayName": "Lease Action",
+                                        "inputType": "combo",
+                                        "defaultValue": "None",
+                                        "required": "false",
+                                        "helpTip": "The lease action to perform on the file.",
+                                        "comboValues": [
+                                            "None",
+                                            "Acquire",
+                                            "Auto Renew",
+                                            "Acquire Release",
+                                            "Release"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "leaseDuration",
+                                        "displayName": "Lease Duration",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "false",
+                                        "helpTip": "The lease duration in seconds."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "proposedLeaseId",
+                                        "displayName": "Proposed Lease Id",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "false",
+                                        "helpTip": "A proposed lease ID that can be set when acquiring or changing a lease."
                                     }
                                 },
                                 {
                                     "type": "attribute",
                                     "value": {
                                         "name": "timeout",
-                                        "displayName": "Timeout",
+                                        "displayName": "Timeout(seconds)",
                                         "inputType": "stringOrExpression",
                                         "defaultValue": "",
                                         "required": "false",
-                                        "helpTip": "Time in milliseconds after which the operation will time out."
+                                        "helpTip": "Time in seconds after which the operation will time out."
                                     }
                                 }
                             ]
