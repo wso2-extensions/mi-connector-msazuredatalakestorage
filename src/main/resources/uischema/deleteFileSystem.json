@@ -41,7 +41,16 @@
                                         "required": "true",
                                         "helpTip": "Name of the file system to be deleted."
                                     }
-                                },
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "type": "attributeGroup",
+                        "value": {
+                            "groupName": "Advanced",
+                            "isCollapsed": "true",
+                            "elements": [
                                 {
                                     "type": "attribute",
                                     "value": {

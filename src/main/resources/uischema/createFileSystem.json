@@ -42,7 +42,16 @@
                                         "helpTip": "Name of the file system to be created.",
                                         "validation": "nameWithoutSpecialCharactors"
                                     }
-                                },
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "type": "attributeGroup",
+                        "value": {
+                            "groupName": "Advanced",
+                            "isCollapsed": "true",
+                            "elements": [
                                 {
                                     "type": "attribute",
                                     "value": {

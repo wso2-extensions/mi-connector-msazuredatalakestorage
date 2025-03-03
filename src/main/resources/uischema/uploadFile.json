@@ -46,7 +46,7 @@
                                     "type": "attribute",
                                     "value": {
                                         "name": "filePathToUpload",
-                                        "displayName": "File Path to Upload",
+                                        "displayName": "Target Path",
                                         "inputType": "stringOrExpression",
                                         "defaultValue": "",
                                         "required": "true",
@@ -99,7 +99,16 @@
                                             }
                                         ]
                                     }
-                                },
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "type": "attributeGroup",
+                        "value": {
+                            "groupName": "Advanced",
+                            "isCollapsed": "true",
+                            "elements": [
                                 {
                                     "type": "attribute",
                                     "value": {

@@ -63,7 +63,16 @@
                                         "required": "true",
                                         "helpTip": "Meta data to be added."
                                     }
-                                },
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "type": "attributeGroup",
+                        "value": {
+                            "groupName": "Advanced",
+                            "isCollapsed": "true",
+                            "elements": [
                                 {
                                     "type": "attribute",
                                     "value": {

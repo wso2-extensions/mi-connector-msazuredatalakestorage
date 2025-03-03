@@ -46,7 +46,7 @@
                                     "type": "attribute",
                                     "value": {
                                         "name": "filePathToAppend",
-                                        "displayName": "File Path to Append",
+                                        "displayName": "Target Path",
                                         "inputType": "stringOrExpression",
                                         "defaultValue": "",
                                         "required": "true",
@@ -75,7 +75,7 @@
                                         "displayName": "Local File Path",
                                         "inputType": "stringOrExpression",
                                         "defaultValue": "",
-                                        "required": "false",
+                                        "required": "true",
                                         "helpTip": "File to be uploaded.",
                                         "enableCondition": [
                                             {
@@ -91,7 +91,7 @@
                                         "displayName": "Text Content",
                                         "inputType": "stringOrExpression",
                                         "defaultValue": "",
-                                        "required": "false",
+                                        "required": "true",
                                         "helpTip": "Text content to be uploaded (without using a file).",
                                         "enableCondition": [
                                             {
@@ -99,14 +99,23 @@
                                             }
                                         ]
                                     }
-                                },
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "type": "attributeGroup",
+                        "value": {
+                            "groupName": "Advanced",
+                            "isCollapsed": "true",
+                            "elements": [
                                 {
                                     "type": "attribute",
                                     "value": {
                                         "name": "flush",
                                         "displayName": "Flush",
                                         "inputType": "checkbox",
-                                        "defaultValue": "false",
+                                        "defaultValue": "true",
                                         "required": "false",
                                         "helpTip": "Flush the data to the file after appending."
                                     }

@@ -46,7 +46,7 @@
                                     "type": "attribute",
                                     "value": {
                                         "name": "directoryName",
-                                        "displayName": "Path",
+                                        "displayName": "Target Path",
                                         "inputType": "stringOrExpression",
                                         "defaultValue": "",
                                         "required": "true",
@@ -74,7 +74,16 @@
                                         "required": "true",
                                         "helpTip": "New path of the directory."
                                     }
-                                },
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "type": "attributeGroup",
+                        "value": {
+                            "groupName": "Advanced",
+                            "isCollapsed": "true",
+                            "elements": [
                                 {
                                     "type": "attribute",
                                     "value": {

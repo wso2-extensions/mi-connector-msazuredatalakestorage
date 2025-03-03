@@ -46,13 +46,22 @@
                                     "type": "attribute",
                                     "value": {
                                         "name": "filePath",
-                                        "displayName": "File Path",
+                                        "displayName": "Target File",
                                         "inputType": "stringOrExpression",
                                         "defaultValue": "",
                                         "required": "true",
                                         "helpTip": "Path of the file to be read."
                                     }
-                                },
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "type": "attributeGroup",
+                        "value": {
+                            "groupName": "Advanced",
+                            "isCollapsed": "true",
+                            "elements": [
                                 {
                                     "type": "attribute",
                                     "value": {

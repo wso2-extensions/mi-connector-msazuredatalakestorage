@@ -41,12 +41,22 @@
                                         "required": "true",
                                         "helpTip": "Name of the file system."
                                     }
-                                },
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "type": "attributeGroup",
+                        "value": {
+                            "groupName": "Advanced",
+                            "isCollapsed": "true",
+                            "elements": [
+
                                 {
                                     "type": "attribute",
                                     "value": {
                                         "name": "path",
-                                        "displayName": "Path",
+                                        "displayName": "Specific Path",
                                         "inputType": "stringOrExpression",
                                         "defaultValue": "",
                                         "required": "false",

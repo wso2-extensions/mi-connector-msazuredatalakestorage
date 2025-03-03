@@ -29,7 +29,8 @@
                     {
                         "type": "attributeGroup",
                         "value": {
-                            "groupName": "Basic",
+                            "groupName": "Advanced",
+                            "isCollapsed": "true",
                             "elements": [
                                 {
                                     "type": "attribute",

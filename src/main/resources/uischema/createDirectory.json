@@ -46,13 +46,22 @@
                                     "type": "attribute",
                                     "value": {
                                         "name": "directoryName",
-                                        "displayName": "Directory Name",
+                                        "displayName": "Target Path",
                                         "inputType": "stringOrExpression",
                                         "defaultValue": "",
                                         "required": "true",
                                         "helpTip": "Path of the directory to be created."
                                     }
-                                },
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "type": "attributeGroup",
+                        "value": {
+                            "groupName": "Advanced",
+                            "isCollapsed": "true",
+                            "elements": [
                                 {
                                     "type": "attribute",
                                     "value": {

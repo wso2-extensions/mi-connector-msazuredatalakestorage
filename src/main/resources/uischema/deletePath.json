@@ -46,13 +46,22 @@
                                     "type": "attribute",
                                     "value": {
                                         "name": "directoryName",
-                                        "displayName": "Path",
+                                        "displayName": "Target Path",
                                         "inputType": "stringOrExpression",
                                         "defaultValue": "",
                                         "required": "true",
                                         "helpTip": "Path to be deleted."
                                     }
-                                },
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "type": "attributeGroup",
+                        "value": {
+                            "groupName": "Advanced",
+                            "isCollapsed": "true",
+                            "elements": [
                                 {
                                     "type": "attribute",
                                     "value": {

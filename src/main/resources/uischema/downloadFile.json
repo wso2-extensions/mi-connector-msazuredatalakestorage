@@ -46,7 +46,7 @@
                                     "type": "attribute",
                                     "value": {
                                         "name": "filePathToDownload",
-                                        "displayName": "File Path to Download",
+                                        "displayName": "Target File",
                                         "inputType": "stringOrExpression",
                                         "defaultValue": "",
                                         "required": "true",
@@ -63,7 +63,16 @@
                                         "required": "true",
                                         "helpTip": "Location where the file is to be downloaded."
                                     }
-                                },
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "type": "attributeGroup",
+                        "value": {
+                            "groupName": "Advanced",
+                            "isCollapsed": "true",
+                            "elements": [
                                 {
                                     "type": "attribute",
                                     "value": {

@@ -39,13 +39,49 @@
                                 },
                                 {
                                     "type": "attribute",
+                                    "value" : {
+                                        "name": "keyType",
+                                        "displayName": "Key Type",
+                                        "inputType": "combo",
+                                        "defaultValue": "Access Key",
+                                        "comboValues": [
+                                            "Access Key",
+                                            "Shared Access Signature"
+                                        ],
+                                        "required": "true",
+                                        "helpTip": "The access key for the storage account."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
                                     "value": {
                                         "name": "accountKey",
                                         "displayName": "Access Key",
                                         "inputType": "stringOrExpression",
                                         "defaultValue": "",
                                         "required": "true",
-                                        "helpTip": "The access key for the storage account."
+                                        "helpTip": "The access key for the storage account.",
+                                        "enableCondition" : [
+                                            {
+                                                "keyType" : "Access Key"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "sasToken",
+                                        "displayName": "Shared Access Signature Token",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "true",
+                                        "helpTip": "The sas token for the storage account.",
+                                        "enableCondition" : [
+                                            {
+                                                "keyType" : "Shared Access Signature"
+                                            }
+                                        ]
                                     }
                                 },
                                 {

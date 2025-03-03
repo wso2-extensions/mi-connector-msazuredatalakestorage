@@ -35,7 +35,7 @@
                                     "type": "attribute",
                                     "value": {
                                         "name": "fileSystemName",
-                                        "displayName": "File System name",
+                                        "displayName": "File System Name",
                                         "inputType": "stringOrExpression",
                                         "defaultValue": "",
                                         "required": "true",
@@ -46,7 +46,7 @@
                                     "type": "attribute",
                                     "value": {
                                         "name": "filePath",
-                                        "displayName": "File Path",
+                                        "displayName": "Target Path",
                                         "inputType": "stringOrExpression",
                                         "defaultValue": "",
                                         "required": "true",
