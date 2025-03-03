@@ -1,12 +1,12 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
     "type": "object",
-    "title": "Rename Directory",
-    "description": "Rename a directory.",
+    "title": "Rename Path",
+    "description": "Rename a Path.",
     "properties": {
         "payload": {
             "type": "boolean",
-            "description": "Whether to rename the directory or not."
+            "description": "Whether to rename the path or not."
         }
     },
     "required": [

@@ -1,8 +1,8 @@
 {
     "connectorName": "azureDataLake",
-    "operationName": "renameFile",
-    "title": "Rename File",
-    "help": "<h1>Rename File</h1> <b>This operation can be used to rename a file.</b>",
+    "operationName": "deletePath",
+    "title": "Delete Path",
+    "help": "<h1>Delete Path</h1> <b>This operation can be used to delete a path.</b>",
     "elements": [
         {
             "type": "attributeGroup",
@@ -39,124 +39,58 @@
                                         "inputType": "stringOrExpression",
                                         "defaultValue": "",
                                         "required": "true",
-                                        "helpTip": "Name of the file system where the file is located."
+                                        "helpTip": "Name of the file system where the directory is located."
                                     }
                                 },
                                 {
                                     "type": "attribute",
                                     "value": {
-                                        "name": "filePathToRename",
-                                        "displayName": "File Path to Rename",
+                                        "name": "directoryName",
+                                        "displayName": "Path",
                                         "inputType": "stringOrExpression",
                                         "defaultValue": "",
                                         "required": "true",
-                                        "helpTip": "Path of the file to be renamed."
-                                    }
-                                },
-                                {
-                                    "type": "attribute",
-                                    "value": {
-                                        "name": "newFileSystemName",
-                                        "displayName": "New File System Name",
-                                        "inputType": "stringOrExpression",
-                                        "defaultValue": "",
-                                        "required": "true",
-                                        "helpTip": "Name of the file system where the file is located."
-                                    }
-                                },
-                                {
-                                    "type": "attribute",
-                                    "value": {
-                                        "name": "newFilePath",
-                                        "displayName": "New File Path",
-                                        "inputType": "stringOrExpression",
-                                        "defaultValue": "",
-                                        "required": "true",
-                                        "helpTip": "New path of the file."
+                                        "helpTip": "Path to be deleted."
                                     }
                                 },
                                 {
                                     "type": "attribute",
                                     "value": {
                                         "name": "timeout",
-                                        "displayName": "Timeout(seconds)",
+                                        "displayName": "Timeout",
                                         "inputType": "stringOrExpression",
                                         "defaultValue": "",
                                         "required": "false",
-                                        "helpTip": "Timeout in seconds. If the operation does not complete within the specified timeout"
+                                        "helpTip": "Time in seconds after which the operation will time out."
                                     }
                                 },
                                 {
                                     "type": "attribute",
                                     "value": {
-                                        "name": "sourceLeaseId",
-                                        "displayName": "Source Lease Id",
-                                        "inputType": "stringOrExpression",
-                                        "defaultValue": "",
+                                        "name": "recursive",
+                                        "displayName": "Recursive",
+                                        "inputType": "checkbox",
+                                        "defaultValue": "false",
                                         "required": "false",
-                                        "helpTip": "This request will succeed only if the provided source leaseId matches the actual lease on the resource"
+                                        "helpTip": "If checked, the contents of the directory will be deleted."
                                     }
                                 },
                                 {
                                     "type": "attribute",
                                     "value": {
-                                        "name": "sourceIfUnmodifiedSince",
-                                        "displayName": "Source If Unmodified Since",
+                                        "name": "leaseId",
+                                        "displayName": "Lease Id",
                                         "inputType": "stringOrExpression",
                                         "defaultValue": "",
                                         "required": "false",
-                                        "helpTip": "The operation will be performed only if the resource has not been modified since the specified time."
+                                        "helpTip": "This request will succeed only if the provided leaseId matches the actual lease on the resource"
                                     }
                                 },
                                 {
                                     "type": "attribute",
                                     "value": {
-                                        "name": "sourceIfMatch",
-                                        "displayName": "Source If Match(ETag)",
-                                        "inputType": "stringOrExpression",
-                                        "defaultValue": "",
-                                        "required": "false",
-                                        "helpTip": "The operation will be performed only if the resource's ETag matches the specified ETag value."
-                                    }
-                                },
-                                {
-                                    "type": "attribute",
-                                    "value": {
-                                        "name": "sourceIfModifiedSince",
-                                        "displayName": "Source If Modified Since",
-                                        "inputType": "stringOrExpression",
-                                        "defaultValue": "",
-                                        "required": "false",
-                                        "helpTip": "The operation will be performed only if the resource has been modified since the specified time."
-                                    }
-                                },
-                                {
-                                    "type": "attribute",
-                                    "value": {
-                                        "name": "sourceIfNoneMatch",
-                                        "displayName": "Source If None Match(ETag)",
-                                        "inputType": "stringOrExpression",
-                                        "defaultValue": "",
-                                        "required": "false",
-                                        "helpTip": "The operation will be performed only if the resource's ETag does not match the specified ETag value."
-                                    }
-                                },
-                                {
-                                    "type": "attribute",
-                                    "value": {
-                                        "name": "destinationLeaseId",
-                                        "displayName": "Destination Lease Id",
-                                        "inputType": "stringOrExpression",
-                                        "defaultValue": "",
-                                        "required": "false",
-                                        "helpTip": "This request will succeed only if the provided source leaseId matches the actual lease on the resource"
-                                    }
-                                },
-                                {
-                                    "type": "attribute",
-                                    "value": {
-                                        "name": "destinationIfUnmodifiedSince",
-                                        "displayName": "Destination If Unmodified Since",
+                                        "name": "ifUnmodifiedSince",
+                                        "displayName": "If Unmodified Since",
                                         "inputType": "stringOrExpression",
                                         "defaultValue": "",
                                         "required": "false",
@@ -166,8 +100,8 @@
                                 {
                                     "type": "attribute",
                                     "value": {
-                                        "name": "destinationIfMatch",
-                                        "displayName": "Destination If Match(ETag)",
+                                        "name": "ifMatch",
+                                        "displayName": "If Match(ETag)",
                                         "inputType": "stringOrExpression",
                                         "defaultValue": "",
                                         "required": "false",
@@ -177,8 +111,8 @@
                                 {
                                     "type": "attribute",
                                     "value": {
-                                        "name": "destinationIfModifiedSince",
-                                        "displayName": "Destination If Modified Since",
+                                        "name": "ifModifiedSince",
+                                        "displayName": "If Modified Since",
                                         "inputType": "stringOrExpression",
                                         "defaultValue": "",
                                         "required": "false",
@@ -188,8 +122,8 @@
                                 {
                                     "type": "attribute",
                                     "value": {
-                                        "name": "destinationIfNoneMatch",
-                                        "displayName": "Destination If None Match(ETag)",
+                                        "name": "ifNoneMatch",
+                                        "displayName": "If None Match(ETag)",
                                         "inputType": "stringOrExpression",
                                         "defaultValue": "",
                                         "required": "false",

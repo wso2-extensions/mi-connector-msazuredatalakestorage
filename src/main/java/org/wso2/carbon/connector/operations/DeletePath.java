@@ -36,27 +36,27 @@ import org.wso2.carbon.connector.util.Error;
 import java.time.Duration;
 
 /**
- * Implements the delete file operation.
+ * Implements the delete path operation.
  */
-public class DeleteFile extends AbstractAzureMediator {
+public class DeletePath extends AbstractAzureMediator {
 
     @Override
     public void execute(MessageContext messageContext, String responseVariable, Boolean overwriteBody) {
 
-        String connectionName =
-                getProperty(messageContext, AzureConstants.CONNECTION_NAME, String.class, false);
+        String connectionName = getProperty(messageContext, AzureConstants.CONNECTION_NAME, String.class, false);
         String fileSystemName =
                 getMediatorParameter(messageContext, AzureConstants.FILE_SYSTEM_NAME, String.class, false);
-        String filePathToDelete =
-                getMediatorParameter(messageContext, AzureConstants.FILE_PATH_TO_DELETE, String.class, false);
-        String ifUnmodifiedSince = getMediatorParameter(messageContext, AzureConstants.IF_UNMODIFIED_SINCE,
-                String.class, true);
+        String directoryName = getMediatorParameter(messageContext, AzureConstants.DIRECTORY_NAME, String.class, false);
         Integer timeout = getMediatorParameter(messageContext, AzureConstants.TIMEOUT, Integer.class, true);
-        String leaseId = getMediatorParameter(messageContext, AzureConstants.LEASE_ID, String.class, true);
-        String ifMatch = getMediatorParameter(messageContext, AzureConstants.IF_MATCH, String.class, true);
+        Boolean recursive = getMediatorParameter(messageContext, AzureConstants.RECURSIVE, Boolean.class, true);
         String ifNoneMatch = getMediatorParameter(messageContext, AzureConstants.IF_NONE_MATCH, String.class, true);
-        String ifModifiedSince = getMediatorParameter(messageContext, AzureConstants.IF_MODIFIED_SINCE, String.class,
-                true);
+        String ifModifiedSince =
+                getMediatorParameter(messageContext, AzureConstants.IF_MODIFIED_SINCE, String.class, true);
+        String leaseId = getMediatorParameter(messageContext, AzureConstants.LEASE_ID, String.class, true);
+        String ifUnmodifiedSince =
+                getMediatorParameter(messageContext, AzureConstants.IF_UNMODIFIED_SINCE, String.class, true);
+        String ifMatch = getMediatorParameter(messageContext, AzureConstants.IF_MATCH, String.class, true);
+
         ConnectionHandler handler = ConnectionHandler.getConnectionHandler();
 
         try {
@@ -66,18 +66,17 @@ public class DeleteFile extends AbstractAzureMediator {
             DataLakeServiceClient dataLakeServiceClient = azureStorageConnectionHandler.getDataLakeServiceClient();
             DataLakeFileSystemClient dataLakeFileSystemClient =
                     dataLakeServiceClient.getFileSystemClient(fileSystemName);
-            DataLakeFileClient dataLakeFileClient = dataLakeFileSystemClient.getFileClient(filePathToDelete);
-
             DataLakeRequestConditions requestConditions = getRequestConditions(leaseId, ifMatch,
                     ifModifiedSince, ifNoneMatch, ifUnmodifiedSince);
+            DataLakeFileClient dataLakeFileClient =
+                    dataLakeFileSystemClient.getFileClient(directoryName);
             Response<?> response = dataLakeFileClient.deleteIfExistsWithResponse(
-                    new DataLakePathDeleteOptions().setIsRecursive(true).setRequestConditions(requestConditions),
+                    new DataLakePathDeleteOptions().setIsRecursive(recursive).setRequestConditions(requestConditions),
                     timeout != null ? Duration.ofSeconds(timeout.longValue()) : null, null);
             if (response.getStatusCode() == 200) {
-                handleConnectorResponse(messageContext, responseVariable, overwriteBody, true, null,
-                        null);
+                handleConnectorResponse(messageContext, responseVariable, overwriteBody, true, null, null);
             } else {
-                handleConnectorException(Error.FILE_DOES_NOT_EXIST, messageContext);
+                handleConnectorException(Error.DIRECTORY_NOT_FOUND_ERROR, messageContext);
             }
 
         } catch (ConnectException e) {
@@ -90,4 +89,5 @@ public class DeleteFile extends AbstractAzureMediator {
             handleConnectorException(Error.GENERAL_ERROR, messageContext, e);
         }
     }
+
 }

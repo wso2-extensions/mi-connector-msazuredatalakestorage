@@ -15,15 +15,15 @@
    specific language governing permissions and limitations
    under the License.
 -->
-<template xmlns="http://ws.apache.org/ns/synapse" name="renameFile">
+<template xmlns="http://ws.apache.org/ns/synapse" name="renamePath">
     <parameter name="fileSystemName" description="The name of the file system."/>
-    <parameter name="filePathToRename" description="The path of the file to be renamed."/>
-    <parameter name="newFileSystemName" description="The name of the new destination file system"/>
-    <parameter name="newFilePath" description="The path of the new destination"/>
-    <parameter name="timeout" description="The timeout for the operation."/>
+    <parameter name="directoryName" description="The name of the directory."/>
+    <parameter name="newDirectoryName" description="The new name of the directory."/>
     <parameter name="responseVariable" description="Response variable name"/>
     <parameter name="overwriteBody"
                description="Replace the Message Body in Message Context with the response of the operation."/>
+    <parameter name="timeout" description="The timeout for the operation."/>
+    <parameter name="newFileSystemName" description="The name of the new file system."/>
     <parameter name="sourceLeaseId"
                description="This request will succeed only if the provided leaseId matches the actual lease on the resource"/>
     <parameter name="sourceIfUnmodifiedSince"
@@ -44,11 +44,12 @@
                description="The operation will be performed only if the resource has been modified since the specified time."/>
     <parameter name="destinationIfNoneMatch"
                description="The operation will be performed only if the resource's ETag does not match the specified ETag value."/>
+
     <sequence>
         <property name="fileSystemName" expression="$func:fileSystemName"/>
-        <property name="filePathToRename" expression="$func:filePathToRename"/>
+        <property name="directoryName" expression="$func:directoryName"/>
+        <property name="newDirectoryName" expression="$func:newDirectoryName"/>
         <property name="newFileSystemName" expression="$func:newFileSystemName"/>
-        <property name="newFilePath" expression="$func:newFilePath"/>
         <property name="timeout" expression="$func:timeout"/>
         <property name="sourceLeaseId" expression="$func:sourceLeaseId"/>
         <property name="sourceIfUnmodifiedSince" expression="$func:sourceIfUnmodifiedSince"/>
@@ -60,6 +61,7 @@
         <property name="destinationIfMatch" expression="$func:destinationIfMatch"/>
         <property name="destinationIfModifiedSince" expression="$func:destinationIfModifiedSince"/>
         <property name="destinationIfNoneMatch" expression="$func:destinationIfNoneMatch"/>
-        <class name="org.wso2.carbon.connector.operations.RenameFile"/>
+
+        <class name="org.wso2.carbon.connector.operations.RenamePath"/>
     </sequence>
 </template>

@@ -18,7 +18,7 @@
 
 package org.wso2.carbon.connector.operations;
 
-import com.azure.storage.file.datalake.DataLakeDirectoryClient;
+import com.azure.storage.file.datalake.DataLakeFileClient;
 import com.azure.storage.file.datalake.DataLakeFileSystemClient;
 import com.azure.storage.file.datalake.DataLakeServiceClient;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
@@ -34,9 +34,9 @@ import org.wso2.carbon.connector.util.Error;
 import java.time.Duration;
 
 /**
- * Implements the delete directory operation.
+ * Implements the rename path operation.
  */
-public class  RenameDirectory extends AbstractAzureMediator {
+public class RenamePath extends AbstractAzureMediator {
 
     @Override
     public void execute(MessageContext messageContext, String responseVariable, Boolean overwriteBody) {
@@ -76,7 +76,11 @@ public class  RenameDirectory extends AbstractAzureMediator {
             AzureStorageConnectionHandler azureStorageConnectionHandler =
                     (AzureStorageConnectionHandler) handler.getConnection(AzureConstants.CONNECTOR_NAME,
                             connectionName);
+            DataLakeRequestConditions destinationRequestConditions = getRequestConditions(
+                    destinationLeaseId, destinationIfMatch, destinationIfNoneMatch, destinationIfModifiedSince,
+                    destinationIfUnmodifiedSince);
             DataLakeServiceClient dataLakeServiceClient = azureStorageConnectionHandler.getDataLakeServiceClient();
+
             DataLakeFileSystemClient dataLakeFileSystemClient =
                     dataLakeServiceClient.getFileSystemClient(fileSystemName);
 
@@ -84,14 +88,10 @@ public class  RenameDirectory extends AbstractAzureMediator {
                     getRequestConditions(sourceLeaseId, sourceIfMatch, sourceIfNoneMatch, sourceIfModifiedSince,
                             sourceIfUnmodifiedSince);
 
-            DataLakeDirectoryClient dataLakeDirectoryClient =
-                    dataLakeFileSystemClient.getDirectoryClient(directoryName);
+            DataLakeFileClient dataLakeFileClient =
+                    dataLakeFileSystemClient.getFileClient(directoryName);
 
-            DataLakeRequestConditions destinationRequestConditions = getRequestConditions(
-                    destinationLeaseId, destinationIfMatch, destinationIfNoneMatch, destinationIfModifiedSince,
-                    destinationIfUnmodifiedSince);
-
-            dataLakeDirectoryClient
+            dataLakeFileClient
                     .renameWithResponse(newFileSystemName, newDirectoryName, sourceRequestConditions,
                             destinationRequestConditions,
                             timeout != null ? Duration.ofSeconds(timeout.longValue()) : null, null);

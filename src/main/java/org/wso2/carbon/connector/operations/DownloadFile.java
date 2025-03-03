@@ -103,13 +103,22 @@ public class DownloadFile extends AbstractAzureMediator {
                 fileRange = new FileRange(offset.longValue(), count.longValue());
             }
 
-            dataLakeFileClient.readToFileWithResponse(
-                    new ReadToFileOptions(downloadFilePath).setRangeGetContentMd5(rangeGetContentMd5)
-                            .setRange(fileRange).setParallelTransferOptions(parallelTransferOptions)
-                            .setDownloadRetryOptions(
-                                    new DownloadRetryOptions().setMaxRetryRequests(maxRetryRequests))
-                            .setDataLakeRequestConditions(requestConditions),
-                    timeout != null ? Duration.ofSeconds(timeout.longValue()) : null, null);
+            if (maxRetryRequests == null || maxRetryRequests < 0) {
+                dataLakeFileClient.readToFileWithResponse(
+                        new ReadToFileOptions(downloadFilePath).setRangeGetContentMd5(rangeGetContentMd5)
+                                .setRange(fileRange).setParallelTransferOptions(parallelTransferOptions)
+                                .setDataLakeRequestConditions(requestConditions),
+                        timeout != null ? Duration.ofSeconds(timeout.longValue()) : null, null)
+                ;
+            } else {
+                dataLakeFileClient.readToFileWithResponse(
+                        new ReadToFileOptions(downloadFilePath).setRangeGetContentMd5(rangeGetContentMd5)
+                                .setRange(fileRange).setParallelTransferOptions(parallelTransferOptions)
+                                .setDownloadRetryOptions(
+                                        new DownloadRetryOptions().setMaxRetryRequests(maxRetryRequests))
+                                .setDataLakeRequestConditions(requestConditions),
+                        timeout != null ? Duration.ofSeconds(timeout.longValue()) : null, null);
+            }
             handleConnectorResponse(messageContext, responseVariable, overwriteBody, true, null, null);
 
         } catch (ConnectException e) {
