@@ -16,9 +16,7 @@
                             "displayName": "Connection",
                             "inputType": "connection",
                             "allowedConnectionTypes": [
-                                "SAS",
-                                "OAuth2",
-                                "key"
+                                "MSAzureDataLake"
                             ],
                             "defaultType": "connection.azureDataLake",
                             "defaultValue": "",
@@ -54,14 +52,35 @@
                                     }
                                 },
                                 {
-                                    "type": "attribute",
+                                    "type": "table",
                                     "value": {
                                         "name": "metadata",
-                                        "displayName": "Meta Data",
-                                        "inputType": "stringOrExpression",
-                                        "defaultValue": "",
-                                        "required": "true",
-                                        "helpTip": "Meta data to be added."
+                                        "displayName": "Metadata",
+                                        "description": "Key value pairs of metadata",
+                                        "tableKey": "propertyName",
+                                        "tableValue": "propertyValue",
+                                        "elements": [
+                                            {
+                                                "type": "attribute",
+                                                "value": {
+                                                    "name": "propertyName",
+                                                    "displayName": "Name",
+                                                    "inputType": "string",
+                                                    "required": false,
+                                                    "helpTip": ""
+                                                }
+                                            },
+                                            {
+                                                "type": "attribute",
+                                                "value": {
+                                                    "name": "propertyValue",
+                                                    "displayName": "Value",
+                                                    "inputType": "stringOrExpression",
+                                                    "required": false,
+                                                    "helpTip": ""
+                                                }
+                                            }
+                                        ]
                                     }
                                 }
                             ]

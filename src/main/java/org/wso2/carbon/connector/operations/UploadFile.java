@@ -88,11 +88,12 @@ public class UploadFile extends AbstractAzureMediator {
             AzureStorageConnectionHandler azureStorageConnectionHandler =
                     (AzureStorageConnectionHandler) handler.getConnection(AzureConstants.CONNECTOR_NAME,
                             connectionName);
+            this.log.info(azureStorageConnectionHandler);
             DataLakeServiceClient dataLakeServiceClient = azureStorageConnectionHandler.getDataLakeServiceClient();
             DataLakeFileSystemClient dataLakeFileSystemClient =
                     dataLakeServiceClient.getFileSystemClient(fileSystemName);
             DataLakeFileClient dataLakeFileClient = dataLakeFileSystemClient.getFileClient(filePathToUpload);
-
+            this.log.info(dataLakeFileClient);
             ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
                     .setBlockSizeLong(blockSizeL)
                     .setMaxConcurrency(maxConcurrency)

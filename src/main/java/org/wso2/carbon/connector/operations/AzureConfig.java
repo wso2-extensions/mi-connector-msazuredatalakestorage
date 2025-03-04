@@ -93,8 +93,6 @@ public class AzureConfig extends AbstractConnector implements ManagedLifecycle {
 
         String connectionName = (String) ConnectorUtils.
                 lookupTemplateParamater(msgContext, AzureConstants.CONNECTION_NAME);
-        String endpointProtocol = (String) ConnectorUtils.
-                lookupTemplateParamater(msgContext, AzureConstants.PROTOCOL);
         String accountName = (String) ConnectorUtils.
                 lookupTemplateParamater(msgContext, AzureConstants.ACCOUNT_NAME);
         String accountKey = (String) ConnectorUtils.
@@ -112,7 +110,6 @@ public class AzureConfig extends AbstractConnector implements ManagedLifecycle {
         connectionConfig.setConnectionName(connectionName);
         connectionConfig.setAccountKey(accountKey);
         connectionConfig.setAccountName(accountName);
-        connectionConfig.setEndpointProtocol(endpointProtocol);
         connectionConfig.setClientID(clientId);
         connectionConfig.setClientSecret(clientSecret);
         connectionConfig.setTenantID(tenantId);

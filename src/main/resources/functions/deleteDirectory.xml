@@ -15,7 +15,7 @@
    specific language governing permissions and limitations
    under the License.
 -->
-<template xmlns="http://ws.apache.org/ns/synapse" name="deletePath">
+<template xmlns="http://ws.apache.org/ns/synapse" name="deleteDirectory">
     <parameter name="fileSystemName" description="The name of the file system."/>
     <parameter name="directoryName" description="The name of the directory to be deleted."/>
     <parameter name="responseVariable" description="Response variable name"/>

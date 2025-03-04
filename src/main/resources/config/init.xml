@@ -20,8 +20,6 @@
     <parameter name="name" description="Unique name to identify the connection"/>
     <parameter name="accountName" description="The name of the azure storage account."/>
     <parameter name="accountKey" description="The access key for the storage account."/>
-    <parameter name="defaultEndpointsProtocol"
-               description="The protocol (http or https) of the azure storage account."/>
     <parameter name="clientId" description="The client ID of the application."/>
     <parameter name="clientSecret" description="The client secret of the application."/>
     <parameter name="tenantId" description="The tenant ID of the application."/>

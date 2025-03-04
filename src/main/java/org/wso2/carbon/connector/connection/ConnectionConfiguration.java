@@ -32,7 +32,6 @@ public class ConnectionConfiguration {
     private String clientID;
     private String clientSecret;
     private String tenantID;
-    private String endpointProtocol;
     private String sasToken;
 
     public String getConnectionName() {
@@ -97,16 +96,6 @@ public class ConnectionConfiguration {
     public void setTenantID(String tenantID) {
 
         this.tenantID = tenantID;
-    }
-
-    public String getEndpointProtocol() {
-
-        return endpointProtocol;
-    }
-
-    public void setEndpointProtocol(String endpointProtocol) {
-
-        this.endpointProtocol = endpointProtocol;
     }
 
     public String getSasToken() {

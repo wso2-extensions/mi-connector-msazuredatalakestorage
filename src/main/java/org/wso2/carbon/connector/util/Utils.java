@@ -21,9 +21,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.apache.commons.lang.StringUtils;
 
-import java.lang.reflect.Type;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Utility class to handle common operations.
@@ -32,26 +30,37 @@ public class Utils {
 
     protected static final Gson gson = new GsonBuilder().create();
 
-    public static <T> T fromJson(String json, Type type) {
-
-        return gson.fromJson(json, type);
-    }
-
     public static String toJson(Object object) {
 
         return gson.toJson(object);
     }
 
-    public static void addDataToMapFromJsonString(String jsonString, HashMap<String, String> metadataMap) {
-        if (StringUtils.isEmpty(jsonString)) {
+    /**
+     * Add data to a map from a JSON string.
+     *
+     * @param arrayString Array string
+     * @param metadataMap Map to add data
+     */
+    public static void addDataToMapFromJsonString(String arrayString, HashMap<String, String> metadataMap) {
+
+        if (StringUtils.isEmpty(arrayString)) {
             return;
         }
-        Map<String, String> map = Utils.fromJson(jsonString.replace("'", ""), Map.class);
-        for (Map.Entry<?, ?> entry : map.entrySet()) {
-            if (StringUtils.isNotEmpty(entry.getValue().toString())) {
-                metadataMap.put(entry.getKey().toString(), entry.getValue().toString());
+        arrayString = arrayString.substring(1, arrayString.length() - 2);
+
+        String[] entries = arrayString.split("],\\s*\\[");
+        for (String entry : entries) {
+            entry = entry.replace("[", "").replace("]", "");
+            String[] pair = entry.split(",");
+
+            if (pair.length == 2) {
+                String key = pair[0].trim().replace("\"", "");
+                String value = pair[1].trim().replace("\"", "");
+
+                metadataMap.put(key, value);
             }
         }
+
     }
 
 }

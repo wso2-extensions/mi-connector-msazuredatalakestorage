@@ -1,8 +1,8 @@
 {
     "connectorName": "azureDataLake",
-    "operationName": "deletePath",
-    "title": "Delete Path",
-    "help": "<h1>Delete Path</h1> <b>This operation can be used to delete a path.</b>",
+    "operationName": "deleteFile",
+    "title": "Delete File",
+    "help": "<h1>Delete File</h1> <b>This operation can be used to delete a file.</b>",
     "elements": [
         {
             "type": "attributeGroup",
@@ -16,9 +16,7 @@
                             "displayName": "Connection",
                             "inputType": "connection",
                             "allowedConnectionTypes": [
-                                "SAS",
-                                "OAuth2",
-                                "key"
+                                "MSAzureDataLake"
                             ],
                             "defaultType": "connection.azureDataLake",
                             "defaultValue": "",
@@ -46,11 +44,11 @@
                                     "type": "attribute",
                                     "value": {
                                         "name": "directoryName",
-                                        "displayName": "Target Path",
+                                        "displayName": "Target File Path",
                                         "inputType": "stringOrExpression",
                                         "defaultValue": "",
                                         "required": "true",
-                                        "helpTip": "Path to be deleted."
+                                        "helpTip": "File path to be deleted."
                                     }
                                 }
                             ]
@@ -71,17 +69,6 @@
                                         "defaultValue": "",
                                         "required": "false",
                                         "helpTip": "Time in seconds after which the operation will time out."
-                                    }
-                                },
-                                {
-                                    "type": "attribute",
-                                    "value": {
-                                        "name": "recursive",
-                                        "displayName": "Recursive",
-                                        "inputType": "checkbox",
-                                        "defaultValue": "false",
-                                        "required": "false",
-                                        "helpTip": "If checked, the contents of the directory will be deleted."
                                     }
                                 },
                                 {

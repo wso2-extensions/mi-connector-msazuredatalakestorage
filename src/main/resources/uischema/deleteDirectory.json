@@ -1,8 +1,8 @@
 {
     "connectorName": "azureDataLake",
-    "operationName": "flushFile",
-    "title": "Flush File",
-    "help": "<h1>Flush File</h1> <b>This operation can be used to flush a file.</b>",
+    "operationName": "deleteDirectory",
+    "title": "Delete Directory",
+    "help": "<h1>Delete Directory</h1> <b>This operation can be used to delete a directory.</b>",
     "elements": [
         {
             "type": "attributeGroup",
@@ -37,29 +37,18 @@
                                         "inputType": "stringOrExpression",
                                         "defaultValue": "",
                                         "required": "true",
-                                        "helpTip": "Name of the file system where the file is located."
+                                        "helpTip": "Name of the file system where the directory is located."
                                     }
                                 },
                                 {
                                     "type": "attribute",
                                     "value": {
-                                        "name": "filePathToFlush",
-                                        "displayName": "File Path to Flush",
+                                        "name": "directoryName",
+                                        "displayName": "Target Directory Path",
                                         "inputType": "stringOrExpression",
                                         "defaultValue": "",
                                         "required": "true",
-                                        "helpTip": "Path of the file to flush."
-                                    }
-                                },
-                                {
-                                    "type": "attribute",
-                                    "value": {
-                                        "name": "fileLength",
-                                        "displayName": "File Length",
-                                        "inputType": "stringOrExpression",
-                                        "defaultValue": "",
-                                        "required": "true",
-                                        "helpTip": "Length of the file to flush."
+                                        "helpTip": "Directory path to be deleted."
                                     }
                                 }
                             ]
@@ -74,56 +63,23 @@
                                 {
                                     "type": "attribute",
                                     "value": {
-                                        "name": "contentLanguage",
-                                        "displayName": "Content Language",
+                                        "name": "timeout",
+                                        "displayName": "Timeout",
                                         "inputType": "stringOrExpression",
-                                        "defaultValue": "en-US",
+                                        "defaultValue": "",
                                         "required": "false",
-                                        "helpTip": "The language of the content."
+                                        "helpTip": "Time in seconds after which the operation will time out."
                                     }
                                 },
                                 {
                                     "type": "attribute",
                                     "value": {
-                                        "name": "contentType",
-                                        "displayName": "Content Type",
-                                        "inputType": "stringOrExpression",
-                                        "defaultValue": "",
+                                        "name": "recursive",
+                                        "displayName": "Recursive",
+                                        "inputType": "checkbox",
+                                        "defaultValue": "true",
                                         "required": "false",
-                                        "helpTip": "The MIME content type of the content."
-                                    }
-                                },
-                                {
-                                    "type": "attribute",
-                                    "value": {
-                                        "name": "contentEncoding",
-                                        "displayName": "Content Encoding",
-                                        "inputType": "stringOrExpression",
-                                        "defaultValue": "",
-                                        "required": "false",
-                                        "helpTip": "Defines the encoding type (e.g., \"gzip\", \"UTF-8\")."
-                                    }
-                                },
-                                {
-                                    "type": "attribute",
-                                    "value": {
-                                        "name": "contentDisposition",
-                                        "displayName": "Content Disposition",
-                                        "inputType": "stringOrExpression",
-                                        "defaultValue": "",
-                                        "required": "false",
-                                        "helpTip": "The value of the Content-Disposition response header."
-                                    }
-                                },
-                                {
-                                    "type": "attribute",
-                                    "value": {
-                                        "name": "cacheControl",
-                                        "displayName": "Cache Control",
-                                        "inputType": "stringOrExpression",
-                                        "defaultValue": "",
-                                        "required": "false",
-                                        "helpTip": "The value of the Cache-Control response header."
+                                        "helpTip": "If checked, the contents of the directory will be deleted."
                                     }
                                 },
                                 {
@@ -179,68 +135,6 @@
                                         "defaultValue": "",
                                         "required": "false",
                                         "helpTip": "The operation will be performed only if the resource's ETag does not match the specified ETag value."
-                                    }
-                                },
-                                {
-                                    "type": "attribute",
-                                    "value": {
-                                        "name": "uncommittedDataRetained",
-                                        "displayName": "Uncommitted Data Retained",
-                                        "inputType": "checkbox",
-                                        "defaultValue": "false",
-                                        "required": "false",
-                                        "helpTip": "Indicates whether uncommitted data is retained."
-                                    }
-                                },
-                                {
-                                    "type": "attribute",
-                                    "value": {
-                                        "name": "leaseAction",
-                                        "displayName": "Lease Action",
-                                        "inputType": "combo",
-                                        "defaultValue": "None",
-                                        "required": "false",
-                                        "helpTip": "The lease action to perform on the file.",
-                                        "comboValues": [
-                                            "None",
-                                            "Acquire",
-                                            "Auto Renew",
-                                            "Acquire Release",
-                                            "Release"
-                                        ]
-                                    }
-                                },
-                                {
-                                    "type": "attribute",
-                                    "value": {
-                                        "name": "leaseDuration",
-                                        "displayName": "Lease Duration",
-                                        "inputType": "stringOrExpression",
-                                        "defaultValue": "",
-                                        "required": "false",
-                                        "helpTip": "The lease duration in seconds."
-                                    }
-                                },
-                                {
-                                    "type": "attribute",
-                                    "value": {
-                                        "name": "proposedLeaseId",
-                                        "displayName": "Proposed Lease Id",
-                                        "inputType": "stringOrExpression",
-                                        "defaultValue": "",
-                                        "required": "false",
-                                        "helpTip": "A proposed lease ID that can be set when acquiring or changing a lease."
-                                    }
-                                },
-                                {
-                                    "type": "attribute",
-                                    "value": {
-                                        "name": "timeout",
-                                        "displayName": "Timeout(seconds)",
-                                        "inputType": "stringOrExpression",
-                                        "defaultValue": "",
-                                        "required": "false",
-                                        "helpTip": "Time in seconds after which the operation will time out."
                                     }
                                 }
                             ]

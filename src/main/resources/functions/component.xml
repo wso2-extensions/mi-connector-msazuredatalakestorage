@@ -34,10 +34,6 @@
             <file>createDirectory.xml</file>
             <description>Creates a directory into the Azure Data Lake storage Gen2.</description>
         </component>
-        <component name="deletePath">
-            <file>deletePath.xml</file>
-            <description>Deletes the path from the file system.</description>
-        </component>
         <component name="renamePath">
             <file>renamePath.xml</file>
             <description>Renames the path of the file system</description>
@@ -73,6 +69,14 @@
         <component name="flushFile">
             <file>flushFile.xml</file>
             <description>Flushes files to the existing file</description>
+        </component>
+        <component name="deleteFile">
+            <file>deleteFile.xml</file>
+            <description>Deletes the file from the file system</description>
+        </component>
+        <component name="deleteDirectory">
+            <file>deleteDirectory.xml</file>
+            <description>Deletes the directory from the file system</description>
         </component>
     </subComponents>
 </component>

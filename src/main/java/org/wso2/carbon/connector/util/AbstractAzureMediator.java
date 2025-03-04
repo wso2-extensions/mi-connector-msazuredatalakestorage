@@ -96,6 +96,7 @@ public abstract class AbstractAzureMediator extends AbstractConnector {
         try {
             return parse(Objects.requireNonNull(parameter).toString(), type);
         } catch (IllegalArgumentException e) {
+            this.log.info(parameter + "mmmm" + parameter.getClass());
             handleException(String.format(
                     "Parameter %s is not of type %s", parameterName, type.getName()
                                          ), messageContext);

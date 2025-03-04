@@ -1,12 +1,12 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
     "type": "object",
-    "title": "Delete Path",
-    "description": "Delete a path.",
+    "title": "Delete Directory",
+    "description": "Delete a directory.",
     "properties": {
         "payload": {
             "type": "boolean",
-            "description": "Whether to delete the path or not."
+            "description": "Whether to delete the directory or not."
         }
     },
     "required": [

@@ -1,6 +1,6 @@
 {
     "connectorName": "azureDataLake",
-    "connectionName": "Key",
+    "connectionName": "MSAzureDataLake",
     "title": "Azure Data Lake Connector",
     "help": "The Azure Data Lake Connector allows you to access the Azure Data Lake Storage Service",
     "elements": [
@@ -40,13 +40,14 @@
                                 {
                                     "type": "attribute",
                                     "value" : {
-                                        "name": "keyType",
-                                        "displayName": "Key Type",
+                                        "name": "accessType",
+                                        "displayName": "Access Type",
                                         "inputType": "combo",
                                         "defaultValue": "Access Key",
                                         "comboValues": [
                                             "Access Key",
-                                            "Shared Access Signature"
+                                            "Shared Access Signature",
+                                            "OAuth2"
                                         ],
                                         "required": "true",
                                         "helpTip": "The access key for the storage account."
@@ -63,7 +64,7 @@
                                         "helpTip": "The access key for the storage account.",
                                         "enableCondition" : [
                                             {
-                                                "keyType" : "Access Key"
+                                                "accessType" : "Access Key"
                                             }
                                         ]
                                     }
@@ -79,7 +80,7 @@
                                         "helpTip": "The sas token for the storage account.",
                                         "enableCondition" : [
                                             {
-                                                "keyType" : "Shared Access Signature"
+                                                "accessType" : "Shared Access Signature"
                                             }
                                         ]
                                     }
@@ -87,12 +88,49 @@
                                 {
                                     "type": "attribute",
                                     "value": {
-                                        "name": "defaultEndpointsProtocol",
-                                        "displayName": "Default Endpoints Protocol",
+                                        "name": "clientId",
+                                        "displayName": "Client ID",
                                         "inputType": "stringOrExpression",
-                                        "defaultValue": "https",
+                                        "defaultValue": "",
                                         "required": "true",
-                                        "helpTip": "The protocol (http or https) of the azure storage account."
+                                        "helpTip": "The client ID of the application.",
+                                        "enableCondition" : [
+                                            {
+                                                "accessType" : "OAuth2"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "clientSecret",
+                                        "displayName": "Client Secret",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "true",
+                                        "helpTip": "The client secret of the application.",
+                                        "enableCondition" : [
+                                            {
+                                                "accessType" : "OAuth2"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "tenantId",
+                                        "displayName": "Tenant ID",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "true",
+                                        "helpTip": "The tenant ID of the application.",
+                                        "enableCondition" : [
+                                            {
+                                                "accessType" : "OAuth2"
+                                            }
+                                        ]
                                     }
                                 }
                             ]
