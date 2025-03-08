@@ -73,6 +73,7 @@ public class DeletePath extends AbstractAzureMediator {
             Response<?> response = dataLakeFileClient.deleteIfExistsWithResponse(
                     new DataLakePathDeleteOptions().setIsRecursive(recursive).setRequestConditions(requestConditions),
                     timeout != null ? Duration.ofSeconds(timeout.longValue()) : null, null);
+
             if (response.getStatusCode() == 200) {
                 handleConnectorResponse(messageContext, responseVariable, overwriteBody, true, null, null);
             } else {

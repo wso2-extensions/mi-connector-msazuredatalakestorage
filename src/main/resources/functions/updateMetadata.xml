@@ -15,7 +15,7 @@
    specific language governing permissions and limitations
    under the License.
 -->
-<template xmlns="http://ws.apache.org/ns/synapse" name="updateMetaData">
+<template xmlns="http://ws.apache.org/ns/synapse" name="updateMetadata">
     <parameter name="fileSystemName" description="The name of the file system."/>
     <parameter name="filePathToAddMetaData" description=""/>
     <parameter name="metadata" description="The metadata to be added."/>
@@ -44,6 +44,6 @@
         <property name="ifMatch" expression="$func:ifMatch"/>
         <property name="ifModifiedSince" expression="$func:ifModifiedSince"/>
         <property name="ifNoneMatch" expression="$func:ifNoneMatch"/>
-        <class name="org.wso2.carbon.connector.operations.UpdateMetaData"/>
+        <class name="org.wso2.carbon.connector.operations.UpdateMetadata"/>
     </sequence>
 </template>

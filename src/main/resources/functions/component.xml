@@ -42,8 +42,8 @@
             <file>uploadFile.xml</file>
             <description>Uploads the File to the directory path within the file system</description>
         </component>
-        <component name="updateMetaData">
-            <file>updateMetaData.xml</file>
+        <component name="updateMetadata">
+            <file>updateMetadata.xml</file>
             <description>Updates the metadata to the file</description>
         </component>
         <component name="getMetadata">

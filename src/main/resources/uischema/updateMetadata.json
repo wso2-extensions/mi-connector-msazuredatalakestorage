@@ -1,6 +1,6 @@
 {
     "connectorName": "azureDataLake",
-    "operationName": "updateMetaData",
+    "operationName": "updateMetadata",
     "title": "Update Meta Data",
     "help": "<h1>Update Meta Data</h1> <b>This operation can be used to update meta data to a file.</b>",
     "elements": [
@@ -119,6 +119,7 @@
                                     "value": {
                                         "name": "ifUnmodifiedSince",
                                         "displayName": "If Unmodified Since",
+                                        "placeholder": "yyyy-MM-ddTHH:mm:ssZ",
                                         "inputType": "stringOrExpression",
                                         "defaultValue": "",
                                         "required": "false",
@@ -143,6 +144,7 @@
                                         "displayName": "If Modified Since",
                                         "inputType": "stringOrExpression",
                                         "defaultValue": "",
+                                        "placeholder": "yyyy-MM-ddTHH:mm:ssZ",
                                         "required": "false",
                                         "helpTip": "The operation will be performed only if the resource has been modified since the specified time."
                                     }

@@ -110,6 +110,7 @@
                                         "name": "sourceIfUnmodifiedSince",
                                         "displayName": "Source If Unmodified Since",
                                         "inputType": "stringOrExpression",
+                                        "placeholder": "yyyy-MM-ddTHH:mm:ssZ",
                                         "defaultValue": "",
                                         "required": "false",
                                         "helpTip": "The operation will be performed only if the resource has not been modified since the specified time."
@@ -132,6 +133,7 @@
                                         "name": "sourceIfModifiedSince",
                                         "displayName": "Source If Modified Since",
                                         "inputType": "stringOrExpression",
+                                        "placeholder": "yyyy-MM-ddTHH:mm:ssZ",
                                         "defaultValue": "",
                                         "required": "false",
                                         "helpTip": "The operation will be performed only if the resource has been modified since the specified time."
@@ -165,6 +167,7 @@
                                         "name": "destinationIfUnmodifiedSince",
                                         "displayName": "Destination If Unmodified Since",
                                         "inputType": "stringOrExpression",
+                                        "placeholder": "yyyy-MM-ddTHH:mm:ssZ",
                                         "defaultValue": "",
                                         "required": "false",
                                         "helpTip": "The operation will be performed only if the resource has not been modified since the specified time."
@@ -187,6 +190,7 @@
                                         "name": "destinationIfModifiedSince",
                                         "displayName": "Destination If Modified Since",
                                         "inputType": "stringOrExpression",
+                                        "placeholder": "yyyy-MM-ddTHH:mm:ssZ",
                                         "defaultValue": "",
                                         "required": "false",
                                         "helpTip": "The operation will be performed only if the resource has been modified since the specified time."

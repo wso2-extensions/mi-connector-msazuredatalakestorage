@@ -77,7 +77,8 @@
                                         "name": "contentLanguage",
                                         "displayName": "Content Language",
                                         "inputType": "stringOrExpression",
-                                        "defaultValue": "en-US",
+                                        "placeholder": "en-US",
+                                        "defaultValue": "",
                                         "required": "false",
                                         "helpTip": "The language of the content."
                                     }
@@ -88,6 +89,7 @@
                                         "name": "contentType",
                                         "displayName": "Content Type",
                                         "inputType": "stringOrExpression",
+                                        "placeholder": "application/json",
                                         "defaultValue": "",
                                         "required": "false",
                                         "helpTip": "The MIME content type of the content."
@@ -99,6 +101,7 @@
                                         "name": "contentEncoding",
                                         "displayName": "Content Encoding",
                                         "inputType": "stringOrExpression",
+                                        "placeholder": "gzip",
                                         "defaultValue": "",
                                         "required": "false",
                                         "helpTip": "Defines the encoding type (e.g., \"gzip\", \"UTF-8\")."
@@ -110,6 +113,7 @@
                                         "name": "contentDisposition",
                                         "displayName": "Content Disposition",
                                         "inputType": "stringOrExpression",
+                                        "placeholder": "attachment",
                                         "defaultValue": "",
                                         "required": "false",
                                         "helpTip": "The value of the Content-Disposition response header."
@@ -121,6 +125,7 @@
                                         "name": "cacheControl",
                                         "displayName": "Cache Control",
                                         "inputType": "stringOrExpression",
+                                        "placeholder": "no-cache",
                                         "defaultValue": "",
                                         "required": "false",
                                         "helpTip": "The value of the Cache-Control response header."
@@ -143,6 +148,7 @@
                                         "name": "ifUnmodifiedSince",
                                         "displayName": "If Unmodified Since",
                                         "inputType": "stringOrExpression",
+                                        "placeholder": "yyyy-MM-ddTHH:mm:ssZ",
                                         "defaultValue": "",
                                         "required": "false",
                                         "helpTip": "The operation will be performed only if the resource has not been modified since the specified time."
@@ -165,6 +171,7 @@
                                         "name": "ifModifiedSince",
                                         "displayName": "If Modified Since",
                                         "inputType": "stringOrExpression",
+                                        "placeholder": "yyyy-MM-ddTHH:mm:ssZ",
                                         "defaultValue": "",
                                         "required": "false",
                                         "helpTip": "The operation will be performed only if the resource has been modified since the specified time."

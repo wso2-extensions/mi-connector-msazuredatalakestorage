@@ -88,6 +88,7 @@
                                         "name": "ifUnmodifiedSince",
                                         "displayName": "If Unmodified Since",
                                         "inputType": "stringOrExpression",
+                                        "placeholder": "yyyy-MM-ddTHH:mm:ssZ",
                                         "defaultValue": "",
                                         "required": "false",
                                         "helpTip": "The operation will be performed only if the resource has not been modified since the specified time."
@@ -109,6 +110,7 @@
                                     "value": {
                                         "name": "ifModifiedSince",
                                         "displayName": "If Modified Since",
+                                        "placeholder": "yyyy-MM-ddTHH:mm:ssZ",
                                         "inputType": "stringOrExpression",
                                         "defaultValue": "",
                                         "required": "false",
@@ -163,11 +165,11 @@
                                     "type": "attribute",
                                     "value": {
                                         "name": "offset",
-                                        "displayName": "Offset",
+                                        "displayName": "Offset(Bytes)",
                                         "inputType": "stringOrExpression",
                                         "defaultValue": "",
                                         "required": "false",
-                                        "helpTip": "Offset(byte) from where the file is to be read."
+                                        "helpTip": "Offset(bytes) from where the file is to be read."
                                     }
                                 },
                                 {

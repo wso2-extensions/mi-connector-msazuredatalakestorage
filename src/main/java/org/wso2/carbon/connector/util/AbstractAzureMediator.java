@@ -96,7 +96,6 @@ public abstract class AbstractAzureMediator extends AbstractConnector {
         try {
             return parse(Objects.requireNonNull(parameter).toString(), type);
         } catch (IllegalArgumentException e) {
-            this.log.info(parameter + "mmmm" + parameter.getClass());
             handleException(String.format(
                     "Parameter %s is not of type %s", parameterName, type.getName()
                                          ), messageContext);
@@ -188,7 +187,9 @@ public abstract class AbstractAzureMediator extends AbstractConnector {
                     AzureConstants.JSON_CONTENT_TYPE);
             axisMsgCtx.setProperty(org.apache.axis2.Constants.Configuration.CONTENT_TYPE,
                     AzureConstants.JSON_CONTENT_TYPE);
-        } else {
+
+        }
+        else {
             response.setPayload(output);
         }
         response.setHeaders(headers);

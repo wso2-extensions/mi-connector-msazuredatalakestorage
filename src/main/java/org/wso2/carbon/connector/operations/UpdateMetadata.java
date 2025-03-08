@@ -39,7 +39,7 @@ import java.util.HashMap;
 /**
  * Implements the update meta data operation.
  */
-public class UpdateMetaData extends AbstractAzureMediator {
+public class UpdateMetadata extends AbstractAzureMediator {
 
     @Override
     public void execute(MessageContext messageContext, String responseVariable, Boolean overwriteBody) {
