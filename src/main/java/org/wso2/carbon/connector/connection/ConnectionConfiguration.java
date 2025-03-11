@@ -99,10 +99,12 @@ public class ConnectionConfiguration {
     }
 
     public String getSasToken() {
+
         return sasToken;
     }
 
     public void setSasToken(String sasToken) {
+
         this.sasToken = sasToken;
     }
 

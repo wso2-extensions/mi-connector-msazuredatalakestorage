@@ -201,6 +201,12 @@ public abstract class AbstractAzureMediator extends AbstractConnector {
         throw new SynapseException(code.getErrorMessage());
     }
 
+    /**
+     * Get LeaseAction object.
+     *
+     * @param leaseAction Lease action.
+     * @return LeaseAction object.
+     */
     public LeaseAction getLeaseAction(String leaseAction) {
 
         LeaseAction leaseActionConstant = null;

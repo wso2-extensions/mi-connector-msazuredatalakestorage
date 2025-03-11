@@ -63,7 +63,6 @@ public class CreateFileSystem extends AbstractAzureMediator {
                 break;
         }
 
-
         ConnectionHandler handler = ConnectionHandler.getConnectionHandler();
         try {
             AzureStorageConnectionHandler azureStorageConnectionHandler =

@@ -39,7 +39,7 @@
                                 },
                                 {
                                     "type": "attribute",
-                                    "value" : {
+                                    "value": {
                                         "name": "accessType",
                                         "displayName": "Access Type",
                                         "inputType": "combo",
@@ -62,9 +62,9 @@
                                         "defaultValue": "",
                                         "required": "true",
                                         "helpTip": "The access key for the storage account.",
-                                        "enableCondition" : [
+                                        "enableCondition": [
                                             {
-                                                "accessType" : "Access Key"
+                                                "accessType": "Access Key"
                                             }
                                         ]
                                     }
@@ -78,9 +78,9 @@
                                         "defaultValue": "",
                                         "required": "true",
                                         "helpTip": "The sas token for the storage account.",
-                                        "enableCondition" : [
+                                        "enableCondition": [
                                             {
-                                                "accessType" : "Shared Access Signature"
+                                                "accessType": "Shared Access Signature"
                                             }
                                         ]
                                     }
@@ -94,9 +94,9 @@
                                         "defaultValue": "",
                                         "required": "true",
                                         "helpTip": "The client ID of the application.",
-                                        "enableCondition" : [
+                                        "enableCondition": [
                                             {
-                                                "accessType" : "OAuth2"
+                                                "accessType": "OAuth2"
                                             }
                                         ]
                                     }
@@ -110,9 +110,9 @@
                                         "defaultValue": "",
                                         "required": "true",
                                         "helpTip": "The client secret of the application.",
-                                        "enableCondition" : [
+                                        "enableCondition": [
                                             {
-                                                "accessType" : "OAuth2"
+                                                "accessType": "OAuth2"
                                             }
                                         ]
                                     }
@@ -126,9 +126,9 @@
                                         "defaultValue": "",
                                         "required": "true",
                                         "helpTip": "The tenant ID of the application.",
-                                        "enableCondition" : [
+                                        "enableCondition": [
                                             {
-                                                "accessType" : "OAuth2"
+                                                "accessType": "OAuth2"
                                             }
                                         ]
                                     }

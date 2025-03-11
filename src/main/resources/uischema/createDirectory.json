@@ -65,9 +65,9 @@
                                     "value": {
                                         "name": "metadata",
                                         "displayName": "Metadata",
-                                        "description" : "Key value pairs of metadata",
-                                        "tableKey" : "propertyName",
-                                        "tableValue" : "propertyValue",
+                                        "description": "Key value pairs of metadata",
+                                        "tableKey": "propertyName",
+                                        "tableValue": "propertyValue",
                                         "elements": [
                                             {
                                                 "type": "attribute",
@@ -90,7 +90,6 @@
                                                 }
                                             }
                                         ]
-
                                     }
                                 },
                                 {
