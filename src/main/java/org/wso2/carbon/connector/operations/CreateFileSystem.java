@@ -23,6 +23,8 @@ import com.azure.storage.file.datalake.DataLakeServiceClient;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import org.apache.synapse.MessageContext;
+import org.apache.synapse.util.InlineExpressionUtil;
+import org.json.JSONObject;
 import org.wso2.carbon.connector.connection.AzureStorageConnectionHandler;
 import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.connector.core.connection.ConnectionHandler;
@@ -41,6 +43,7 @@ public class CreateFileSystem extends AbstractAzureMediator {
 
     @Override
     public void execute(MessageContext messageContext, String responseVariable, Boolean overwriteBody) {
+
         String connectionName =
                 getProperty(messageContext, AzureConstants.CONNECTION_NAME, String.class, false);
         String fileSystemName =
@@ -60,10 +63,7 @@ public class CreateFileSystem extends AbstractAzureMediator {
                 break;
         }
 
-        HashMap<String, String> metadataMap = new HashMap<>();
-        if (metadata != null){
-            Utils.addDataToMapFromJsonString(metadata, metadataMap);
-        }
+
         ConnectionHandler handler = ConnectionHandler.getConnectionHandler();
         try {
             AzureStorageConnectionHandler azureStorageConnectionHandler =
@@ -72,12 +72,26 @@ public class CreateFileSystem extends AbstractAzureMediator {
             DataLakeServiceClient dataLakeServiceClient = azureStorageConnectionHandler.getDataLakeServiceClient();
             DataLakeFileSystemClient dataLakeFileSystemClient =
                     dataLakeServiceClient.getFileSystemClient(fileSystemName != null ? fileSystemName : "");
+            metadata = InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, metadata);
+
+            HashMap<String, String> metadataMap = new HashMap<>();
+            if (metadata != null) {
+                Utils.addDataToMapFromJsonString(metadata, metadataMap);
+            }
             Response<?> response = dataLakeFileSystemClient.createIfNotExistsWithResponse(
-                    metadata != null ? metadataMap : null, publicAccessType, timeout != null ? Duration.ofSeconds(timeout.longValue()) : null, null);
+                    metadata != null ? metadataMap : null, publicAccessType,
+                    timeout != null ? Duration.ofSeconds(timeout.longValue()) : null, null);
+
             if (response.getStatusCode() == 201) {
-                handleConnectorResponse(messageContext, responseVariable, overwriteBody, true, null,
+                JSONObject responseObject = new JSONObject();
+                responseObject.put("success", true);
+                responseObject.put("message", "Successfully created the filesystem");
+                responseObject.put("fileSystemName", fileSystemName);
+
+                handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null,
                         null);
             } else {
+
                 handleConnectorException(Error.FILE_ALREADY_EXISTS_ERROR, messageContext);
             }
 

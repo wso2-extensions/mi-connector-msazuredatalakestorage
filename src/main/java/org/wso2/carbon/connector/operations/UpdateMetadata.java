@@ -25,6 +25,8 @@ import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.google.gson.JsonSyntaxException;
 import org.apache.synapse.MessageContext;
+import org.apache.synapse.util.InlineExpressionUtil;
+import org.json.JSONObject;
 import org.wso2.carbon.connector.connection.AzureStorageConnectionHandler;
 import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.connector.core.connection.ConnectionHandler;
@@ -71,6 +73,8 @@ public class UpdateMetadata extends AbstractAzureMediator {
 
             DataLakeRequestConditions requestConditions = getRequestConditions(leaseId, ifMatch, ifModifiedSince,
                     ifNoneMatch, ifUnmodifiedSince);
+            metadata = InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, metadata);
+
             HashMap<String, String> metadataMap = new HashMap<>();
 
             String metadataString = metadata != null ? metadata : "";
@@ -84,9 +88,15 @@ public class UpdateMetadata extends AbstractAzureMediator {
                     null);
 
             if (response.getStatusCode() == 200) {
-                handleConnectorResponse(messageContext, responseVariable, overwriteBody, true, null, null);
+                JSONObject responseObject = new JSONObject();
+                responseObject.put("success", true);
+                responseObject.put("message", "Successfully updated the metadata");
+                handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null, null);
             } else {
-                handleConnectorResponse(messageContext, responseVariable, overwriteBody, false, null, null);
+                JSONObject responseObject = new JSONObject();
+                responseObject.put("success", false);
+                responseObject.put("message", "Failed to update the metadata");
+                handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null, null);
             }
 
         } catch (DataLakeStorageException e) {

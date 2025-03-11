@@ -18,13 +18,17 @@
 
 package org.wso2.carbon.connector.operations;
 
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 import com.azure.storage.file.datalake.DataLakeFileSystemClient;
 import com.azure.storage.file.datalake.DataLakeServiceClient;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileRange;
+import com.azure.storage.file.datalake.models.FileReadResponse;
 import org.apache.synapse.MessageContext;
+import org.json.JSONObject;
 import org.wso2.carbon.connector.connection.AzureStorageConnectionHandler;
 import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.connector.core.connection.ConnectionHandler;
@@ -84,17 +88,24 @@ public class ReadFile extends AbstractAzureMediator {
 
             DataLakeRequestConditions requestConditions = getRequestConditions(leaseId, ifMatch,
                     ifModifiedSince, ifNoneMatch, ifUnmodifiedSince);
-            dataLakeFileSystemClient.getFileClient(filePath).readWithResponse(
+            FileReadResponse response = dataLakeFileSystemClient.getFileClient(filePath).readWithResponse(
                     outputStream, fileRange,
                     maxRetryRequests != null ? new DownloadRetryOptions().setMaxRetryRequests(maxRetryRequests) : null,
                     requestConditions,
                     false,
                     timeout != null ? Duration.ofSeconds(timeout) : null,
                     null
-                                                                             );
+                                                                                                         );
             String content = outputStream.toString();
 
-            handleConnectorResponse(messageContext, responseVariable, overwriteBody, content, null, null);
+            HttpHeaders headers = response.getHeaders();
+
+            JSONObject contentJson = new JSONObject();
+            contentJson.put("status", true);
+            contentJson.put("content", content);
+            contentJson.put("length", headers.getValue(HttpHeaderName.CONTENT_LENGTH));
+
+            handleConnectorResponse(messageContext, responseVariable, overwriteBody, contentJson, null, null);
         } catch (ConnectException e) {
             handleConnectorException(Error.CONNECTION_ERROR, messageContext, e);
         } catch (DataLakeStorageException e) {
@@ -106,4 +117,5 @@ public class ReadFile extends AbstractAzureMediator {
         }
 
     }
+
 }

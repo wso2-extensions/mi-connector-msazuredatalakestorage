@@ -24,6 +24,7 @@ import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import org.apache.synapse.MessageContext;
+import org.json.JSONObject;
 import org.wso2.carbon.connector.connection.AzureStorageConnectionHandler;
 import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.connector.core.connection.ConnectionHandler;
@@ -70,7 +71,10 @@ public class DeleteFileSystem extends AbstractAzureMediator {
                     timeout != null ? Duration.ofSeconds(timeout.longValue()) : null, null);
 
             if (response.getStatusCode() == 202) {
-                handleConnectorResponse(messageContext, responseVariable, overwriteBody, true, null,
+                JSONObject responseObject = new JSONObject();
+                responseObject.put("success", true);
+                responseObject.put("message", "Successfully deleted the file system");
+                handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null,
                         null);
             } else {
                 handleConnectorException(Error.FILE_SYSTEM_DOES_NOT_EXIST, messageContext);

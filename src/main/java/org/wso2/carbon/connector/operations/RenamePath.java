@@ -24,6 +24,7 @@ import com.azure.storage.file.datalake.DataLakeServiceClient;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import org.apache.synapse.MessageContext;
+import org.json.JSONObject;
 import org.wso2.carbon.connector.connection.AzureStorageConnectionHandler;
 import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.connector.core.connection.ConnectionHandler;
@@ -95,7 +96,12 @@ public class RenamePath extends AbstractAzureMediator {
                     .renameWithResponse(newFileSystemName, newDirectoryName, sourceRequestConditions,
                             destinationRequestConditions,
                             timeout != null ? Duration.ofSeconds(timeout.longValue()) : null, null);
-            handleConnectorResponse(messageContext, responseVariable, overwriteBody, true, null,
+
+            JSONObject responseObject = new JSONObject();
+            responseObject.put("success", true);
+            responseObject.put("message", "Successfully renamed the path");
+
+            handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null,
                     null);
 
         } catch (DataLakeStorageException e) {

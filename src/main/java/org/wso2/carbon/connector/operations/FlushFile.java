@@ -9,6 +9,7 @@ import com.azure.storage.file.datalake.models.LeaseAction;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.options.DataLakeFileFlushOptions;
 import org.apache.synapse.MessageContext;
+import org.json.JSONObject;
 import org.wso2.carbon.connector.connection.AzureStorageConnectionHandler;
 import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.connector.core.connection.ConnectionHandler;
@@ -89,9 +90,15 @@ public class FlushFile extends AbstractAzureMediator {
                     null);
 
             if (response != null && response.getStatusCode() == 200) {
-                handleConnectorResponse(messageContext, responseVariable, overwriteBody, true, null, null);
+                JSONObject responseObject = new JSONObject();
+                responseObject.put("success", true);
+                responseObject.put("message", "Successfully flushed");
+                handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null, null);
             } else {
-                handleConnectorResponse(messageContext, responseVariable, overwriteBody, false, null, null);
+                JSONObject responseObject = new JSONObject();
+                responseObject.put("success", false);
+                responseObject.put("message", "Failed to flush");
+                handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null, null);
             }
 
         } catch (DataLakeStorageException e) {

@@ -19,7 +19,6 @@ package org.wso2.carbon.connector.util;
 
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.LeaseAction;
-import com.google.gson.JsonParser;
 import org.apache.axis2.AxisFault;
 import org.apache.synapse.MessageContext;
 import org.apache.synapse.SynapseException;
@@ -30,7 +29,6 @@ import org.apache.synapse.data.connector.DefaultConnectorResponse;
 import org.wso2.carbon.connector.core.AbstractConnector;
 
 import java.time.OffsetDateTime;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -162,23 +160,13 @@ public abstract class AbstractAzureMediator extends AbstractConnector {
             attributes = Map.of();
         }
 
-        Object output;
-        String jsonString = Utils.toJson(payload);
-        if (payload instanceof List) {
-            output = JsonParser.parseString(jsonString).getAsJsonArray();
-        } else if (payload instanceof String || payload instanceof Boolean ||
-                payload instanceof Long || payload instanceof Double) {
-            output = payload;
-        } else {
-            // Convert Java object to JSON string
-            output = JsonParser.parseString(jsonString).getAsJsonObject();
-        }
-
         if (overwriteBody != null && overwriteBody) {
+
             org.apache.axis2.context.MessageContext axisMsgCtx =
                     ((Axis2MessageContext) messageContext).getAxis2MessageContext();
             try {
-                JsonUtil.getNewJsonPayload(axisMsgCtx, jsonString, true, true);
+                JsonUtil.getNewJsonPayload(axisMsgCtx, payload.toString(), true, true);
+
             } catch (AxisFault e) {
                 handleException("Error setting response payload", e, messageContext);
             }
@@ -188,9 +176,8 @@ public abstract class AbstractAzureMediator extends AbstractConnector {
             axisMsgCtx.setProperty(org.apache.axis2.Constants.Configuration.CONTENT_TYPE,
                     AzureConstants.JSON_CONTENT_TYPE);
 
-        }
-        else {
-            response.setPayload(output);
+        } else {
+            response.setPayload(payload);
         }
         response.setHeaders(headers);
         response.setAttributes(attributes);
@@ -209,7 +196,6 @@ public abstract class AbstractAzureMediator extends AbstractConnector {
     public void handleConnectorException(Error code, MessageContext mc) {
 
         this.log.error(code.getErrorMessage());
-
         mc.setProperty("ERROR_CODE", code.getErrorCode());
         mc.setProperty("ERROR_MESSAGE", code.getErrorMessage());
         throw new SynapseException(code.getErrorMessage());

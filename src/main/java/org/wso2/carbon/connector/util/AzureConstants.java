@@ -30,7 +30,6 @@ public class AzureConstants {
     public static final String CLIENT_SECRET = "clientSecret";
     public static final String TENANT_ID = "tenantId";
     public static final String ACCOUNT_KEY = "accountKey";
-    public static final String PROTOCOL = "defaultEndpointsProtocol";
     public static final String FILE_SYSTEM_NAME = "fileSystemName";
     public static final String DIRECTORY_NAME = "directoryName";
     public static final String NEW_DIRECTORY_NAME = "newDirectoryName";
@@ -44,9 +43,6 @@ public class AzureConstants {
     public static final String LOCAL_FILE_PATH = "localFilePath";
     public static final String FILE_PATH_TO_UPLOAD = "filePathToUpload";
     public static final String TEXT_CONTENT = "textContent";
-    public static final String FILE_PATH_TO_DELETE = "filePathToDelete";
-    public static final String FILE_PATH_TO_RENAME = "filePathToRename";
-    public static final String NEW_FILE_PATH = "newFilePath";
     public static final String FILE_PATH_TO_ADD_META_DATA = "filePathToAddMetaData";
     public static final String PATH = "path";
     public static final String METADATA = "metadata";
@@ -99,7 +95,7 @@ public class AzureConstants {
     public static final String LEASE_ACTION = "leaseAction";
     public static final String LEASE_DURATION = "leaseDuration";
     public static final String INPUT_TYPE = "inputType";
-    public static final String L_TEXT_CONTENT= "Text Content";
+    public static final String L_TEXT_CONTENT = "Text Content";
     public static final String L_LOCAL_FILE_PATH = "Local File";
     public static final String PROPOSED_LEASE_ID = "proposedLeaseId";
     public static final String FILE_PATH_TO_FLUSH = "filePathToFlush";
@@ -108,6 +104,7 @@ public class AzureConstants {
     public static final String SAS_TOKEN = "sasToken";
     public static final String ACCESS_TYPE = "accessType";
     public static final String HTTPS = "https";
+
     private AzureConstants() {
 
     }

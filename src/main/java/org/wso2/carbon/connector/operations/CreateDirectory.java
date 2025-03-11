@@ -26,6 +26,7 @@ import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import org.apache.synapse.MessageContext;
+import org.json.JSONObject;
 import org.wso2.carbon.connector.connection.AzureStorageConnectionHandler;
 import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.connector.core.connection.ConnectionHandler;
@@ -33,6 +34,7 @@ import org.wso2.carbon.connector.util.AbstractAzureMediator;
 import org.wso2.carbon.connector.util.AzureConstants;
 import org.wso2.carbon.connector.util.Error;
 import org.wso2.carbon.connector.util.Utils;
+import org.apache.synapse.util.InlineExpressionUtil;
 
 import java.time.Duration;
 import java.util.HashMap;
@@ -53,6 +55,7 @@ public class CreateDirectory extends AbstractAzureMediator {
                 getMediatorParameter(messageContext, AzureConstants.DIRECTORY_NAME, String.class, false);
         String metadata =
                 getMediatorParameter(messageContext, AzureConstants.METADATA, String.class, true);
+
         Integer timeout =
                 getMediatorParameter(messageContext, AzureConstants.TIMEOUT, Integer.class, true);
         String contentLanguage =
@@ -88,6 +91,8 @@ public class CreateDirectory extends AbstractAzureMediator {
             DataLakeDirectoryClient dataLakeDirectoryClient =
                     dataLakeFileSystemClient.getDirectoryClient(directoryName);
 
+            metadata = InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, metadata);
+
             PathHttpHeaders headers = new PathHttpHeaders()
                     .setCacheControl(cacheControl)
                     .setContentType(contentType)
@@ -109,7 +114,11 @@ public class CreateDirectory extends AbstractAzureMediator {
                     timeout != null ? Duration.ofSeconds(timeout.longValue()) : null, null);
 
             if (response.getStatusCode() == 201) {
-                handleConnectorResponse(messageContext, responseVariable, overwriteBody, true, null, null);
+                JSONObject responseObject = new JSONObject();
+                responseObject.put("success", true);
+                responseObject.put("message", "Successfully created the directory");
+                responseObject.put("directoryName", directoryName);
+                handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null, null);
             } else {
                 handleConnectorResponse(messageContext, responseVariable, overwriteBody, false, null, null);
             }
@@ -118,9 +127,10 @@ public class CreateDirectory extends AbstractAzureMediator {
             handleConnectorException(Error.CONNECTION_ERROR, messageContext, e);
         } catch (DataLakeStorageException e) {
             handleConnectorException(Error.DATA_LAKE_STORAGE_GEN2_ERROR, messageContext, e);
+        } catch (Exception e) {
+            handleConnectorException(Error.GENERAL_ERROR, messageContext, e);
         }
-        handleConnectorResponse(messageContext, responseVariable, overwriteBody, true, null,
-                null);
+
     }
 
 }

@@ -23,6 +23,7 @@ import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.FileSystemListDetails;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
 import org.apache.synapse.MessageContext;
+import org.json.JSONObject;
 import org.wso2.carbon.connector.connection.AzureStorageConnectionHandler;
 import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.connector.core.connection.ConnectionHandler;
@@ -85,8 +86,11 @@ public class ListFileSystems extends AbstractAzureMediator {
 
                     });
 
-            handleConnectorResponse(messageContext, responseVariable, overwriteBody,
-                    retrieveMetadata ? fileSystemsWithMetadata : fileSystemNames, null, null);
+            JSONObject responseObject = new JSONObject();
+            responseObject.put("success", true);
+            responseObject.put("result", retrieveMetadata ? fileSystemsWithMetadata : fileSystemNames);
+
+            handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null, null);
 
         } catch (ConnectException e) {
             handleConnectorException(Error.CONNECTION_ERROR, messageContext, e);
@@ -94,6 +98,8 @@ public class ListFileSystems extends AbstractAzureMediator {
             handleConnectorException(Error.DATA_LAKE_STORAGE_GEN2_ERROR, messageContext, e);
         } catch (RuntimeException e) {
             handleConnectorException(Error.TIMEOUT_ERROR, messageContext, e);
+        } catch (Exception e) {
+            handleConnectorException(Error.GENERAL_ERROR, messageContext, e);
         }
 
     }

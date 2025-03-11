@@ -26,6 +26,8 @@ import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
 import org.apache.synapse.MessageContext;
+import org.apache.synapse.util.InlineExpressionUtil;
+import org.json.JSONObject;
 import org.wso2.carbon.connector.connection.AzureStorageConnectionHandler;
 import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.connector.core.connection.ConnectionHandler;
@@ -99,6 +101,8 @@ public class UploadFile extends AbstractAzureMediator {
                     .setMaxConcurrency(maxConcurrency)
                     .setMaxSingleUploadSizeLong(maxSingleUploadSizeL);
 
+            metadata = InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, metadata);
+
             HashMap<String, String> metadataMap = new HashMap<>();
 
             if (metadata != null && !metadata.isEmpty()) {
@@ -131,10 +135,14 @@ public class UploadFile extends AbstractAzureMediator {
                                 .setParallelTransferOptions(parallelTransferOptions)
                                 .setMetadata(metadataMap),
                         timeout != null ? Duration.ofSeconds(timeout.longValue()) : null,
-                        null );
+                        null);
             }
 
-            handleConnectorResponse(messageContext, responseVariable, overwriteBody, true, null, null);
+            JSONObject responseObject = new JSONObject();
+            responseObject.put("success", true);
+            responseObject.put("message", "Successfully uploaded the file");
+
+            handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null, null);
         } catch (DataLakeStorageException e) {
             handleConnectorException(Error.DATA_LAKE_STORAGE_GEN2_ERROR, messageContext, e);
         } catch (ConnectException e) {

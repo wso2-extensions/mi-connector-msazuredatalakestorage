@@ -9,6 +9,7 @@ import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.LeaseAction;
 import com.azure.storage.file.datalake.options.DataLakeFileAppendOptions;
 import org.apache.synapse.MessageContext;
+import org.json.JSONObject;
 import org.wso2.carbon.connector.connection.AzureStorageConnectionHandler;
 import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.connector.core.connection.ConnectionHandler;
@@ -107,7 +108,12 @@ public class AppendFile extends AbstractAzureMediator {
             attributes.put("appendSize", appendSize);
 
             if (response != null && response.getStatusCode() == 202) {
-                handleConnectorResponse(messageContext, responseVariable, overwriteBody, true, null, attributes);
+                JSONObject responseObject = new JSONObject();
+                responseObject.put("success", true);
+                responseObject.put("message", "Successfully  appended");
+                responseObject.put("appendSize", appendSize);
+                handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null,
+                        attributes);
             } else {
                 handleConnectorResponse(messageContext, responseVariable, overwriteBody, false, null, attributes);
             }

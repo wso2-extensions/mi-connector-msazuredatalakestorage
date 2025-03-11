@@ -28,6 +28,7 @@ import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.options.ReadToFileOptions;
 import org.apache.synapse.MessageContext;
+import org.json.JSONObject;
 import org.wso2.carbon.connector.connection.AzureStorageConnectionHandler;
 import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.connector.core.connection.ConnectionHandler;
@@ -119,7 +120,11 @@ public class DownloadFile extends AbstractAzureMediator {
                                 .setDataLakeRequestConditions(requestConditions),
                         timeout != null ? Duration.ofSeconds(timeout.longValue()) : null, null);
             }
-            handleConnectorResponse(messageContext, responseVariable, overwriteBody, true, null, null);
+
+            JSONObject responseObject = new JSONObject();
+            responseObject.put("success", true);
+            responseObject.put("message", "Successfully downloaded the file");
+            handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null, null);
 
         } catch (ConnectException e) {
             handleConnectorException(Error.CONNECTION_ERROR, messageContext, e);
