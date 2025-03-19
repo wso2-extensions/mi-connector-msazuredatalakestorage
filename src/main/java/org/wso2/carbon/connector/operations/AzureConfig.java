@@ -20,6 +20,7 @@ package org.wso2.carbon.connector.operations;
 
 import org.apache.synapse.ManagedLifecycle;
 import org.apache.synapse.MessageContext;
+import org.apache.synapse.SynapseConstants;
 import org.apache.synapse.SynapseException;
 import org.apache.synapse.core.SynapseEnvironment;
 import org.wso2.carbon.connector.connection.AzureStorageConnectionHandler;
@@ -32,7 +33,7 @@ import org.wso2.carbon.connector.util.AzureConstants;
 import org.wso2.carbon.connector.util.Error;
 
 /**
- * AzureConfig class to handle the Azure DataLake connector configuration
+ * The `AzureConfig` class handles the configuration for the Azure DataLake connector.
  */
 public class AzureConfig extends AbstractConnector implements ManagedLifecycle {
 
@@ -54,7 +55,7 @@ public class AzureConfig extends AbstractConnector implements ManagedLifecycle {
         String connectorName = AzureConstants.CONNECTOR_NAME;
         String connectionName;
         try {
-            ConnectionConfiguration configuration = getConnectionConfigFromContext(messageContext);
+            ConnectionConfiguration configuration = getConnectionConfigFromMessageContext(messageContext);
             connectionName = configuration.getConnectionName();
             ConnectionHandler handler = ConnectionHandler.getConnectionHandler();
             if (handler.checkIfConnectionExists(connectorName, connectionName)) {
@@ -70,13 +71,13 @@ public class AzureConfig extends AbstractConnector implements ManagedLifecycle {
             }
         } catch (ConnectException e) {
             this.log.error(Error.CONNECTION_ERROR.getErrorMessage(), e);
-            messageContext.setProperty("ERROR_CODE", Error.CONNECTION_ERROR.getErrorCode());
-            messageContext.setProperty("ERROR_MESSAGE", Error.CONNECTION_ERROR.getErrorMessage());
+            messageContext.setProperty(SynapseConstants.ERROR_CODE, Error.CONNECTION_ERROR.getErrorCode());
+            messageContext.setProperty(SynapseConstants.ERROR_MESSAGE, Error.CONNECTION_ERROR.getErrorMessage());
             throw new SynapseException(Error.CONNECTION_ERROR.getErrorMessage(), e);
         } catch (Exception e) {
             this.log.error(Error.GENERAL_ERROR.getErrorMessage(), e);
-            messageContext.setProperty("ERROR_CODE", Error.GENERAL_ERROR.getErrorCode());
-            messageContext.setProperty("ERROR_MESSAGE", Error.GENERAL_ERROR.getErrorMessage());
+            messageContext.setProperty(SynapseConstants.ERROR_CODE, Error.GENERAL_ERROR.getErrorCode());
+            messageContext.setProperty(SynapseConstants.ERROR_MESSAGE, Error.GENERAL_ERROR.getErrorMessage());
             throw new SynapseException(Error.GENERAL_ERROR.getErrorMessage(), e);
         }
     }
@@ -88,7 +89,7 @@ public class AzureConfig extends AbstractConnector implements ManagedLifecycle {
      * @return Connection configuration
      * @throws ConnectException If an error occurs while getting the connection configuration
      */
-    private ConnectionConfiguration getConnectionConfigFromContext(MessageContext msgContext)
+    private ConnectionConfiguration getConnectionConfigFromMessageContext(MessageContext msgContext)
             throws ConnectException {
 
         String connectionName = (String) ConnectorUtils.

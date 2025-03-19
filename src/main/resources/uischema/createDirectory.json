@@ -1,5 +1,5 @@
 {
-    "connectorName": "azureDataLake",
+    "connectorName": "msazuredatalakestorage",
     "operationName": "createDirectory",
     "title": "Create Directory",
     "help": "<h1>Create Directory</h1> <b>This operation can be used to create a new directory.</b>",
@@ -18,7 +18,7 @@
                             "allowedConnectionTypes": [
                                 "MSAzureDataLake"
                             ],
-                            "defaultType": "connection.azureDataLake",
+                            "defaultType": "connection.msazuredatalakestorage",
                             "defaultValue": "",
                             "required": "true",
                             "helpTip": "Connection to be used"

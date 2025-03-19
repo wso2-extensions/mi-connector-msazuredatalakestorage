@@ -36,7 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Implements the list paths of file system operation.
+ * Lists the paths in a specified file system.
  */
 public class ListPaths extends AbstractAzureMediator {
 

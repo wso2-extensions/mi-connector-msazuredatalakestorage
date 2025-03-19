@@ -21,6 +21,7 @@ import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.LeaseAction;
 import org.apache.axis2.AxisFault;
 import org.apache.synapse.MessageContext;
+import org.apache.synapse.SynapseConstants;
 import org.apache.synapse.SynapseException;
 import org.apache.synapse.commons.json.JsonUtil;
 import org.apache.synapse.core.axis2.Axis2MessageContext;
@@ -29,11 +30,12 @@ import org.apache.synapse.data.connector.DefaultConnectorResponse;
 import org.wso2.carbon.connector.core.AbstractConnector;
 
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.Map;
 import java.util.Objects;
 
 /**
- * Abstract Azure Mediator class to handle common operations.
+ * Abstract class for handling common Azure operations.
  */
 public abstract class AbstractAzureMediator extends AbstractConnector {
 
@@ -83,65 +85,60 @@ public abstract class AbstractAzureMediator extends AbstractConnector {
 
     protected <T> T getMediatorParameter(
             MessageContext messageContext, String parameterName, Class<T> type, boolean isOptional) {
-
         Object parameter = getParameter(messageContext, parameterName);
-        if (!isOptional && (parameter == null || parameter.toString().isEmpty())) {
-            handleException(String.format("Parameter %s is not provided", parameterName), messageContext);
-        } else if (parameter == null || parameter.toString().isEmpty()) {
-            return null;
-        }
-
-        try {
-            return parse(Objects.requireNonNull(parameter).toString(), type);
-        } catch (IllegalArgumentException e) {
-            handleException(String.format(
-                    "Parameter %s is not of type %s", parameterName, type.getName()
-                                         ), messageContext);
-        }
-
-        return null;
+        return getValue(parameter, parameterName, type, isOptional, messageContext, "Parameter");
     }
 
     protected <T> T getProperty(
             MessageContext messageContext, String propertyName, Class<T> type, boolean isOptional) {
-
         Object property = messageContext.getProperty(propertyName);
-        if (!isOptional && (property == null || property.toString().isEmpty())) {
-            handleException(String.format("Property %s is not set", propertyName), messageContext);
-        } else if (property == null || property.toString().isEmpty()) {
+        return getValue(property, propertyName, type, isOptional, messageContext, "Property");
+    }
+
+    private <T> T getValue(Object value, String name, Class<T> type, boolean isOptional,
+                           MessageContext messageContext, String valueType) {
+        if (!isOptional && (value == null || value.toString().isEmpty())) {
+            handleException(String.format("%s %s is not provided", valueType, name), messageContext);
+        } else if (value == null || value.toString().isEmpty()) {
             return null;
         }
 
         try {
-            return parse(Objects.requireNonNull(property).toString(), type);
+            return parse(Objects.requireNonNull(value).toString(), type);
         } catch (IllegalArgumentException e) {
-            handleException(String.format(
-                    "Property %s is not of type %s", propertyName, type.getName()
-                                         ), messageContext);
+            handleException(String.format("%s %s is not of type %s", valueType, name, type.getName()), messageContext);
         }
 
         return null;
     }
 
+
     /**
-     * Get DataLakeRequestConditions object.
+     * Creates and returns a {@link DataLakeRequestConditions} object with the specified conditions.
      *
-     * @param leaseId           Lease ID.
-     * @param ifMatch           If-Match.
-     * @param ifNoneMatch       If-None-Match.
-     * @param ifModifiedSince   If-Modified-Since.
-     * @param ifUnmodifiedSince If-Unmodified-Since.
-     * @return DataLakeRequestConditions object.
+     * @param leaseId the lease ID to be set in the request conditions (can be {@code null})
+     * @param ifMatch an ETag value that must match for the request to succeed (can be {@code null})
+     * @param ifNoneMatch an ETag value that must not match for the request to succeed (can be {@code null})
+     * @param ifModifiedSince a timestamp in ISO-8601 format; the request succeeds only if the resource
+     *                        has been modified since this time (can be {@code null})
+     * @param ifUnmodifiedSince a timestamp in ISO-8601 format; the request succeeds only if the resource
+     *                          has not been modified since this time (can be {@code null})
+     * @return a {@link DataLakeRequestConditions} object with the provided conditions
+     * @throws DateTimeParseException if {@code ifModifiedSince} or {@code ifUnmodifiedSince} are not in a valid ISO-8601 format
      */
     protected DataLakeRequestConditions getRequestConditions(String leaseId, String ifMatch, String ifNoneMatch,
                                                              String ifModifiedSince, String ifUnmodifiedSince) {
 
-        return new DataLakeRequestConditions()
-                .setLeaseId(leaseId)
-                .setIfMatch(ifMatch)
-                .setIfModifiedSince(ifModifiedSince != null ? OffsetDateTime.parse(ifModifiedSince) : null)
-                .setIfNoneMatch(ifNoneMatch)
-                .setIfUnmodifiedSince(ifUnmodifiedSince != null ? OffsetDateTime.parse(ifUnmodifiedSince) : null);
+        try {
+            return new DataLakeRequestConditions()
+                    .setLeaseId(leaseId)
+                    .setIfMatch(ifMatch)
+                    .setIfModifiedSince(ifModifiedSince != null ? OffsetDateTime.parse(ifModifiedSince) : null)
+                    .setIfNoneMatch(ifNoneMatch)
+                    .setIfUnmodifiedSince(ifUnmodifiedSince != null ? OffsetDateTime.parse(ifUnmodifiedSince) : null);
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("Invalid date-time format", e);
+        }
     }
 
     protected void handleConnectorResponse(MessageContext messageContext, String responseVariable,
@@ -184,49 +181,66 @@ public abstract class AbstractAzureMediator extends AbstractConnector {
         messageContext.setVariable(responseVariable, response);
     }
 
+    /**
+     * Logs the given error code and message along with the provided exception,
+     * sets the corresponding error properties in the {@link MessageContext},
+     * and throws a {@link SynapseException} with the error message and cause.
+     *
+     * @param code the {@link Error} object containing the error code and message
+     * @param mc the {@link MessageContext} in which the error properties should be set
+     * @param e the {@link Throwable} exception that caused this error
+     * @throws SynapseException always thrown with the error message and cause from the provided {@link Error} object
+     */
     public void handleConnectorException(Error code, MessageContext mc, Throwable e) {
 
         this.log.error(code.getErrorMessage(), e);
 
-        mc.setProperty("ERROR_CODE", code.getErrorCode());
-        mc.setProperty("ERROR_MESSAGE", code.getErrorMessage());
+        mc.setProperty(SynapseConstants.ERROR_CODE, code.getErrorCode());
+        mc.setProperty(SynapseConstants.ERROR_MESSAGE, code.getErrorMessage());
         throw new SynapseException(code.getErrorMessage(), e);
     }
 
+    /**
+     * Logs the given error code and message, sets the corresponding error properties in the {@link MessageContext},
+     * and throws a {@link SynapseException} with the error message.
+     *
+     * @param code the {@link Error} object containing the error code and message
+     * @param mc the {@link MessageContext} in which the error properties should be set
+     * @throws SynapseException always thrown with the error message from the provided {@link Error} object
+     */
     public void handleConnectorException(Error code, MessageContext mc) {
 
         this.log.error(code.getErrorMessage());
-        mc.setProperty("ERROR_CODE", code.getErrorCode());
-        mc.setProperty("ERROR_MESSAGE", code.getErrorMessage());
+        mc.setProperty(SynapseConstants.ERROR_CODE, code.getErrorCode());
+        mc.setProperty(SynapseConstants.ERROR_MESSAGE, code.getErrorMessage());
         throw new SynapseException(code.getErrorMessage());
     }
 
     /**
-     * Get LeaseAction object.
+     * Returns the corresponding {@link LeaseAction} constant for the given lease action string.
      *
-     * @param leaseAction Lease action.
-     * @return LeaseAction object.
+     * @param leaseAction the lease action as a string (e.g., "Acquire", "Auto Renew", "Acquire Release", "Release")
+     * @return the corresponding {@link LeaseAction} constant, or {@code null} if the input is {@code null}, empty,
+     *         or does not match any known lease action.
      */
     public LeaseAction getLeaseAction(String leaseAction) {
-
-        LeaseAction leaseActionConstant = null;
+        if (leaseAction == null || leaseAction.isEmpty()) {
+            return null;
+        }
 
         switch (leaseAction) {
             case "Acquire":
-                leaseActionConstant = LeaseAction.ACQUIRE;
-                break;
+                return LeaseAction.ACQUIRE;
             case "Auto Renew":
-                leaseActionConstant = LeaseAction.AUTO_RENEW;
-                break;
+                return LeaseAction.AUTO_RENEW;
             case "Acquire Release":
-                leaseActionConstant = LeaseAction.ACQUIRE_RELEASE;
-                break;
+                return LeaseAction.ACQUIRE_RELEASE;
             case "Release":
-                leaseActionConstant = LeaseAction.RELEASE;
-                break;
+                return LeaseAction.RELEASE;
+            default:
+                return null;
         }
-
-        return leaseActionConstant;
     }
+
 
 }

@@ -1,34 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-   Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ 	Copyright (c) 2025, WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 
-   WSO2 Inc. licenses this file to you under the Apache License,
-   Version 2.0 (the "License"); you may not use this file except
-   in compliance with the License.
-   You may obtain a copy of the License at
+    WSO2 LLC. licenses this file to you under the Apache License,
+    Version 2.0 (the "License"); you may not use this file except
+    in compliance with the License.
+    You may obtain a copy of the License at
 
-   http://www.apache.org/licenses/LICENSE-2.0
+      http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing,
    software distributed under the License is distributed on an
    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-   KIND, either express or implied. See the License for the
+   KIND, either express or implied.  See the License for the
    specific language governing permissions and limitations
    under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.wso2.integration.connector</groupId>
-    <artifactId>mi-connector-azureDataLake</artifactId>
+    <artifactId>mi-connector-msazuredatalakestorage</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
-    <name>WSO2 Carbon - Connector For azureDataLake</name>
+    <name>WSO2 Carbon - Connector For Azure Data Lake</name>
     <url>http://wso2.org</url>
 
     <properties>
-        <connector.name>azureDataLake</connector.name>
+        <connector.name>msazuredatalakestorage</connector.name>
         <integration.base.version>1.0.2</integration.base.version>
         <product.ei.version>6.1.1</product.ei.version>
         <carbon.kernel.version>4.4.17</carbon.kernel.version>
@@ -49,6 +48,8 @@
         <gson.version>2.10.1</gson.version>
         <azure.netty.version>1.15.9</azure.netty.version>
         <azure.storage.version>12.22.0</azure.storage.version>
+        <httpmime.version>4.3.6</httpmime.version>
+        <org.json.version>20080701</org.json.version>
     </properties>
 
     <dependencies>
@@ -163,12 +164,12 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpmime</artifactId>
-            <version>4.3.6</version>
+            <version>${httpmime.version}</version>
         </dependency>
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
-            <version>20080701</version>
+            <version>${org.json.version}</version>
         </dependency>
         <dependency>
             <groupId>org.wso2.ei</groupId>
@@ -246,13 +247,13 @@
                 <artifactId>maven-assembly-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>email-library</id>
+                        <id>build-connector</id>
                         <phase>compile</phase>
                         <goals>
                             <goal>single</goal>
                         </goals>
                         <configuration>
-                            <finalName>${connector.name}-connector-1.0.0</finalName>
+                            <finalName>${connector.name}-connector-${project.version}</finalName>
                             <appendAssemblyId>false</appendAssemblyId>
                             <filters>
                                 <filter>src/main/assembly/filter.properties</filter>

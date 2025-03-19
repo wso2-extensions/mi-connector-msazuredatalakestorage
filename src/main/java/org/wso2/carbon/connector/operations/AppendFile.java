@@ -1,3 +1,20 @@
+/*
+ *  Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ *
+ *  WSO2 LLC. licenses this file to you under the Apache License,
+ *  Version 2.0 (the "License"); you may not use this file except
+ *  in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an
+ *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *  KIND, either express or implied.  See the License for the
+ *  specific language governing permissions and limitations
+ *  under the License.
+ */
 package org.wso2.carbon.connector.operations;
 
 import com.azure.core.http.rest.Response;
@@ -26,7 +43,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Implements the append file operation.
+ * Appends data to a file in Azure Data Lake Storage.
  */
 public class AppendFile extends AbstractAzureMediator {
 
@@ -39,12 +56,10 @@ public class AppendFile extends AbstractAzureMediator {
         String filePathToAppend =
                 getMediatorParameter(messageContext, AzureConstants.FILE_PATH_TO_APPEND, String.class, false);
         String inputType = getMediatorParameter(messageContext, AzureConstants.INPUT_TYPE, String.class, false);
-        String localFilePath =
-                getMediatorParameter(messageContext, AzureConstants.LOCAL_FILE_PATH, String.class,
-                        !inputType.equals(AzureConstants.L_LOCAL_FILE_PATH));
-        String textContent =
-                getMediatorParameter(messageContext, AzureConstants.TEXT_CONTENT, String.class,
-                        !inputType.equals(AzureConstants.L_TEXT_CONTENT));
+        String localFilePath = getMediatorParameter(messageContext, AzureConstants.LOCAL_FILE_PATH, String.class,
+                !((AzureConstants.L_LOCAL_FILE_PATH).equals(inputType)));
+        String textContent = getMediatorParameter(messageContext, AzureConstants.TEXT_CONTENT, String.class,
+                !((AzureConstants.L_TEXT_CONTENT).equals(inputType)));
         Integer timeout = getMediatorParameter(messageContext, AzureConstants.TIMEOUT, Integer.class, true);
         Boolean flush = getMediatorParameter(messageContext, AzureConstants.FLUSH, Boolean.class, true);
         String leaseId = getMediatorParameter(messageContext, AzureConstants.LEASE_ID, String.class, true);
@@ -61,8 +76,7 @@ public class AppendFile extends AbstractAzureMediator {
         Response<?> response = null;
 
         try {
-            AzureStorageConnectionHandler
-                    azureStorageConnectionHandler =
+            AzureStorageConnectionHandler azureStorageConnectionHandler =
                     (AzureStorageConnectionHandler) handler.getConnection(AzureConstants.CONNECTOR_NAME,
                             connectionName);
             DataLakeServiceClient dataLakeServiceClient = azureStorageConnectionHandler.getDataLakeServiceClient();
@@ -71,35 +85,22 @@ public class AppendFile extends AbstractAzureMediator {
             DataLakeFileClient dataLakeFileClient = dataLakeFileSystemClient.getFileClient(filePathToAppend);
             long fileSize = dataLakeFileClient.getProperties().getFileSize();
             if (textContent != null && localFilePath == null) {
-                response = dataLakeFileClient.appendWithResponse(
-                        BinaryData.fromString(textContent),
-                        fileSize,
-                        new DataLakeFileAppendOptions()
-                                .setFlush(flush)
-                                .setContentHash(
-                                        MessageDigest.getInstance("MD5").digest(textContent.getBytes())
-                                               )
-                                .setLeaseId(leaseId)
-                                .setLeaseAction(leaseActionConstant)
+                response = dataLakeFileClient.appendWithResponse(BinaryData.fromString(textContent), fileSize,
+                        new DataLakeFileAppendOptions().setFlush(flush)
+                                .setContentHash(MessageDigest.getInstance("MD5").digest(textContent.getBytes()))
+                                .setLeaseId(leaseId).setLeaseAction(leaseActionConstant)
                                 .setLeaseDuration(leaseDuration),
-                        timeout != null ? Duration.ofSeconds(timeout.longValue()) : null,
-                        null);
+                        timeout != null ? Duration.ofSeconds(timeout.longValue()) : null, null);
                 appendSize = textContent.length();
             } else if (localFilePath != null && textContent == null) {
                 Path filePath = Paths.get(localFilePath);
                 byte[] fileContent = Files.readAllBytes(filePath);
-                response = dataLakeFileClient.appendWithResponse(
-                        BinaryData.fromFile(filePath),
-                        fileSize,
+                response = dataLakeFileClient.appendWithResponse(BinaryData.fromFile(filePath), fileSize,
                         new DataLakeFileAppendOptions().setFlush(flush)
                                 .setContentHash(MessageDigest.getInstance("MD5").digest(fileContent))
-                                .setLeaseId(leaseId)
-                                .setLeaseAction(leaseActionConstant)
-                                .setLeaseDuration(leaseDuration)
-                                .setProposedLeaseId(proposedLeaseId)
-                        ,
-                        timeout != null ? Duration.ofSeconds(timeout.longValue()) : null,
-                        null);
+                                .setLeaseId(leaseId).setLeaseAction(leaseActionConstant).setLeaseDuration(leaseDuration)
+                                .setProposedLeaseId(proposedLeaseId),
+                        timeout != null ? Duration.ofSeconds(timeout.longValue()) : null, null);
                 appendSize = Files.size(filePath);
             }
 

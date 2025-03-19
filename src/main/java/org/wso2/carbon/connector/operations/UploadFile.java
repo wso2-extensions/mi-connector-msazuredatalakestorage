@@ -45,7 +45,7 @@ import java.time.Duration;
 import java.util.HashMap;
 
 /**
- * Implements the upload file operation.
+ * Uploads a file to Azure Data Lake Storage.
  */
 public class UploadFile extends AbstractAzureMediator {
 
@@ -60,7 +60,7 @@ public class UploadFile extends AbstractAzureMediator {
         String inputType = getMediatorParameter(messageContext, AzureConstants.INPUT_TYPE, String.class, false);
         String localFilePath =
                 getMediatorParameter(messageContext, AzureConstants.LOCAL_FILE_PATH, String.class,
-                        !inputType.equals(AzureConstants.L_LOCAL_FILE_PATH));
+                        !((AzureConstants.L_LOCAL_FILE_PATH).equals(inputType)));
         String textContent =
                 getMediatorParameter(messageContext, AzureConstants.TEXT_CONTENT, String.class,
                         true);

@@ -22,7 +22,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.wso2.carbon.connector.core.ConnectException;
 
 /**
- * Connection Configuration
+ * Represents the configuration required for Azure Storage connection.
  */
 public class ConnectionConfiguration {
 

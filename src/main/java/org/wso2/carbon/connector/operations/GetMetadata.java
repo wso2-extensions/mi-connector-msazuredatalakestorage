@@ -23,6 +23,8 @@ import com.azure.storage.file.datalake.DataLakeFileSystemClient;
 import com.azure.storage.file.datalake.DataLakeServiceClient;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import org.apache.synapse.MessageContext;
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.wso2.carbon.connector.connection.AzureStorageConnectionHandler;
 import org.wso2.carbon.connector.core.ConnectException;
@@ -53,17 +55,7 @@ public class GetMetadata extends AbstractAzureMediator {
             AzureStorageConnectionHandler azureStorageConnectionHandler =
                     (AzureStorageConnectionHandler) handler.getConnection(AzureConstants.CONNECTOR_NAME,
                             connectionName);
-            DataLakeServiceClient dataLakeServiceClient = azureStorageConnectionHandler.getDataLakeServiceClient();
-            DataLakeFileSystemClient dataLakeFileSystemClient =
-                    dataLakeServiceClient.getFileSystemClient(fileSystemName);
-            DataLakeFileClient dataLakeFileClient = dataLakeFileSystemClient.getFileClient(filePath);
-
-            Map<String, String> metadata;
-            metadata = dataLakeFileClient.getProperties().getMetadata();
-
-            JSONObject responseObject = new JSONObject();
-            responseObject.put("success", true);
-            responseObject.put("metadata", metadata);
+            JSONObject responseObject = getJsonObject(azureStorageConnectionHandler, fileSystemName, filePath);
 
             handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null,
                     null);
@@ -74,6 +66,35 @@ public class GetMetadata extends AbstractAzureMediator {
         } catch (Exception e) {
             handleConnectorException(Error.GENERAL_ERROR, messageContext, e);
         }
+    }
+
+    /**
+     * Retrieves the metadata of a file in Azure Data Lake Storage.
+     *
+     * @param azureStorageConnectionHandler Azure Storage connection handler
+     * @param fileSystemName                Name of the file system
+     * @param filePath                      Path of the file
+     * @return Metadata of the file
+     * @throws ConnectException If an error occurs while retrieving the metadata
+     * @throws JSONException    If an error occurs while creating the JSON object
+     */
+    @NotNull
+    private static JSONObject getJsonObject(AzureStorageConnectionHandler azureStorageConnectionHandler,
+                                            String fileSystemName, String filePath)
+            throws ConnectException, JSONException {
+
+        DataLakeServiceClient dataLakeServiceClient = azureStorageConnectionHandler.getDataLakeServiceClient();
+        DataLakeFileSystemClient dataLakeFileSystemClient =
+                dataLakeServiceClient.getFileSystemClient(fileSystemName);
+        DataLakeFileClient dataLakeFileClient = dataLakeFileSystemClient.getFileClient(filePath);
+
+        Map<String, String> metadata;
+        metadata = dataLakeFileClient.getProperties().getMetadata();
+
+        JSONObject responseObject = new JSONObject();
+        responseObject.put("success", true);
+        responseObject.put("metadata", metadata);
+        return responseObject;
     }
 
 }

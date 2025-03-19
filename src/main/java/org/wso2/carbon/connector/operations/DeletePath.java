@@ -37,7 +37,7 @@ import org.wso2.carbon.connector.util.Error;
 import java.time.Duration;
 
 /**
- * Implements the delete path operation.
+ * Deletes a path in Azure Data Lake.
  */
 public class DeletePath extends AbstractAzureMediator {
 

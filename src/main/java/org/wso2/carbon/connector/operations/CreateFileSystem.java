@@ -37,7 +37,7 @@ import java.time.Duration;
 import java.util.HashMap;
 
 /**
- * Implements the create directory operation.
+ * Handles the creation of a filesystem in Azure Data Lake.
  */
 public class CreateFileSystem extends AbstractAzureMediator {
 

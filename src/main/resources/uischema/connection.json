@@ -1,5 +1,5 @@
 {
-    "connectorName": "azureDataLake",
+    "connectorName": "msazuredatalakestorage",
     "connectionName": "MSAzureDataLake",
     "title": "Azure Data Lake Connector",
     "help": "The Azure Data Lake Connector allows you to access the Azure Data Lake Storage Service",

@@ -31,7 +31,7 @@ import org.wso2.carbon.connector.util.AbstractAzureMediator;
 import org.wso2.carbon.connector.util.AzureConstants;
 
 /**
- * Azure Storage Connection Handler
+ * Handles the connection to Azure Storage.
  */
 public class AzureStorageConnectionHandler implements Connection {
 
@@ -44,7 +44,11 @@ public class AzureStorageConnectionHandler implements Connection {
     }
 
     /**
-     * @return an instance of DataLakeServiceClient
+     * Retrieves the DataLakeServiceClient instance. If the instance is not already created,
+     * it initializes a new one using the provided connection configuration.
+     *
+     * @return an instance of DataLakeServiceClient.
+     * @throws ConnectException if there is an issue creating the client instance.
      */
     public DataLakeServiceClient getDataLakeServiceClient() throws ConnectException {
 
@@ -54,9 +58,11 @@ public class AzureStorageConnectionHandler implements Connection {
         return dataLakeServiceClient;
     }
 
-    /**
-     * @return an instance of ConnectionConfiguration
-     */
+   /**
+    * Retrieves the connection configuration.
+    *
+    * @return an instance of ConnectionConfiguration containing the connection settings.
+    */
     public ConnectionConfiguration getConnectionConfig() {
 
         return connectionConfig;
@@ -74,12 +80,18 @@ public class AzureStorageConnectionHandler implements Connection {
         dataLakeServiceClient = createNewDataLakeServiceClientInstance(this.connectionConfig);
     }
 
-    /**
-     * Create a new instance of DataLakeServiceClient
-     *
-     * @param config ConnectionConfiguration object
-     * @return DataLakeServiceClient object
-     */
+   /**
+    * Creates a new instance of `DataLakeServiceClient`.
+    *
+    * This method initializes a new `DataLakeServiceClient` instance using the provided
+    * connection configuration. It supports different authentication methods including
+    * OAuth2, Access Key, and Shared Access Signature (SAS) Token.
+    *
+    * @param config the `ConnectionConfiguration` object containing the connection settings.
+    * @return a new instance of `DataLakeServiceClient`.
+    * @throws ConnectException if there is an issue creating the client instance or if required
+    *                          authentication parameters are missing.
+    */
     private DataLakeServiceClient createNewDataLakeServiceClientInstance(ConnectionConfiguration config)
             throws ConnectException {
 
@@ -90,35 +102,43 @@ public class AzureStorageConnectionHandler implements Connection {
         String accountKey = config.getAccountKey();
         String sasToken = config.getSasToken();
 
-        if (StringUtils.isNotEmpty(clientId) && StringUtils.isNotEmpty(clientSecret)
-                && StringUtils.isNotEmpty(tenantId) && StringUtils.isNotEmpty(accountName)) {
+        if (StringUtils.isEmpty(accountName)) {
+            throw new ConnectException("Missing account name. Please provide a valid account name to proceed.");
+        }
+
+        DataLakeServiceClientBuilder builder = new DataLakeServiceClientBuilder()
+                .httpClient(new NettyAsyncHttpClientBuilder().build());
+
+        if (StringUtils.isNotEmpty(clientId) && StringUtils.isNotEmpty(clientSecret) &&
+                StringUtils.isNotEmpty(tenantId)) {
             ClientSecretCredential credential = new ClientSecretCredentialBuilder()
                     .httpClient(new NettyAsyncHttpClientBuilder().build())
                     .clientId(clientId)
                     .clientSecret(clientSecret)
                     .tenantId(tenantId)
                     .build();
-            return new DataLakeServiceClientBuilder()
-                    .httpClient(new NettyAsyncHttpClientBuilder().build())
-                    .credential(credential)
+
+            return builder.credential(credential)
                     .endpoint(AzureConstants.HTTPS_PROTOCOL + accountName + AzureConstants.DFS_ENDPOINT_SUFFIX)
                     .buildClient();
-        } else if (StringUtils.isNotEmpty(accountName) && StringUtils.isNotEmpty(accountKey)) {
-            return new DataLakeServiceClientBuilder()
-                    .httpClient(new NettyAsyncHttpClientBuilder().build())
-                    .connectionString(
-                            AbstractAzureMediator.getStorageConnectionString(accountName, accountKey,
-                                    AzureConstants.HTTPS))
+        }
+
+        if (StringUtils.isNotEmpty(accountKey)) {
+            return builder.connectionString(
+                            AbstractAzureMediator.getStorageConnectionString(accountName, accountKey, AzureConstants.HTTPS))
                     .buildClient();
-        } else if (StringUtils.isNotEmpty(sasToken) && StringUtils.isNotEmpty(accountName)) {
-            return new DataLakeServiceClientBuilder()
-                    .httpClient(new NettyAsyncHttpClientBuilder().build())
-                    .endpoint(AzureConstants.HTTPS_PROTOCOL + accountName + AzureConstants.DFS_ENDPOINT_SUFFIX)
+        }
+
+        if (StringUtils.isNotEmpty(sasToken)) {
+            return builder.endpoint(AzureConstants.HTTPS_PROTOCOL + accountName + AzureConstants.DFS_ENDPOINT_SUFFIX)
                     .sasToken(sasToken)
                     .buildClient();
-        } else {
-            throw new ConnectException("Missing authentication parameters.");
         }
+
+        throw new ConnectException("Missing authentication parameters. " +
+                "If the access type is OAuth2, you must provide client ID, tenant ID, and client secret. " +
+                "If the access type is Access Key, you must provide an account key. " +
+                "If the access type is Shared Access Signature Token, you must provide a SAS token.");
     }
 
     @Override

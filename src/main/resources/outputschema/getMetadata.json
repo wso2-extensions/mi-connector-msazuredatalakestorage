@@ -20,9 +20,10 @@
                     }
                 }
             }
-        },
-        "required": [
-            "payload"
-        ],
-        "additionalProperties": false
-    }
+        }
+    },
+    "required": [
+        "payload"
+    ],
+    "additionalProperties": false
+}

@@ -38,7 +38,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Implements the list of file systems operation.
+ * Lists all file systems in the Azure Data Lake Storage.
  */
 public class ListFileSystems extends AbstractAzureMediator {
 

@@ -19,7 +19,7 @@
 package org.wso2.carbon.connector.util;
 
 /**
- * Contains error codes and details related to Microsoft Azure storage connector.
+ * Enum representing error codes and messages for the Microsoft Azure storage connector.
  */
 public enum Error {
 

@@ -40,7 +40,7 @@ import java.io.ByteArrayOutputStream;
 import java.time.Duration;
 
 /**
- * Implements the read file operation.
+ * Reads a file from Azure Data Lake Storage.
  */
 public class ReadFile extends AbstractAzureMediator {
 

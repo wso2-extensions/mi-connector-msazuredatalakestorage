@@ -22,7 +22,7 @@ import org.apache.commons.lang.StringUtils;
 import java.util.HashMap;
 
 /**
- * Utility class to handle common operations.
+ * Utility class for common operations.
  */
 public class Utils {
 
@@ -51,7 +51,5 @@ public class Utils {
                 metadataMap.put(key, value);
             }
         }
-
     }
-
 }

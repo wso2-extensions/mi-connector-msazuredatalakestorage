@@ -1,5 +1,5 @@
 {
-    "connectorName": "azureDataLake",
+    "connectorName": "msazuredatalakestorage",
     "operationName": "listFileSystems",
     "title": "List File Systems",
     "help": "<h1>List File Systems</h1> <b>This operation can be used to list all the file systems.</b>",
@@ -18,7 +18,7 @@
                             "allowedConnectionTypes": [
                                 "MSAzureDataLake"
                             ],
-                            "defaultType": "connection.azureDataLake",
+                            "defaultType": "connection.msazuredatalakestorage",
                             "defaultValue": "",
                             "required": "true",
                             "helpTip": "Connection to be used"

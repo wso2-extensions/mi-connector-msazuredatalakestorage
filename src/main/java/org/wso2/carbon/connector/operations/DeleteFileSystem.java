@@ -35,7 +35,7 @@ import org.wso2.carbon.connector.util.Error;
 import java.time.Duration;
 
 /**
- * Implements the delete file system operation.
+ * Deletes a file system in Azure Data Lake.
  */
 public class DeleteFileSystem extends AbstractAzureMediator {
 

@@ -40,7 +40,7 @@ import java.io.UncheckedIOException;
 import java.time.Duration;
 
 /**
- * Implements the download file operation.
+ * Downloads a file from Azure Data Lake.
  */
 public class DownloadFile extends AbstractAzureMediator {
 

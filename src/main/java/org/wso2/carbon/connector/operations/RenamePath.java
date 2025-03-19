@@ -35,7 +35,7 @@ import org.wso2.carbon.connector.util.Error;
 import java.time.Duration;
 
 /**
- * Implements the rename path operation.
+ * Renames a path in the Azure Data Lake Storage.
  */
 public class RenamePath extends AbstractAzureMediator {
 

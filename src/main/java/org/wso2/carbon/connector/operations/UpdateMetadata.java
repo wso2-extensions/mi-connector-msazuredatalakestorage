@@ -39,7 +39,7 @@ import java.time.Duration;
 import java.util.HashMap;
 
 /**
- * Implements the update meta data operation.
+ * Updates metadata for a file in Azure Data Lake Storage.
  */
 public class UpdateMetadata extends AbstractAzureMediator {
 

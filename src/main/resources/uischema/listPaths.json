@@ -1,5 +1,5 @@
 {
-    "connectorName": "azureDataLake",
+    "connectorName": "msazuredatalakestorage",
     "operationName": "listPaths",
     "title": "List Paths of the File System",
     "help": "<h1>List Paths of the File System</h1> <b>This operation can be used to get all paths of the file system.</b>",
@@ -18,7 +18,7 @@
                             "allowedConnectionTypes": [
                                 "MSAzureDataLake"
                             ],
-                            "defaultType": "connection.azureDataLake",
+                            "defaultType": "connection.msazuredatalakestorage",
                             "defaultValue": "",
                             "required": "true",
                             "helpTip": "Connection to be used"

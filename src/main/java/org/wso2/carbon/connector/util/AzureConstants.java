@@ -19,11 +19,11 @@
 package org.wso2.carbon.connector.util;
 
 /**
- * This class contains the azure connector specific constants.
+ * Contains constants specific to the Azure connector.
  */
 public class AzureConstants {
 
-    public static final String CONNECTOR_NAME = "azureDataLake";
+    public static final String CONNECTOR_NAME = "msazuredatalakestorage";
     public static final String CONNECTION_NAME = "name";
     public static final String ACCOUNT_NAME = "accountName";
     public static final String CLIENT_ID = "clientId";

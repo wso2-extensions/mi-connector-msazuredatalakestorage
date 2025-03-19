@@ -34,7 +34,6 @@
     <parameter name="group" description="The group of the directory."/>
     <parameter name="owner" description="The owner of the directory."/>
 
-
     <sequence>
         <property name="fileSystemName" expression="$func:fileSystemName"/>
         <property name="directoryName" expression="$func:directoryName"/>
@@ -53,3 +52,4 @@
         <class name="org.wso2.carbon.connector.operations.CreateDirectory"/>
     </sequence>
 </template>
+
