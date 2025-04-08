@@ -20,8 +20,6 @@ package org.wso2.carbon.connector.operations;
 
 import com.azure.core.http.rest.Response;
 import com.azure.storage.file.datalake.DataLakeDirectoryClient;
-import com.azure.storage.file.datalake.DataLakeFileSystemClient;
-import com.azure.storage.file.datalake.DataLakeServiceClient;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
@@ -85,11 +83,9 @@ public class CreateDirectory extends AbstractAzureMediator {
             AzureStorageConnectionHandler azureStorageConnectionHandler =
                     (AzureStorageConnectionHandler) handler.getConnection(AzureConstants.CONNECTOR_NAME,
                             connectionName);
-            DataLakeServiceClient dataLakeServiceClient = azureStorageConnectionHandler.getDataLakeServiceClient();
-            DataLakeFileSystemClient dataLakeFileSystemClient =
-                    dataLakeServiceClient.getFileSystemClient(fileSystemName);
             DataLakeDirectoryClient dataLakeDirectoryClient =
-                    dataLakeFileSystemClient.getDirectoryClient(directoryName);
+                    azureStorageConnectionHandler.getDataLakeServiceClient().getFileSystemClient(fileSystemName)
+                            .getDirectoryClient(directoryName);
 
             metadata = InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, metadata);
 
@@ -120,7 +116,10 @@ public class CreateDirectory extends AbstractAzureMediator {
                 responseObject.put("directoryName", directoryName);
                 handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null, null);
             } else {
-                handleConnectorResponse(messageContext, responseVariable, overwriteBody, false, null, null);
+                JSONObject responseObject = new JSONObject();
+                responseObject.put("success", false);
+                responseObject.put("message", "Failed to create the directory");
+                handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null, null);
             }
 
         } catch (ConnectException e) {

@@ -20,8 +20,6 @@ package org.wso2.carbon.connector.operations;
 import com.azure.core.util.BinaryData;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.file.datalake.DataLakeFileClient;
-import com.azure.storage.file.datalake.DataLakeFileSystemClient;
-import com.azure.storage.file.datalake.DataLakeServiceClient;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
@@ -90,10 +88,9 @@ public class UploadFile extends AbstractAzureMediator {
             AzureStorageConnectionHandler azureStorageConnectionHandler =
                     (AzureStorageConnectionHandler) handler.getConnection(AzureConstants.CONNECTOR_NAME,
                             connectionName);
-            DataLakeServiceClient dataLakeServiceClient = azureStorageConnectionHandler.getDataLakeServiceClient();
-            DataLakeFileSystemClient dataLakeFileSystemClient =
-                    dataLakeServiceClient.getFileSystemClient(fileSystemName);
-            DataLakeFileClient dataLakeFileClient = dataLakeFileSystemClient.getFileClient(filePathToUpload);
+            DataLakeFileClient dataLakeFileClient =
+                    azureStorageConnectionHandler.getDataLakeServiceClient().getFileSystemClient(fileSystemName)
+                            .getFileClient(filePathToUpload);
             ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
                     .setBlockSizeLong(blockSizeL)
                     .setMaxConcurrency(maxConcurrency)

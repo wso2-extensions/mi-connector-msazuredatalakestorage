@@ -21,7 +21,6 @@ package org.wso2.carbon.connector.operations;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.storage.file.datalake.DataLakeFileSystemClient;
-import com.azure.storage.file.datalake.DataLakeServiceClient;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
@@ -71,9 +70,8 @@ public class ReadFile extends AbstractAzureMediator {
             AzureStorageConnectionHandler azureStorageConnectionHandler =
                     (AzureStorageConnectionHandler) handler.getConnection(AzureConstants.CONNECTOR_NAME,
                             connectionName);
-            DataLakeServiceClient dataLakeServiceClient = azureStorageConnectionHandler.getDataLakeServiceClient();
             DataLakeFileSystemClient dataLakeFileSystemClient =
-                    dataLakeServiceClient.getFileSystemClient(fileSystemName);
+                    azureStorageConnectionHandler.getDataLakeServiceClient().getFileSystemClient(fileSystemName);
 
             FileRange fileRange;
             if (offset == null) {

@@ -19,8 +19,6 @@ package org.wso2.carbon.connector.operations;
 
 import com.azure.core.http.rest.Response;
 import com.azure.storage.file.datalake.DataLakeFileClient;
-import com.azure.storage.file.datalake.DataLakeFileSystemClient;
-import com.azure.storage.file.datalake.DataLakeServiceClient;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.LeaseAction;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
@@ -83,10 +81,10 @@ public class FlushFile extends AbstractAzureMediator {
                     azureStorageConnectionHandler =
                     (AzureStorageConnectionHandler) handler.getConnection(AzureConstants.CONNECTOR_NAME,
                             connectionName);
-            DataLakeServiceClient dataLakeServiceClient = azureStorageConnectionHandler.getDataLakeServiceClient();
-            DataLakeFileSystemClient dataLakeFileSystemClient =
-                    dataLakeServiceClient.getFileSystemClient(fileSystemName);
-            DataLakeFileClient dataLakeFileClient = dataLakeFileSystemClient.getFileClient(filePathToFlush);
+
+            DataLakeFileClient dataLakeFileClient =
+                    azureStorageConnectionHandler.getDataLakeServiceClient().getFileSystemClient(fileSystemName)
+                            .getFileClient(filePathToFlush);
             long fileSizeBefore = dataLakeFileClient.getProperties().getFileSize();
 
             Response<?> response = dataLakeFileClient.flushWithResponse(

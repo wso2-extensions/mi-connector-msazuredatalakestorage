@@ -20,8 +20,6 @@ package org.wso2.carbon.connector.operations;
 
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.file.datalake.DataLakeFileClient;
-import com.azure.storage.file.datalake.DataLakeFileSystemClient;
-import com.azure.storage.file.datalake.DataLakeServiceClient;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
@@ -83,10 +81,10 @@ public class DownloadFile extends AbstractAzureMediator {
             AzureStorageConnectionHandler azureStorageConnectionHandler =
                     (AzureStorageConnectionHandler) handler.getConnection(AzureConstants.CONNECTOR_NAME,
                             connectionName);
-            DataLakeServiceClient dataLakeServiceClient = azureStorageConnectionHandler.getDataLakeServiceClient();
-            DataLakeFileSystemClient dataLakeFileSystemClient =
-                    dataLakeServiceClient.getFileSystemClient(fileSystemName);
-            DataLakeFileClient dataLakeFileClient = dataLakeFileSystemClient.getFileClient(filePath);
+
+            DataLakeFileClient dataLakeFileClient =
+                    azureStorageConnectionHandler.getDataLakeServiceClient().getFileSystemClient(fileSystemName)
+                            .getFileClient(filePath);
 
             ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
                     .setBlockSizeLong(blockSizeL)

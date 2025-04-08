@@ -19,7 +19,6 @@ package org.wso2.carbon.connector.operations;
 
 import com.azure.core.http.rest.Response;
 import com.azure.storage.file.datalake.DataLakeFileSystemClient;
-import com.azure.storage.file.datalake.DataLakeServiceClient;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import org.apache.synapse.MessageContext;
@@ -68,9 +67,8 @@ public class CreateFileSystem extends AbstractAzureMediator {
             AzureStorageConnectionHandler azureStorageConnectionHandler =
                     (AzureStorageConnectionHandler) handler.getConnection(AzureConstants.CONNECTOR_NAME,
                             connectionName);
-            DataLakeServiceClient dataLakeServiceClient = azureStorageConnectionHandler.getDataLakeServiceClient();
             DataLakeFileSystemClient dataLakeFileSystemClient =
-                    dataLakeServiceClient.getFileSystemClient(fileSystemName != null ? fileSystemName : "");
+                    azureStorageConnectionHandler.getDataLakeServiceClient().getFileSystemClient(fileSystemName);
             metadata = InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, metadata);
 
             HashMap<String, String> metadataMap = new HashMap<>();
@@ -90,8 +88,11 @@ public class CreateFileSystem extends AbstractAzureMediator {
                 handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null,
                         null);
             } else {
-
-                handleConnectorException(Error.FILE_ALREADY_EXISTS_ERROR, messageContext);
+                JSONObject responseObject = new JSONObject();
+                responseObject.put("success", false);
+                responseObject.put("message", "Failed to create the filesystem");
+                handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null,
+                        null);
             }
 
         } catch (ConnectException e) {

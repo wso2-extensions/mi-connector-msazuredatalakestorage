@@ -81,7 +81,10 @@ public class DeletePath extends AbstractAzureMediator {
                 responseObject.put("message", "Successfully deleted the path");
                 handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null, null);
             } else {
-                handleConnectorException(Error.DIRECTORY_NOT_FOUND_ERROR, messageContext);
+                JSONObject responseObject = new JSONObject();
+                responseObject.put("success", false);
+                responseObject.put("message", "Failed to delete the path");
+                handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null, null);
             }
 
         } catch (ConnectException e) {

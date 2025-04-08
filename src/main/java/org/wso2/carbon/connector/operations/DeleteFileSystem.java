@@ -19,7 +19,6 @@ package org.wso2.carbon.connector.operations;
 
 import com.azure.core.http.rest.Response;
 import com.azure.storage.file.datalake.DataLakeFileSystemClient;
-import com.azure.storage.file.datalake.DataLakeServiceClient;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
@@ -61,9 +60,8 @@ public class DeleteFileSystem extends AbstractAzureMediator {
             AzureStorageConnectionHandler azureStorageConnectionHandler =
                     (AzureStorageConnectionHandler) handler.getConnection(AzureConstants.CONNECTOR_NAME,
                             connectionName);
-            DataLakeServiceClient dataLakeServiceClient = azureStorageConnectionHandler.getDataLakeServiceClient();
             DataLakeFileSystemClient dataLakeFileSystemClient =
-                    dataLakeServiceClient.getFileSystemClient(fileSystemName);
+                    azureStorageConnectionHandler.getDataLakeServiceClient().getFileSystemClient(fileSystemName);
             DataLakeRequestConditions requestConditions = getRequestConditions(leaseId, ifMatch,
                     ifModifiedSince, ifNoneMatch, ifUnmodifiedSince);
             Response<?> response = dataLakeFileSystemClient.deleteIfExistsWithResponse(
@@ -77,7 +75,12 @@ public class DeleteFileSystem extends AbstractAzureMediator {
                 handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null,
                         null);
             } else {
-                handleConnectorException(Error.FILE_SYSTEM_DOES_NOT_EXIST, messageContext);
+                JSONObject responseObject = new JSONObject();
+                responseObject.put("success", false);
+                responseObject.put("message", "Failed to delete the file system");
+                handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null,
+                        null);
+
             }
 
         } catch (ConnectException e) {

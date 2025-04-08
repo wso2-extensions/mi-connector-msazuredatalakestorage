@@ -19,7 +19,6 @@
 package org.wso2.carbon.connector.operations;
 
 import com.azure.storage.file.datalake.DataLakeFileClient;
-import com.azure.storage.file.datalake.DataLakeFileSystemClient;
 import com.azure.storage.file.datalake.DataLakeServiceClient;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
@@ -82,15 +81,12 @@ public class RenamePath extends AbstractAzureMediator {
                     destinationIfUnmodifiedSince);
             DataLakeServiceClient dataLakeServiceClient = azureStorageConnectionHandler.getDataLakeServiceClient();
 
-            DataLakeFileSystemClient dataLakeFileSystemClient =
-                    dataLakeServiceClient.getFileSystemClient(fileSystemName);
-
             DataLakeRequestConditions sourceRequestConditions =
                     getRequestConditions(sourceLeaseId, sourceIfMatch, sourceIfNoneMatch, sourceIfModifiedSince,
                             sourceIfUnmodifiedSince);
 
             DataLakeFileClient dataLakeFileClient =
-                    dataLakeFileSystemClient.getFileClient(directoryName);
+                    dataLakeServiceClient.getFileSystemClient(fileSystemName).getFileClient(directoryName);
 
             dataLakeFileClient
                     .renameWithResponse(newFileSystemName, newDirectoryName, sourceRequestConditions,

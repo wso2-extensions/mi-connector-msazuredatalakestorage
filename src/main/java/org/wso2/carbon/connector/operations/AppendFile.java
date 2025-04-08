@@ -20,8 +20,6 @@ package org.wso2.carbon.connector.operations;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.storage.file.datalake.DataLakeFileClient;
-import com.azure.storage.file.datalake.DataLakeFileSystemClient;
-import com.azure.storage.file.datalake.DataLakeServiceClient;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.LeaseAction;
 import com.azure.storage.file.datalake.options.DataLakeFileAppendOptions;
@@ -79,10 +77,9 @@ public class AppendFile extends AbstractAzureMediator {
             AzureStorageConnectionHandler azureStorageConnectionHandler =
                     (AzureStorageConnectionHandler) handler.getConnection(AzureConstants.CONNECTOR_NAME,
                             connectionName);
-            DataLakeServiceClient dataLakeServiceClient = azureStorageConnectionHandler.getDataLakeServiceClient();
-            DataLakeFileSystemClient dataLakeFileSystemClient =
-                    dataLakeServiceClient.getFileSystemClient(fileSystemName);
-            DataLakeFileClient dataLakeFileClient = dataLakeFileSystemClient.getFileClient(filePathToAppend);
+            DataLakeFileClient dataLakeFileClient =
+                    azureStorageConnectionHandler.getDataLakeServiceClient().getFileSystemClient(fileSystemName)
+                            .getFileClient(filePathToAppend);
             long fileSize = dataLakeFileClient.getProperties().getFileSize();
             if (textContent != null && localFilePath == null) {
                 response = dataLakeFileClient.appendWithResponse(BinaryData.fromString(textContent), fileSize,
@@ -116,7 +113,10 @@ public class AppendFile extends AbstractAzureMediator {
                 handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null,
                         attributes);
             } else {
-                handleConnectorResponse(messageContext, responseVariable, overwriteBody, false, null, attributes);
+                JSONObject responseObject = new JSONObject();
+                responseObject.put("success", false);
+                responseObject.put("message", "Failed to append");
+                handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null, attributes);
             }
 
         } catch (DataLakeStorageException e) {
