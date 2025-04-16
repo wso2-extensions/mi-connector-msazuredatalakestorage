@@ -131,8 +131,8 @@ public class UploadFile extends AbstractAzureMediator {
 
             if (response != null && response.getStatusCode() == 200) {
                 JSONObject responseObject = new JSONObject();
-                responseObject.put("success", true);
-                responseObject.put("message", "Successfully uploaded the file");
+                responseObject.put(AzureConstants.STATUS, true);
+                responseObject.put(AzureConstants.MESSAGE, "Successfully uploaded the file");
                 handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null, null);
             }
             // No 'else' block is needed because if the upload file operation fails,

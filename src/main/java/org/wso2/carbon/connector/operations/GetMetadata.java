@@ -52,8 +52,8 @@ public class GetMetadata extends AbstractAzureMediator {
             metadata = dataLakeFileClient.getProperties().getMetadata();
 
             JSONObject responseObject = new JSONObject();
-            responseObject.put("success", true);
-            responseObject.put("metadata", metadata);
+            responseObject.put(AzureConstants.STATUS, true);
+            responseObject.put(AzureConstants.RESULT, metadata);
 
             handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null,
                     null);

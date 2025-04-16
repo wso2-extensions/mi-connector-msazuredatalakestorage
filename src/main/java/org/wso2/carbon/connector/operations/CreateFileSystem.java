@@ -77,10 +77,8 @@ public class CreateFileSystem extends AbstractAzureMediator {
 
             if (response.getStatusCode() == 201) {
                 JSONObject responseObject = new JSONObject();
-                responseObject.put("success", true);
-                responseObject.put("message", "Successfully created the filesystem");
-                responseObject.put("fileSystemName", fileSystemName);
-                responseObject.put("metadata", metadata);
+                responseObject.put(AzureConstants.STATUS, true);
+                responseObject.put(AzureConstants.MESSAGE, "Successfully created the filesystem");
 
                 handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null,
                         null);

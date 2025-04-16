@@ -81,8 +81,8 @@ public class ListFileSystems extends AbstractAzureMediator {
                     });
 
             JSONObject responseObject = new JSONObject();
-            responseObject.put("success", true);
-            responseObject.put("result", retrieveMetadata ? fileSystemsWithMetadata : fileSystemNames);
+            responseObject.put(AzureConstants.STATUS, true);
+            responseObject.put(AzureConstants.RESULT, retrieveMetadata ? fileSystemsWithMetadata : fileSystemNames);
 
             handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null, null);
 

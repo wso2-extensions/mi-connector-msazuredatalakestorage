@@ -80,8 +80,8 @@ public class UpdateMetadata extends AbstractAzureMediator {
 
             if (response.getStatusCode() == 200) {
                 JSONObject responseObject = new JSONObject();
-                responseObject.put("success", true);
-                responseObject.put("message", "Successfully updated the metadata");
+                responseObject.put(AzureConstants.STATUS, true);
+                responseObject.put(AzureConstants.MESSAGE, "Successfully updated the metadata");
                 handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null, null);
             }
 

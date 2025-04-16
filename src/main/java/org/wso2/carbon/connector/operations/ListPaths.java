@@ -63,8 +63,8 @@ public class ListPaths extends AbstractAzureMediator {
                     .forEach(pathItem -> listPaths.add(pathItem.getName()));
 
             JSONObject responseObject = new JSONObject();
-            responseObject.put("success", true);
-            responseObject.put("result", listPaths);
+            responseObject.put(AzureConstants.STATUS, true);
+            responseObject.put(AzureConstants.RESULT, listPaths);
 
             handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null,
                     null);

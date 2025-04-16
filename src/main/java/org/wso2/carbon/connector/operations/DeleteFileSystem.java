@@ -70,8 +70,8 @@ public class DeleteFileSystem extends AbstractAzureMediator {
 
             if (response.getStatusCode() == 202) {
                 JSONObject responseObject = new JSONObject();
-                responseObject.put("success", true);
-                responseObject.put("message", "Successfully deleted the file system");
+                responseObject.put(AzureConstants.STATUS, true);
+                responseObject.put(AzureConstants.MESSAGE, "Successfully deleted the file system");
                 handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null,
                         null);
             }

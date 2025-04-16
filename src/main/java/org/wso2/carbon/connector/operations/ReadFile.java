@@ -92,9 +92,9 @@ public class ReadFile extends AbstractAzureMediator {
             if (response.getStatusCode() == 200) {
                 HttpHeaders headers = response.getHeaders();
                 JSONObject contentJson = new JSONObject();
-                contentJson.put("status", true);
-                contentJson.put("content", content);
-                contentJson.put("length", headers.getValue(HttpHeaderName.CONTENT_LENGTH));
+                contentJson.put(AzureConstants.STATUS, true);
+                contentJson.put(AzureConstants.CONTENT, content);
+                contentJson.put(AzureConstants.LENGTH, headers.getValue(HttpHeaderName.CONTENT_LENGTH));
 
                 handleConnectorResponse(messageContext, responseVariable, overwriteBody, contentJson, null, null);
             }

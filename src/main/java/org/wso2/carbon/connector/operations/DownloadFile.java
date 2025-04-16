@@ -114,8 +114,8 @@ public class DownloadFile extends AbstractAzureMediator {
 
             if ( response.getStatusCode() == 206) {
                 JSONObject responseObject = new JSONObject();
-                responseObject.put("success", true);
-                responseObject.put("message", "Successfully downloaded the file");
+                responseObject.put(AzureConstants.STATUS, true);
+                responseObject.put(AzureConstants.MESSAGE, "Successfully downloaded the file");
                 handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null, null);
             }
 

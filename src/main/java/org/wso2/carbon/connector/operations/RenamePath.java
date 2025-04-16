@@ -88,8 +88,8 @@ public class RenamePath extends AbstractAzureMediator {
 
             if (response.getStatusCode() == 201) {
                 JSONObject responseObject = new JSONObject();
-                responseObject.put("success", true);
-                responseObject.put("message", "Successfully renamed the path");
+                responseObject.put(AzureConstants.STATUS, true);
+                responseObject.put(AzureConstants.MESSAGE, "Successfully renamed the path");
 
                 handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null,
                         null);

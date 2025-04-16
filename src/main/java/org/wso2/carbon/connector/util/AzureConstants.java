@@ -104,6 +104,13 @@ public class AzureConstants {
     public static final String SAS_TOKEN = "sasToken";
     public static final String ACCESS_TYPE = "accessType";
     public static final String HTTPS = "https";
+    public static final String STATUS = "status";
+    public static final String MESSAGE = "message";
+    public static final String CONTENT = "content";
+    public static final String LENGTH = "length";
+    public static final String RESULT = "result";
+    public static final String APPENDSIZE = "appendSize";
+
 
     private AzureConstants() {
 

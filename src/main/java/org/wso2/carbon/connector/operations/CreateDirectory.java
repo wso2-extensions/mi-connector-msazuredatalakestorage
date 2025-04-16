@@ -104,9 +104,8 @@ public class CreateDirectory extends AbstractAzureMediator {
 
             if (response.getStatusCode() == 201) {
                 JSONObject responseObject = new JSONObject();
-                responseObject.put("success", true);
-                responseObject.put("message", "Successfully created the directory");
-                responseObject.put("directoryName", directoryName);
+                responseObject.put(AzureConstants.STATUS, true);
+                responseObject.put(AzureConstants.MESSAGE, "Successfully created the directory");
                 handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null, null);
             }
 

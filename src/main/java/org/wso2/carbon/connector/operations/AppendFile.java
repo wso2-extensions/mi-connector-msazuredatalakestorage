@@ -96,13 +96,13 @@ public class AppendFile extends AbstractAzureMediator {
 
             Map<String, Object> attributes = new HashMap<>();
 
-            attributes.put("appendSize", appendSize);
+            attributes.put(AzureConstants.APPENDSIZE, appendSize);
 
             if (response != null && response.getStatusCode() == 202) {
                 JSONObject responseObject = new JSONObject();
-                responseObject.put("success", true);
-                responseObject.put("message", "Successfully  appended");
-                responseObject.put("appendSize", appendSize);
+                responseObject.put(AzureConstants.STATUS, true);
+                responseObject.put(AzureConstants.MESSAGE, "Successfully  appended");
+                responseObject.put(AzureConstants.APPENDSIZE, appendSize);
                 handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null,
                         attributes);
             }

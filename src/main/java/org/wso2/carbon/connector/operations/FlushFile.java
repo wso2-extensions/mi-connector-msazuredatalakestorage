@@ -96,8 +96,8 @@ public class FlushFile extends AbstractAzureMediator {
 
             if (response != null && response.getStatusCode() == 200) {
                 JSONObject responseObject = new JSONObject();
-                responseObject.put("success", true);
-                responseObject.put("message", "Successfully flushed");
+                responseObject.put(AzureConstants.STATUS, true);
+                responseObject.put(AzureConstants.MESSAGE, "Successfully flushed");
                 handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null, null);
             }
 

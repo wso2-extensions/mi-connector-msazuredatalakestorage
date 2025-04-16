@@ -66,8 +66,8 @@ public class DeletePath extends AbstractAzureMediator {
 
             if (response.getStatusCode() == 200) {
                 JSONObject responseObject = new JSONObject();
-                responseObject.put("success", true);
-                responseObject.put("message", "Successfully deleted the path");
+                responseObject.put(AzureConstants.STATUS, true);
+                responseObject.put(AzureConstants.MESSAGE, "Successfully deleted the path");
                 handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null, null);
             }
 
