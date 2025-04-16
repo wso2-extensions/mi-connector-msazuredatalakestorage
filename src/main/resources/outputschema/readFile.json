@@ -5,8 +5,22 @@
     "description": "Rename a file.",
     "properties": {
         "payload": {
-            "type": "string",
-            "description": "The content of the file."
+            "type": "object",
+            "description": "The content of the file.",
+            "properties": {
+                "status": {
+                    "type": "boolean",
+                    "description": "Whether the file was retrieved successfully."
+                },
+                "content": {
+                    "type": "string",
+                    "description": "content of the file."
+                },
+                "length": {
+                    "type": "integer",
+                    "description": "length of the file"
+                }
+            }
         }
     },
     "required": [

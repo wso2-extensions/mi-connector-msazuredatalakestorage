@@ -5,11 +5,17 @@
     "description": "List paths.",
     "properties": {
         "payload": {
-            "type": "array",
+            "type": "object",
             "description": "List of paths.",
-            "items": {
-                "type": "string",
-                "description": "Path."
+            "properties": {
+                "status": {
+                    "type": "boolean",
+                    "description": "Whether the paths was retrieved successfully."
+                },
+                "result": {
+                    "type": "object",
+                    "description": "Message indicating the result of the operation."
+                }
             }
         }
     },

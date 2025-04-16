@@ -6,7 +6,17 @@
     "properties": {
         "payload": {
             "type": "boolean",
-            "description": "Whether to download the file or not."
+            "description": "Whether to download the file or not.",
+            "properties": {
+                "status": {
+                    "type": "boolean",
+                    "description": "Whether the file was downloaded successfully."
+                },
+                "message": {
+                    "type": "string",
+                    "description": "Message indicating the result of the operation."
+                }
+            }
         }
     },
     "required": [

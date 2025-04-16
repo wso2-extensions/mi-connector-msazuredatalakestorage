@@ -6,7 +6,17 @@
     "properties": {
         "payload": {
             "type": "boolean",
-            "description": "Whether to update the metadata or not."
+            "description": "Whether to update the metadata or not.",
+            "properties": {
+                "status": {
+                    "type": "boolean",
+                    "description": "Whether the metadata was updated successfully."
+                },
+                "message": {
+                    "type": "string",
+                    "description": "Message indicating the result of the operation."
+                }
+            }
         }
     },
     "required": [

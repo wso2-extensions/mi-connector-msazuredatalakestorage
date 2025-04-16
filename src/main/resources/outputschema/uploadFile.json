@@ -6,7 +6,17 @@
     "properties": {
         "payload": {
             "type": "boolean",
-            "description": "Whether to upload the file or not."
+            "description": "Whether to upload the file or not.",
+            "properties": {
+                "status": {
+                    "type": "boolean",
+                    "description": "Whether the file was uploaded successfully."
+                },
+                "message": {
+                    "type": "string",
+                    "description": "Message indicating the result of the operation."
+                }
+            }
         }
     },
     "required": [

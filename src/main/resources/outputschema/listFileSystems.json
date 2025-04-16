@@ -5,11 +5,17 @@
     "description": "List file systems.",
     "properties": {
         "payload": {
-            "type": "array",
+            "type": "object",
             "description": "List of file systems.",
-            "items": {
-                "type": "string",
-                "description": "File system."
+            "properties": {
+                "status": {
+                    "type": "boolean",
+                    "description": "Whether the file systems was retrieved successfully."
+                },
+                "result": {
+                    "type": "object",
+                    "description": "Message indicating the result of the operation."
+                }
             }
         }
     },

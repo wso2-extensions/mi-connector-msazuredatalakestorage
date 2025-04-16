@@ -5,8 +5,18 @@
     "description": "Create a new directory.",
     "properties": {
         "payload": {
-            "type": "boolean",
-            "description": "Whether to create the directory or not."
+            "type": "object",
+            "description": "Whether to create the directory or not.",
+            "properties": {
+                "status": {
+                    "type": "boolean",
+                    "description": "Whether the directory was created successfully."
+                },
+                "message": {
+                    "type": "string",
+                    "description": "Message indicating the result of the operation."
+                }
+            }
         }
     },
     "required": [

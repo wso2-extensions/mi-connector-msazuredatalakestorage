@@ -5,8 +5,18 @@
     "description": "Delete a file system.",
     "properties": {
         "payload": {
-            "type": "boolean",
-            "description": "Whether to delete the file system or not."
+            "type": "object",
+            "description": "Whether to delete the file system or not.",
+            "properties": {
+                "status": {
+                    "type": "boolean",
+                    "description": "Whether the file system was deleted successfully."
+                },
+                "message": {
+                    "type": "string",
+                    "description": "Message indicating the result of the operation."
+                }
+            }
         }
     },
     "required": [
