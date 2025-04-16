@@ -17,6 +17,7 @@
  */
 package org.wso2.carbon.connector.operations;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.file.datalake.DataLakeFileClient;
@@ -26,9 +27,7 @@ import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
 import org.apache.synapse.MessageContext;
 import org.apache.synapse.util.InlineExpressionUtil;
 import org.json.JSONObject;
-import org.wso2.carbon.connector.connection.AzureStorageConnectionHandler;
 import org.wso2.carbon.connector.core.ConnectException;
-import org.wso2.carbon.connector.core.connection.ConnectionHandler;
 import org.wso2.carbon.connector.util.AbstractAzureMediator;
 import org.wso2.carbon.connector.util.AzureConstants;
 import org.wso2.carbon.connector.util.Error;
@@ -82,15 +81,10 @@ public class UploadFile extends AbstractAzureMediator {
                 maxSingleUploadSize != null ? maxSingleUploadSize.longValue() * 1024L * 1024L : null;
         Long blockSizeL = blockSize != null ? blockSize.longValue() * 1024L * 1024L : null;
 
-        ConnectionHandler handler = ConnectionHandler.getConnectionHandler();
-
         try {
-            AzureStorageConnectionHandler azureStorageConnectionHandler =
-                    (AzureStorageConnectionHandler) handler.getConnection(AzureConstants.CONNECTOR_NAME,
-                            connectionName);
+
             DataLakeFileClient dataLakeFileClient =
-                    azureStorageConnectionHandler.getDataLakeServiceClient().getFileSystemClient(fileSystemName)
-                            .getFileClient(filePathToUpload);
+                    getDataLakeFileClient(connectionName, fileSystemName, filePathToUpload);
             ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
                     .setBlockSizeLong(blockSizeL)
                     .setMaxConcurrency(maxConcurrency)
@@ -101,7 +95,7 @@ public class UploadFile extends AbstractAzureMediator {
             HashMap<String, String> metadataMap = new HashMap<>();
 
             if (metadata != null && !metadata.isEmpty()) {
-                Utils.addDataToMapFromJsonString(metadata, metadataMap);
+                Utils.addDataToMapFromArrayString(metadata, metadataMap);
             }
 
             PathHttpHeaders headers = new PathHttpHeaders()
@@ -111,10 +105,12 @@ public class UploadFile extends AbstractAzureMediator {
                     .setContentEncoding(contentEncoding)
                     .setContentLanguage(contentLanguage);
 
+            Response<?> response = null;
+
             if (localFilePath != null && textContent == null) {
                 byte[] fileContent = Files.readAllBytes(Paths.get(localFilePath));
 
-                dataLakeFileClient.uploadFromFileWithResponse(
+                response = dataLakeFileClient.uploadFromFileWithResponse(
                         localFilePath,
                         parallelTransferOptions,
                         headers.setContentMd5(MessageDigest.getInstance("MD5").digest(fileContent)),
@@ -123,7 +119,7 @@ public class UploadFile extends AbstractAzureMediator {
                         timeout != null ? Duration.ofSeconds(timeout.longValue()) : null,
                         null);
             } else if (textContent != null && localFilePath == null) {
-                dataLakeFileClient.uploadWithResponse(
+                response = dataLakeFileClient.uploadWithResponse(
                         new FileParallelUploadOptions(BinaryData.fromString(textContent))
                                 .setHeaders(headers.setContentMd5(
                                         MessageDigest.getInstance("MD5").digest(textContent.getBytes())))
@@ -133,11 +129,16 @@ public class UploadFile extends AbstractAzureMediator {
                         null);
             }
 
-            JSONObject responseObject = new JSONObject();
-            responseObject.put("success", true);
-            responseObject.put("message", "Successfully uploaded the file");
+            if (response != null && response.getStatusCode() == 200) {
+                JSONObject responseObject = new JSONObject();
+                responseObject.put("success", true);
+                responseObject.put("message", "Successfully uploaded the file");
+                handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null, null);
+            }
+            // No 'else' block is needed because if the upload file operation fails,
+            // the SDK throws an exception. We only handle the success case explicitly
+            // (status code 200), and let exceptions propagate for error handling.
 
-            handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null, null);
         } catch (DataLakeStorageException e) {
             handleConnectorException(Error.DATA_LAKE_STORAGE_GEN2_ERROR, messageContext, e);
         } catch (ConnectException e) {

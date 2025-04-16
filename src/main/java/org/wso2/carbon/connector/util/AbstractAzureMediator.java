@@ -17,6 +17,10 @@
  */
 package org.wso2.carbon.connector.util;
 
+import com.azure.storage.file.datalake.DataLakeDirectoryClient;
+import com.azure.storage.file.datalake.DataLakeFileClient;
+import com.azure.storage.file.datalake.DataLakeFileSystemClient;
+import com.azure.storage.file.datalake.DataLakeServiceClient;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.LeaseAction;
 import org.apache.axis2.AxisFault;
@@ -27,7 +31,10 @@ import org.apache.synapse.commons.json.JsonUtil;
 import org.apache.synapse.core.axis2.Axis2MessageContext;
 import org.apache.synapse.data.connector.ConnectorResponse;
 import org.apache.synapse.data.connector.DefaultConnectorResponse;
+import org.wso2.carbon.connector.connection.AzureStorageConnectionHandler;
 import org.wso2.carbon.connector.core.AbstractConnector;
+import org.wso2.carbon.connector.core.ConnectException;
+import org.wso2.carbon.connector.core.connection.ConnectionHandler;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeParseException;
@@ -85,18 +92,21 @@ public abstract class AbstractAzureMediator extends AbstractConnector {
 
     protected <T> T getMediatorParameter(
             MessageContext messageContext, String parameterName, Class<T> type, boolean isOptional) {
+
         Object parameter = getParameter(messageContext, parameterName);
         return getValue(parameter, parameterName, type, isOptional, messageContext, "Parameter");
     }
 
     protected <T> T getProperty(
             MessageContext messageContext, String propertyName, Class<T> type, boolean isOptional) {
+
         Object property = messageContext.getProperty(propertyName);
         return getValue(property, propertyName, type, isOptional, messageContext, "Property");
     }
 
     private <T> T getValue(Object value, String name, Class<T> type, boolean isOptional,
                            MessageContext messageContext, String valueType) {
+
         if (!isOptional && (value == null || value.toString().isEmpty())) {
             handleException(String.format("%s %s is not provided", valueType, name), messageContext);
         } else if (value == null || value.toString().isEmpty()) {
@@ -112,15 +122,14 @@ public abstract class AbstractAzureMediator extends AbstractConnector {
         return null;
     }
 
-
     /**
      * Creates and returns a {@link DataLakeRequestConditions} object with the specified conditions.
      *
-     * @param leaseId the lease ID to be set in the request conditions (can be {@code null})
-     * @param ifMatch an ETag value that must match for the request to succeed (can be {@code null})
-     * @param ifNoneMatch an ETag value that must not match for the request to succeed (can be {@code null})
-     * @param ifModifiedSince a timestamp in ISO-8601 format; the request succeeds only if the resource
-     *                        has been modified since this time (can be {@code null})
+     * @param leaseId           the lease ID to be set in the request conditions (can be {@code null})
+     * @param ifMatch           an ETag value that must match for the request to succeed (can be {@code null})
+     * @param ifNoneMatch       an ETag value that must not match for the request to succeed (can be {@code null})
+     * @param ifModifiedSince   a timestamp in ISO-8601 format; the request succeeds only if the resource
+     *                          has been modified since this time (can be {@code null})
      * @param ifUnmodifiedSince a timestamp in ISO-8601 format; the request succeeds only if the resource
      *                          has not been modified since this time (can be {@code null})
      * @return a {@link DataLakeRequestConditions} object with the provided conditions
@@ -187,8 +196,8 @@ public abstract class AbstractAzureMediator extends AbstractConnector {
      * and throws a {@link SynapseException} with the error message and cause.
      *
      * @param code the {@link Error} object containing the error code and message
-     * @param mc the {@link MessageContext} in which the error properties should be set
-     * @param e the {@link Throwable} exception that caused this error
+     * @param mc   the {@link MessageContext} in which the error properties should be set
+     * @param e    the {@link Throwable} exception that caused this error
      * @throws SynapseException always thrown with the error message and cause from the provided {@link Error} object
      */
     public void handleConnectorException(Error code, MessageContext mc, Throwable e) {
@@ -205,7 +214,7 @@ public abstract class AbstractAzureMediator extends AbstractConnector {
      * and throws a {@link SynapseException} with the error message.
      *
      * @param code the {@link Error} object containing the error code and message
-     * @param mc the {@link MessageContext} in which the error properties should be set
+     * @param mc   the {@link MessageContext} in which the error properties should be set
      * @throws SynapseException always thrown with the error message from the provided {@link Error} object
      */
     public void handleConnectorException(Error code, MessageContext mc) {
@@ -221,9 +230,10 @@ public abstract class AbstractAzureMediator extends AbstractConnector {
      *
      * @param leaseAction the lease action as a string (e.g., "Acquire", "Auto Renew", "Acquire Release", "Release")
      * @return the corresponding {@link LeaseAction} constant, or {@code null} if the input is {@code null}, empty,
-     *         or does not match any known lease action.
+     * or does not match any known lease action.
      */
     public LeaseAction getLeaseAction(String leaseAction) {
+
         if (leaseAction == null || leaseAction.isEmpty()) {
             return null;
         }
@@ -242,5 +252,35 @@ public abstract class AbstractAzureMediator extends AbstractConnector {
         }
     }
 
+    public DataLakeServiceClient getDataLakeServiceClient(
+            String connectionName) throws ConnectException {
+
+        ConnectionHandler handler = ConnectionHandler.getConnectionHandler();
+        AzureStorageConnectionHandler azureStorageConnectionHandler =
+                (AzureStorageConnectionHandler) handler.getConnection(AzureConstants.CONNECTOR_NAME,
+                        connectionName);
+        return azureStorageConnectionHandler.getDataLakeServiceClient();
+    }
+
+    public DataLakeFileSystemClient getDataLakeFileSystemClient(
+            String connectionName, String fileSystemName) throws ConnectException {
+
+        DataLakeServiceClient dataLakeServiceClient = getDataLakeServiceClient(connectionName);
+        return dataLakeServiceClient.getFileSystemClient(fileSystemName);
+    }
+
+    public DataLakeFileClient getDataLakeFileClient(
+            String connectionName, String fileSystemName, String directoryName) throws ConnectException {
+
+        DataLakeFileSystemClient dataLakeFileSystemClient = getDataLakeFileSystemClient(connectionName, fileSystemName);
+        return dataLakeFileSystemClient.getFileClient(directoryName);
+    }
+
+    public DataLakeDirectoryClient getDataLakeDirectoryClient(
+            String connectionName, String fileSystemName, String directoryName) throws ConnectException {
+
+        DataLakeFileSystemClient dataLakeFileSystemClient = getDataLakeFileSystemClient(connectionName, fileSystemName);
+        return dataLakeFileSystemClient.getDirectoryClient(directoryName);
+    }
 
 }

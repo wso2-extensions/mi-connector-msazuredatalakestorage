@@ -20,16 +20,13 @@ package org.wso2.carbon.connector.operations;
 
 import com.azure.core.http.rest.Response;
 import com.azure.storage.file.datalake.DataLakeFileClient;
-import com.azure.storage.file.datalake.DataLakeServiceClient;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.google.gson.JsonSyntaxException;
 import org.apache.synapse.MessageContext;
 import org.apache.synapse.util.InlineExpressionUtil;
 import org.json.JSONObject;
-import org.wso2.carbon.connector.connection.AzureStorageConnectionHandler;
 import org.wso2.carbon.connector.core.ConnectException;
-import org.wso2.carbon.connector.core.connection.ConnectionHandler;
 import org.wso2.carbon.connector.util.AbstractAzureMediator;
 import org.wso2.carbon.connector.util.AzureConstants;
 import org.wso2.carbon.connector.util.Error;
@@ -61,15 +58,9 @@ public class UpdateMetadata extends AbstractAzureMediator {
         String ifUnmodifiedSince =
                 getMediatorParameter(messageContext, AzureConstants.IF_UNMODIFIED_SINCE, String.class, true);
 
-        ConnectionHandler handler = ConnectionHandler.getConnectionHandler();
-
         try {
-            AzureStorageConnectionHandler azureStorageConnectionHandler =
-                    (AzureStorageConnectionHandler) handler.getConnection(AzureConstants.CONNECTOR_NAME,
-                            connectionName);
-            DataLakeServiceClient dataLakeServiceClient = azureStorageConnectionHandler.getDataLakeServiceClient();
             DataLakeFileClient dataLakeFileClient =
-                    dataLakeServiceClient.getFileSystemClient(fileSystemName).getFileClient(filePathToAddMetaData);
+                    getDataLakeFileClient(connectionName, fileSystemName, filePathToAddMetaData);
 
             DataLakeRequestConditions requestConditions = getRequestConditions(leaseId, ifMatch, ifModifiedSince,
                     ifNoneMatch, ifUnmodifiedSince);
@@ -79,7 +70,7 @@ public class UpdateMetadata extends AbstractAzureMediator {
 
             String metadataString = metadata != null ? metadata : "";
 
-            Utils.addDataToMapFromJsonString(metadataString, metadataMap);
+            Utils.addDataToMapFromArrayString(metadataString, metadataMap);
 
             Response<?> response = dataLakeFileClient.setMetadataWithResponse(
                     metadataMap,
@@ -92,12 +83,11 @@ public class UpdateMetadata extends AbstractAzureMediator {
                 responseObject.put("success", true);
                 responseObject.put("message", "Successfully updated the metadata");
                 handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null, null);
-            } else {
-                JSONObject responseObject = new JSONObject();
-                responseObject.put("success", false);
-                responseObject.put("message", "Failed to update the metadata");
-                handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null, null);
             }
+
+            // No 'else' block is needed because if the update metadata operation fails,
+            // the SDK throws an exception. We only handle the success case explicitly
+            // (status code 200), and let exceptions propagate for error handling.
 
         } catch (DataLakeStorageException e) {
 

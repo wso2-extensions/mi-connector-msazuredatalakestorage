@@ -25,9 +25,7 @@ import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.options.DataLakeFileFlushOptions;
 import org.apache.synapse.MessageContext;
 import org.json.JSONObject;
-import org.wso2.carbon.connector.connection.AzureStorageConnectionHandler;
 import org.wso2.carbon.connector.core.ConnectException;
-import org.wso2.carbon.connector.core.connection.ConnectionHandler;
 import org.wso2.carbon.connector.util.AbstractAzureMediator;
 import org.wso2.carbon.connector.util.AzureConstants;
 import org.wso2.carbon.connector.util.Error;
@@ -72,19 +70,11 @@ public class FlushFile extends AbstractAzureMediator {
         Boolean uncommittedDataRetained =
                 getMediatorParameter(messageContext, AzureConstants.UNCOMMITTED_DATA_RETAINED, Boolean.class, true);
 
-        ConnectionHandler handler = ConnectionHandler.getConnectionHandler();
-
         LeaseAction leaseActionConstant = getLeaseAction(leaseAction);
 
         try {
-            AzureStorageConnectionHandler
-                    azureStorageConnectionHandler =
-                    (AzureStorageConnectionHandler) handler.getConnection(AzureConstants.CONNECTOR_NAME,
-                            connectionName);
-
             DataLakeFileClient dataLakeFileClient =
-                    azureStorageConnectionHandler.getDataLakeServiceClient().getFileSystemClient(fileSystemName)
-                            .getFileClient(filePathToFlush);
+                    getDataLakeFileClient(connectionName, fileSystemName, filePathToFlush);
             long fileSizeBefore = dataLakeFileClient.getProperties().getFileSize();
 
             Response<?> response = dataLakeFileClient.flushWithResponse(
@@ -109,12 +99,11 @@ public class FlushFile extends AbstractAzureMediator {
                 responseObject.put("success", true);
                 responseObject.put("message", "Successfully flushed");
                 handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null, null);
-            } else {
-                JSONObject responseObject = new JSONObject();
-                responseObject.put("success", false);
-                responseObject.put("message", "Failed to flush");
-                handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null, null);
             }
+
+            // No 'else' block is needed because if the flush operation fails,
+            // the SDK throws an exception. We only handle the success case explicitly
+            // (status code 200), and let exceptions propagate for error handling.
 
         } catch (DataLakeStorageException e) {
             handleConnectorException(org.wso2.carbon.connector.util.Error.DATA_LAKE_STORAGE_GEN2_ERROR, messageContext,

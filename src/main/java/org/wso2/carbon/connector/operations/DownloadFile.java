@@ -18,6 +18,7 @@
 
 package org.wso2.carbon.connector.operations;
 
+import com.azure.core.http.rest.Response;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.file.datalake.DataLakeFileClient;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
@@ -27,9 +28,7 @@ import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.options.ReadToFileOptions;
 import org.apache.synapse.MessageContext;
 import org.json.JSONObject;
-import org.wso2.carbon.connector.connection.AzureStorageConnectionHandler;
 import org.wso2.carbon.connector.core.ConnectException;
-import org.wso2.carbon.connector.core.connection.ConnectionHandler;
 import org.wso2.carbon.connector.util.AbstractAzureMediator;
 import org.wso2.carbon.connector.util.AzureConstants;
 import org.wso2.carbon.connector.util.Error;
@@ -75,17 +74,9 @@ public class DownloadFile extends AbstractAzureMediator {
 
         Long blockSizeL = blockSize != null ? blockSize.longValue() * 1024L * 1024L : null;
 
-        ConnectionHandler handler = ConnectionHandler.getConnectionHandler();
-
         try {
-            AzureStorageConnectionHandler azureStorageConnectionHandler =
-                    (AzureStorageConnectionHandler) handler.getConnection(AzureConstants.CONNECTOR_NAME,
-                            connectionName);
 
-            DataLakeFileClient dataLakeFileClient =
-                    azureStorageConnectionHandler.getDataLakeServiceClient().getFileSystemClient(fileSystemName)
-                            .getFileClient(filePath);
-
+            DataLakeFileClient dataLakeFileClient = getDataLakeFileClient(connectionName, fileSystemName, filePath);
             ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
                     .setBlockSizeLong(blockSizeL)
                     .setMaxConcurrency(maxConcurrency);
@@ -102,15 +93,17 @@ public class DownloadFile extends AbstractAzureMediator {
                 fileRange = new FileRange(offset.longValue(), count.longValue());
             }
 
-            if (maxRetryRequests == null || maxRetryRequests < 0) {
-                dataLakeFileClient.readToFileWithResponse(
+            Response<?> response;
+
+            if (maxRetryRequests == null) {
+                response = dataLakeFileClient.readToFileWithResponse(
                         new ReadToFileOptions(downloadFilePath).setRangeGetContentMd5(rangeGetContentMd5)
                                 .setRange(fileRange).setParallelTransferOptions(parallelTransferOptions)
                                 .setDataLakeRequestConditions(requestConditions),
                         timeout != null ? Duration.ofSeconds(timeout.longValue()) : null, null)
                 ;
             } else {
-                dataLakeFileClient.readToFileWithResponse(
+                response = dataLakeFileClient.readToFileWithResponse(
                         new ReadToFileOptions(downloadFilePath).setRangeGetContentMd5(rangeGetContentMd5)
                                 .setRange(fileRange).setParallelTransferOptions(parallelTransferOptions)
                                 .setDownloadRetryOptions(
@@ -119,10 +112,16 @@ public class DownloadFile extends AbstractAzureMediator {
                         timeout != null ? Duration.ofSeconds(timeout.longValue()) : null, null);
             }
 
-            JSONObject responseObject = new JSONObject();
-            responseObject.put("success", true);
-            responseObject.put("message", "Successfully downloaded the file");
-            handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null, null);
+            if ( response.getStatusCode() == 206) {
+                JSONObject responseObject = new JSONObject();
+                responseObject.put("success", true);
+                responseObject.put("message", "Successfully downloaded the file");
+                handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null, null);
+            }
+
+            // No 'else' block is needed because if the download file operation fails,
+            // the SDK throws an exception. We only handle the success case explicitly
+            // (status code 206), and let exceptions propagate for error handling.
 
         } catch (ConnectException e) {
             handleConnectorException(Error.CONNECTION_ERROR, messageContext, e);

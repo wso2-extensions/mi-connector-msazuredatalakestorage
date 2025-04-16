@@ -26,9 +26,7 @@ import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import org.apache.synapse.MessageContext;
 import org.apache.synapse.util.InlineExpressionUtil;
 import org.json.JSONObject;
-import org.wso2.carbon.connector.connection.AzureStorageConnectionHandler;
 import org.wso2.carbon.connector.core.ConnectException;
-import org.wso2.carbon.connector.core.connection.ConnectionHandler;
 import org.wso2.carbon.connector.util.AbstractAzureMediator;
 import org.wso2.carbon.connector.util.AzureConstants;
 import org.wso2.carbon.connector.util.Error;
@@ -77,15 +75,10 @@ public class CreateDirectory extends AbstractAzureMediator {
         String sourceLeaseId =
                 getMediatorParameter(messageContext, AzureConstants.SOURCE_LEASE_ID, String.class, true);
 
-        ConnectionHandler handler = ConnectionHandler.getConnectionHandler();
-
         try {
-            AzureStorageConnectionHandler azureStorageConnectionHandler =
-                    (AzureStorageConnectionHandler) handler.getConnection(AzureConstants.CONNECTOR_NAME,
-                            connectionName);
+
             DataLakeDirectoryClient dataLakeDirectoryClient =
-                    azureStorageConnectionHandler.getDataLakeServiceClient().getFileSystemClient(fileSystemName)
-                            .getDirectoryClient(directoryName);
+                    getDataLakeDirectoryClient(connectionName, fileSystemName, directoryName);
 
             metadata = InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, metadata);
 
@@ -99,7 +92,7 @@ public class CreateDirectory extends AbstractAzureMediator {
             HashMap<String, String> metadataMap = new HashMap<>();
 
             if (metadata != null && !metadata.isEmpty()) {
-                Utils.addDataToMapFromJsonString(metadata, metadataMap);
+                Utils.addDataToMapFromArrayString(metadata, metadataMap);
             }
 
             Response<?> response = dataLakeDirectoryClient.createIfNotExistsWithResponse(
@@ -115,12 +108,11 @@ public class CreateDirectory extends AbstractAzureMediator {
                 responseObject.put("message", "Successfully created the directory");
                 responseObject.put("directoryName", directoryName);
                 handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null, null);
-            } else {
-                JSONObject responseObject = new JSONObject();
-                responseObject.put("success", false);
-                responseObject.put("message", "Failed to create the directory");
-                handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null, null);
             }
+
+            // No 'else' block is needed because if the create directory operation fails,
+            // the SDK throws an exception. We only handle the success case explicitly
+            // (status code 201), and let exceptions propagate for error handling.
 
         } catch (ConnectException e) {
             handleConnectorException(Error.CONNECTION_ERROR, messageContext, e);

@@ -17,6 +17,7 @@
  */
 package org.wso2.carbon.connector.util;
 
+import com.google.gson.Gson;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.HashMap;
@@ -32,24 +33,20 @@ public class Utils {
      * @param arrayString Array string
      * @param metadataMap Map to add data
      */
-    public static void addDataToMapFromJsonString(String arrayString, HashMap<String, String> metadataMap) {
+    public static void addDataToMapFromArrayString(String arrayString, HashMap<String, String> metadataMap) {
 
         if (StringUtils.equals("[]", arrayString)) {
             return;
         }
-        arrayString = arrayString.substring(1, arrayString.length() - 2);
 
-        String[] entries = arrayString.split("],\\s*\\[");
-        for (String entry : entries) {
-            entry = entry.replace("[", "").replace("]", "");
-            String[] pair = entry.split(",");
+        Gson gson = new Gson();
+        String[][] array = gson.fromJson(arrayString, String[][].class);
 
-            if (pair.length == 2) {
-                String key = pair[0].trim().replace("\"", "");
-                String value = pair[1].trim().replace("\"", "");
-
-                metadataMap.put(key, value);
+        for (String[] pair : array) {
+            if (pair != null && pair.length == 2 && pair[0] != null && pair[1] != null) {
+                metadataMap.put(pair[0], pair[1]);
             }
         }
+
     }
 }

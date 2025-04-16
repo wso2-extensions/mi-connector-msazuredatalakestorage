@@ -20,16 +20,12 @@ package org.wso2.carbon.connector.operations;
 
 import com.azure.core.http.rest.Response;
 import com.azure.storage.file.datalake.DataLakeFileClient;
-import com.azure.storage.file.datalake.DataLakeFileSystemClient;
-import com.azure.storage.file.datalake.DataLakeServiceClient;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import org.apache.synapse.MessageContext;
 import org.json.JSONObject;
-import org.wso2.carbon.connector.connection.AzureStorageConnectionHandler;
 import org.wso2.carbon.connector.core.ConnectException;
-import org.wso2.carbon.connector.core.connection.ConnectionHandler;
 import org.wso2.carbon.connector.util.AbstractAzureMediator;
 import org.wso2.carbon.connector.util.AzureConstants;
 import org.wso2.carbon.connector.util.Error;
@@ -58,19 +54,12 @@ public class DeletePath extends AbstractAzureMediator {
                 getMediatorParameter(messageContext, AzureConstants.IF_UNMODIFIED_SINCE, String.class, true);
         String ifMatch = getMediatorParameter(messageContext, AzureConstants.IF_MATCH, String.class, true);
 
-        ConnectionHandler handler = ConnectionHandler.getConnectionHandler();
-
         try {
-            AzureStorageConnectionHandler azureStorageConnectionHandler =
-                    (AzureStorageConnectionHandler) handler.getConnection(AzureConstants.CONNECTOR_NAME,
-                            connectionName);
-            DataLakeServiceClient dataLakeServiceClient = azureStorageConnectionHandler.getDataLakeServiceClient();
-            DataLakeFileSystemClient dataLakeFileSystemClient =
-                    dataLakeServiceClient.getFileSystemClient(fileSystemName);
+
             DataLakeRequestConditions requestConditions = getRequestConditions(leaseId, ifMatch,
                     ifModifiedSince, ifNoneMatch, ifUnmodifiedSince);
             DataLakeFileClient dataLakeFileClient =
-                    dataLakeFileSystemClient.getFileClient(directoryName);
+                    getDataLakeFileClient(connectionName, fileSystemName, directoryName);
             Response<?> response = dataLakeFileClient.deleteIfExistsWithResponse(
                     new DataLakePathDeleteOptions().setIsRecursive(recursive).setRequestConditions(requestConditions),
                     timeout != null ? Duration.ofSeconds(timeout.longValue()) : null, null);
@@ -80,12 +69,11 @@ public class DeletePath extends AbstractAzureMediator {
                 responseObject.put("success", true);
                 responseObject.put("message", "Successfully deleted the path");
                 handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null, null);
-            } else {
-                JSONObject responseObject = new JSONObject();
-                responseObject.put("success", false);
-                responseObject.put("message", "Failed to delete the path");
-                handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null, null);
             }
+
+            // No 'else' block is needed because if the delete path operation fails,
+            // the SDK throws an exception. We only handle the success case explicitly
+            // (status code 200), and let exceptions propagate for error handling.
 
         } catch (ConnectException e) {
             handleConnectorException(Error.CONNECTION_ERROR, messageContext, e);

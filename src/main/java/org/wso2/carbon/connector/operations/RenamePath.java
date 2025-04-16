@@ -18,15 +18,13 @@
 
 package org.wso2.carbon.connector.operations;
 
+import com.azure.core.http.rest.Response;
 import com.azure.storage.file.datalake.DataLakeFileClient;
-import com.azure.storage.file.datalake.DataLakeServiceClient;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import org.apache.synapse.MessageContext;
 import org.json.JSONObject;
-import org.wso2.carbon.connector.connection.AzureStorageConnectionHandler;
 import org.wso2.carbon.connector.core.ConnectException;
-import org.wso2.carbon.connector.core.connection.ConnectionHandler;
 import org.wso2.carbon.connector.util.AbstractAzureMediator;
 import org.wso2.carbon.connector.util.AzureConstants;
 import org.wso2.carbon.connector.util.Error;
@@ -70,35 +68,35 @@ public class RenamePath extends AbstractAzureMediator {
                 getMediatorParameter(messageContext, AzureConstants.DESTINATION_IF_UNMODIFIED_SINCE, String.class,
                         true);
 
-        ConnectionHandler handler = ConnectionHandler.getConnectionHandler();
-
         try {
-            AzureStorageConnectionHandler azureStorageConnectionHandler =
-                    (AzureStorageConnectionHandler) handler.getConnection(AzureConstants.CONNECTOR_NAME,
-                            connectionName);
+
             DataLakeRequestConditions destinationRequestConditions = getRequestConditions(
                     destinationLeaseId, destinationIfMatch, destinationIfNoneMatch, destinationIfModifiedSince,
                     destinationIfUnmodifiedSince);
-            DataLakeServiceClient dataLakeServiceClient = azureStorageConnectionHandler.getDataLakeServiceClient();
 
             DataLakeRequestConditions sourceRequestConditions =
                     getRequestConditions(sourceLeaseId, sourceIfMatch, sourceIfNoneMatch, sourceIfModifiedSince,
                             sourceIfUnmodifiedSince);
 
             DataLakeFileClient dataLakeFileClient =
-                    dataLakeServiceClient.getFileSystemClient(fileSystemName).getFileClient(directoryName);
+                    getDataLakeFileClient(connectionName, fileSystemName, directoryName);
 
-            dataLakeFileClient
+            Response<?> response = dataLakeFileClient
                     .renameWithResponse(newFileSystemName, newDirectoryName, sourceRequestConditions,
                             destinationRequestConditions,
                             timeout != null ? Duration.ofSeconds(timeout.longValue()) : null, null);
 
-            JSONObject responseObject = new JSONObject();
-            responseObject.put("success", true);
-            responseObject.put("message", "Successfully renamed the path");
+            if (response.getStatusCode() == 201) {
+                JSONObject responseObject = new JSONObject();
+                responseObject.put("success", true);
+                responseObject.put("message", "Successfully renamed the path");
 
-            handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null,
-                    null);
+                handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null,
+                        null);
+            }
+            // No 'else' block is needed because if the update rename path operation fails,
+            // the SDK throws an exception. We only handle the success case explicitly
+            // (status code 201), and let exceptions propagate for error handling.
 
         } catch (DataLakeStorageException e) {
             handleConnectorException(Error.DATA_LAKE_STORAGE_GEN2_ERROR, messageContext, e);

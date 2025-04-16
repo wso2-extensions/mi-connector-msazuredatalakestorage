@@ -24,9 +24,7 @@ import com.azure.storage.file.datalake.models.FileSystemListDetails;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
 import org.apache.synapse.MessageContext;
 import org.json.JSONObject;
-import org.wso2.carbon.connector.connection.AzureStorageConnectionHandler;
 import org.wso2.carbon.connector.core.ConnectException;
-import org.wso2.carbon.connector.core.connection.ConnectionHandler;
 import org.wso2.carbon.connector.util.AbstractAzureMediator;
 import org.wso2.carbon.connector.util.AzureConstants;
 import org.wso2.carbon.connector.util.Error;
@@ -58,17 +56,13 @@ public class ListFileSystems extends AbstractAzureMediator {
         Boolean retrieveMetadata =
                 getMediatorParameter(messageContext, AzureConstants.RETRIEVE_METADATA, Boolean.class, true);
 
-        ConnectionHandler handler = ConnectionHandler.getConnectionHandler();
-
         Map<String, Object> fileSystemsWithMetadata = new HashMap<>();
 
         List<String> fileSystemNames = new ArrayList<>();
 
         try {
-            AzureStorageConnectionHandler azureStorageConnectionHandler =
-                    (AzureStorageConnectionHandler) handler.getConnection(AzureConstants.CONNECTOR_NAME,
-                            connectionName);
-            DataLakeServiceClient dataLakeServiceClient = azureStorageConnectionHandler.getDataLakeServiceClient();
+
+            DataLakeServiceClient dataLakeServiceClient = getDataLakeServiceClient(connectionName);
             dataLakeServiceClient.listFileSystems(
                             new ListFileSystemsOptions().setPrefix(prefix).setMaxResultsPerPage(maxResultsPerPage)
                                     .setDetails(

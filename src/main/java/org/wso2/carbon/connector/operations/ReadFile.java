@@ -28,9 +28,7 @@ import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.models.FileReadResponse;
 import org.apache.synapse.MessageContext;
 import org.json.JSONObject;
-import org.wso2.carbon.connector.connection.AzureStorageConnectionHandler;
 import org.wso2.carbon.connector.core.ConnectException;
-import org.wso2.carbon.connector.core.connection.ConnectionHandler;
 import org.wso2.carbon.connector.util.AbstractAzureMediator;
 import org.wso2.carbon.connector.util.AzureConstants;
 import org.wso2.carbon.connector.util.Error;
@@ -64,15 +62,10 @@ public class ReadFile extends AbstractAzureMediator {
         String ifModifiedSince =
                 getMediatorParameter(messageContext, AzureConstants.IF_MODIFIED_SINCE, String.class, true);
 
-        ConnectionHandler handler = ConnectionHandler.getConnectionHandler();
-
         try {
-            AzureStorageConnectionHandler azureStorageConnectionHandler =
-                    (AzureStorageConnectionHandler) handler.getConnection(AzureConstants.CONNECTOR_NAME,
-                            connectionName);
-            DataLakeFileSystemClient dataLakeFileSystemClient =
-                    azureStorageConnectionHandler.getDataLakeServiceClient().getFileSystemClient(fileSystemName);
 
+            DataLakeFileSystemClient dataLakeFileSystemClient =
+                    getDataLakeFileSystemClient(connectionName, fileSystemName);
             FileRange fileRange;
             if (offset == null) {
                 fileRange = null;
@@ -96,14 +89,16 @@ public class ReadFile extends AbstractAzureMediator {
                                                                                                          );
             String content = outputStream.toString();
 
-            HttpHeaders headers = response.getHeaders();
+            if (response.getStatusCode() == 200) {
+                HttpHeaders headers = response.getHeaders();
+                JSONObject contentJson = new JSONObject();
+                contentJson.put("status", true);
+                contentJson.put("content", content);
+                contentJson.put("length", headers.getValue(HttpHeaderName.CONTENT_LENGTH));
 
-            JSONObject contentJson = new JSONObject();
-            contentJson.put("status", true);
-            contentJson.put("content", content);
-            contentJson.put("length", headers.getValue(HttpHeaderName.CONTENT_LENGTH));
+                handleConnectorResponse(messageContext, responseVariable, overwriteBody, contentJson, null, null);
+            }
 
-            handleConnectorResponse(messageContext, responseVariable, overwriteBody, contentJson, null, null);
         } catch (ConnectException e) {
             handleConnectorException(Error.CONNECTION_ERROR, messageContext, e);
         } catch (DataLakeStorageException e) {

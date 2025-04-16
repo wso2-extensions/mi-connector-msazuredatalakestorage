@@ -74,14 +74,11 @@ public class DeleteFileSystem extends AbstractAzureMediator {
                 responseObject.put("message", "Successfully deleted the file system");
                 handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null,
                         null);
-            } else {
-                JSONObject responseObject = new JSONObject();
-                responseObject.put("success", false);
-                responseObject.put("message", "Failed to delete the file system");
-                handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null,
-                        null);
-
             }
+
+            // No 'else' block is needed because if the delete file system operation fails,
+            // the SDK throws an exception. We only handle the success case explicitly
+            // (status code 202), and let exceptions propagate for error handling.
 
         } catch (ConnectException e) {
             handleConnectorException(Error.CONNECTION_ERROR, messageContext, e);

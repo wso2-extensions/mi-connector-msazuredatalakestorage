@@ -24,9 +24,7 @@ import com.azure.storage.file.datalake.models.PublicAccessType;
 import org.apache.synapse.MessageContext;
 import org.apache.synapse.util.InlineExpressionUtil;
 import org.json.JSONObject;
-import org.wso2.carbon.connector.connection.AzureStorageConnectionHandler;
 import org.wso2.carbon.connector.core.ConnectException;
-import org.wso2.carbon.connector.core.connection.ConnectionHandler;
 import org.wso2.carbon.connector.util.AbstractAzureMediator;
 import org.wso2.carbon.connector.util.AzureConstants;
 import org.wso2.carbon.connector.util.Error;
@@ -62,19 +60,17 @@ public class CreateFileSystem extends AbstractAzureMediator {
                 break;
         }
 
-        ConnectionHandler handler = ConnectionHandler.getConnectionHandler();
         try {
-            AzureStorageConnectionHandler azureStorageConnectionHandler =
-                    (AzureStorageConnectionHandler) handler.getConnection(AzureConstants.CONNECTOR_NAME,
-                            connectionName);
-            DataLakeFileSystemClient dataLakeFileSystemClient =
-                    azureStorageConnectionHandler.getDataLakeServiceClient().getFileSystemClient(fileSystemName);
-            metadata = InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, metadata);
 
+            DataLakeFileSystemClient dataLakeFileSystemClient =
+                    getDataLakeFileSystemClient(connectionName, fileSystemName);
+            metadata = InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, metadata);
             HashMap<String, String> metadataMap = new HashMap<>();
+
             if (metadata != null) {
-                Utils.addDataToMapFromJsonString(metadata, metadataMap);
+                Utils.addDataToMapFromArrayString(metadata, metadataMap);
             }
+
             Response<?> response = dataLakeFileSystemClient.createIfNotExistsWithResponse(
                     metadata != null ? metadataMap : null, publicAccessType,
                     timeout != null ? Duration.ofSeconds(timeout.longValue()) : null, null);
@@ -84,16 +80,15 @@ public class CreateFileSystem extends AbstractAzureMediator {
                 responseObject.put("success", true);
                 responseObject.put("message", "Successfully created the filesystem");
                 responseObject.put("fileSystemName", fileSystemName);
+                responseObject.put("metadata", metadata);
 
                 handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null,
                         null);
-            } else {
-                JSONObject responseObject = new JSONObject();
-                responseObject.put("success", false);
-                responseObject.put("message", "Failed to create the filesystem");
-                handleConnectorResponse(messageContext, responseVariable, overwriteBody, responseObject, null,
-                        null);
             }
+
+            // No 'else' block is needed because if the create file system operation fails,
+            // the SDK throws an exception. We only handle the success case explicitly
+            // (status code 201), and let exceptions propagate for error handling.
 
         } catch (ConnectException e) {
             handleConnectorException(Error.CONNECTION_ERROR, messageContext, e);

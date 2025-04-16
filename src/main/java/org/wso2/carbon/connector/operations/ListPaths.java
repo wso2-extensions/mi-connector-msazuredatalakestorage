@@ -23,9 +23,7 @@ import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.ListPathsOptions;
 import org.apache.synapse.MessageContext;
 import org.json.JSONObject;
-import org.wso2.carbon.connector.connection.AzureStorageConnectionHandler;
 import org.wso2.carbon.connector.core.ConnectException;
-import org.wso2.carbon.connector.core.connection.ConnectionHandler;
 import org.wso2.carbon.connector.util.AbstractAzureMediator;
 import org.wso2.carbon.connector.util.AzureConstants;
 import org.wso2.carbon.connector.util.Error;
@@ -54,15 +52,10 @@ public class ListPaths extends AbstractAzureMediator {
                 getMediatorParameter(messageContext, AzureConstants.MAX_RESULTS, Integer.class, true);
         Integer timeout = getMediatorParameter(messageContext, AzureConstants.TIMEOUT, Integer.class, true);
 
-        ConnectionHandler handler = ConnectionHandler.getConnectionHandler();
-
         try {
-            AzureStorageConnectionHandler azureStorageConnectionHandler =
-                    (AzureStorageConnectionHandler) handler.getConnection(AzureConstants.CONNECTOR_NAME,
-                            connectionName);
-            DataLakeFileSystemClient dataLakeFileSystemClient =
-                    azureStorageConnectionHandler.getDataLakeServiceClient().getFileSystemClient(fileSystemName);
 
+            DataLakeFileSystemClient dataLakeFileSystemClient =
+                    getDataLakeFileSystemClient(connectionName, fileSystemName);
             List<String> listPaths = new ArrayList<>();
             dataLakeFileSystemClient.listPaths(
                             new ListPathsOptions().setPath(path).setRecursive(recursive).setMaxResults(maxResults),
