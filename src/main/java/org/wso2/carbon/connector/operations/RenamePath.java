@@ -96,7 +96,7 @@ public class RenamePath extends AbstractAzureMediator {
             }
             // No 'else' block is needed because if the update rename path operation fails,
             // the SDK throws an exception. We only handle the success case explicitly
-            // (status code 201), and let exceptions propagate for error handling.
+            // (status code 201) and let exceptions propagate for error handling.
 
         } catch (DataLakeStorageException e) {
             handleConnectorException(Error.DATA_LAKE_STORAGE_GEN2_ERROR, messageContext, e);

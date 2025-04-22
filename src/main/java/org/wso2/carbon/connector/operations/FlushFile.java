@@ -103,7 +103,7 @@ public class FlushFile extends AbstractAzureMediator {
 
             // No 'else' block is needed because if the flush operation fails,
             // the SDK throws an exception. We only handle the success case explicitly
-            // (status code 200), and let exceptions propagate for error handling.
+            // (status code 200) and let exceptions propagate for error handling.
 
         } catch (DataLakeStorageException e) {
             handleConnectorException(org.wso2.carbon.connector.util.Error.DATA_LAKE_STORAGE_GEN2_ERROR, messageContext,

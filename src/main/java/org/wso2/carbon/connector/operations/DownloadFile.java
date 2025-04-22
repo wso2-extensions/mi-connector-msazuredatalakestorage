@@ -121,7 +121,7 @@ public class DownloadFile extends AbstractAzureMediator {
 
             // No 'else' block is needed because if the download file operation fails,
             // the SDK throws an exception. We only handle the success case explicitly
-            // (status code 206), and let exceptions propagate for error handling.
+            // (status code 206) and let exceptions propagate for error handling.
 
         } catch (ConnectException e) {
             handleConnectorException(Error.CONNECTION_ERROR, messageContext, e);

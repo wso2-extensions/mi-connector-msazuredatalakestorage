@@ -73,7 +73,7 @@ public class DeletePath extends AbstractAzureMediator {
 
             // No 'else' block is needed because if the delete path operation fails,
             // the SDK throws an exception. We only handle the success case explicitly
-            // (status code 200), and let exceptions propagate for error handling.
+            // (status code 200) and let exceptions propagate for error handling.
 
         } catch (ConnectException e) {
             handleConnectorException(Error.CONNECTION_ERROR, messageContext, e);

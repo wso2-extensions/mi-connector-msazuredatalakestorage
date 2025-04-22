@@ -109,7 +109,7 @@ public class AppendFile extends AbstractAzureMediator {
 
             // No 'else' block is needed because if the append operation fails,
             // the SDK throws an exception. We only handle the success case explicitly
-            // (status code 202), and let exceptions propagate for error handling.
+            // (status code 202) and let exceptions propagate for error handling.
 
         } catch (DataLakeStorageException e) {
             handleConnectorException(Error.DATA_LAKE_STORAGE_GEN2_ERROR, messageContext, e);

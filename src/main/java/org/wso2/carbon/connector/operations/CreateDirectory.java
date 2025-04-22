@@ -111,7 +111,7 @@ public class CreateDirectory extends AbstractAzureMediator {
 
             // No 'else' block is needed because if the create directory operation fails,
             // the SDK throws an exception. We only handle the success case explicitly
-            // (status code 201), and let exceptions propagate for error handling.
+            // (status code 201) and let exceptions propagate for error handling.
 
         } catch (ConnectException e) {
             handleConnectorException(Error.CONNECTION_ERROR, messageContext, e);
