@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ 	Copyright (c) 2025, WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
+
+    WSO2 LLC. licenses this file to you under the Apache License,
+    Version 2.0 (the "License"); you may not use this file except
+    in compliance with the License.
+    You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing,
+   software distributed under the License is distributed on an
+   "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+   KIND, either express or implied.  See the License for the
+   specific language governing permissions and limitations
+   under the License.
+-->
+<component name="functions" type="synapse/template">
+    <subComponents>
+        <component name="createFileSystem">
+            <file>createFileSystem.xml</file>
+            <description>Creates a File System into the Azure Data Lake storage Gen2.</description>
+        </component>
+        <component name="deleteFileSystem">
+            <file>deleteFileSystem.xml</file>
+            <description>Deletes the File System from the Azure Data Lake storage Gen2.</description>
+        </component>
+        <component name="listFileSystems">
+            <file>listFileSystems.xml</file>
+            <description>Gets the list of all File Systems.</description>
+        </component>
+        <component name="createDirectory">
+            <file>createDirectory.xml</file>
+            <description>Creates a directory into the Azure Data Lake storage Gen2.</description>
+        </component>
+        <component name="renamePath">
+            <file>renamePath.xml</file>
+            <description>Renames the path of the file system</description>
+        </component>
+        <component name="uploadFile">
+            <file>uploadFile.xml</file>
+            <description>Uploads the File to the directory path within the file system</description>
+        </component>
+        <component name="updateMetadata">
+            <file>updateMetadata.xml</file>
+            <description>Updates the metadata to the file</description>
+        </component>
+        <component name="getMetadata">
+            <file>getMetadata.xml</file>
+            <description>Gets the metadata of the file</description>
+        </component>
+        <component name="downloadFile">
+            <file>downloadFile.xml</file>
+            <description>Downloads the file</description>
+        </component>
+        <component name="readFile">
+            <file>readFile.xml</file>
+            <description>Reads the file</description>
+        </component>
+        <component name="listPaths">
+            <file>listPaths.xml</file>
+            <description>Reads all paths of the file system</description>
+        </component>
+        <component name="appendFile">
+            <file>appendFile.xml</file>
+            <description>Appends files to the existing file</description>
+        </component>
+        <component name="flushFile">
+            <file>flushFile.xml</file>
+            <description>Flushes files to the existing file</description>
+        </component>
+        <component name="deleteFile">
+            <file>deleteFile.xml</file>
+            <description>Deletes the file from the file system</description>
+        </component>
+        <component name="deleteDirectory">
+            <file>deleteDirectory.xml</file>
+            <description>Deletes the directory from the file system</description>
+        </component>
+    </subComponents>
+</component>

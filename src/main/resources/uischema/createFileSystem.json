@@ -1,0 +1,150 @@
+{
+    "connectorName": "msazuredatalakestorage",
+    "operationName": "createFileSystem",
+    "title": "Create File System",
+    "help": "<h1>Create File System</h1> <b>This operation can be used to create a new file system.</b>",
+    "elements": [
+        {
+            "type": "attributeGroup",
+            "value": {
+                "groupName": "General",
+                "elements": [
+                    {
+                        "type": "attribute",
+                        "value": {
+                            "name": "configRef",
+                            "displayName": "Connection",
+                            "inputType": "connection",
+                            "allowedConnectionTypes": [
+                                "MSAzureDataLake"
+                            ],
+                            "defaultType": "connection.msazuredatalakestorage",
+                            "defaultValue": "",
+                            "required": "true",
+                            "helpTip": "Connection to be used"
+                        }
+                    },
+                    {
+                        "type": "attributeGroup",
+                        "value": {
+                            "groupName": "Basic",
+                            "elements": [
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "fileSystemName",
+                                        "displayName": "File System name",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "true",
+                                        "helpTip": "Name of the file system to be created.",
+                                        "validation": "nameWithoutSpecialCharactors"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "type": "attributeGroup",
+                        "value": {
+                            "groupName": "Advanced",
+                            "isCollapsed": "true",
+                            "elements": [
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "timeout",
+                                        "displayName": "Timeout(seconds)",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "false",
+                                        "helpTip": "Time in seconds to wait for the operation to complete."
+                                    }
+                                },
+                                {
+                                    "type": "table",
+                                    "value": {
+                                        "name": "metadata",
+                                        "displayName": "Metadata",
+                                        "description": "Key value pairs of metadata",
+                                        "tableKey": "propertyName",
+                                        "tableValue": "propertyValue",
+                                        "elements": [
+                                            {
+                                                "type": "attribute",
+                                                "value": {
+                                                    "name": "propertyName",
+                                                    "displayName": "Name",
+                                                    "inputType": "string",
+                                                    "required": false,
+                                                    "helpTip": ""
+                                                }
+                                            },
+                                            {
+                                                "type": "attribute",
+                                                "value": {
+                                                    "name": "propertyValue",
+                                                    "displayName": "Value",
+                                                    "inputType": "stringOrExpression",
+                                                    "required": false,
+                                                    "helpTip": ""
+                                                }
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "accessType",
+                                        "displayName": "Public Access Type",
+                                        "inputType": "combo",
+                                        "defaultValue": "NONE",
+                                        "required": "false",
+                                        "comboValues": [
+                                            "NONE",
+                                            "BLOB",
+                                            "CONTAINER"
+                                        ],
+                                        "helpTip": "The type of public access to be set on the file system."
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "type": "attributeGroup",
+                        "value": {
+                            "groupName": "Response",
+                            "elements": [
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "responseVariable",
+                                        "displayName": "Response Variable Name",
+                                        "inputType": "string",
+                                        "deriveResponseVariable": true,
+                                        "required": "true",
+                                        "helpTip": "Name of the variable to which the output of the operation should be assigned"
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "overwriteBody",
+                                        "displayName": "Overwrite Message Body",
+                                        "inputType": "checkbox",
+                                        "defaultValue": "false",
+                                        "helpTip": "Replace the Message Body in Message Context with the response of the operation (This will remove the payload from the above variable).",
+                                        "required": "false"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}
+

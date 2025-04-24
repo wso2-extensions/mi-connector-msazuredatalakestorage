@@ -1,0 +1,143 @@
+{
+    "connectorName": "msazuredatalakestorage",
+    "connectionName": "MSAzureDataLake",
+    "title": "Azure Data Lake Connector",
+    "help": "The Azure Data Lake Connector allows you to access the Azure Data Lake Storage Service",
+    "elements": [
+        {
+            "type": "attribute",
+            "value": {
+                "name": "connectionName",
+                "displayName": "Connection Name",
+                "inputType": "string",
+                "defaultValue": "AZURE_CONNECTION_ACCESS_KEY",
+                "required": "true",
+                "helpTip": "The name for the Azure Data Lake connection",
+                "validation": "nameWithoutSpecialCharactors"
+            }
+        },
+        {
+            "type": "attributeGroup",
+            "value": {
+                "groupName": "General",
+                "elements": [
+                    {
+                        "type": "attributeGroup",
+                        "value": {
+                            "groupName": "Basic",
+                            "elements": [
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "accountName",
+                                        "displayName": "Account name",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "helpTip": "The name of the azure storage account.",
+                                        "required": "true"
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "accessType",
+                                        "displayName": "Access Type",
+                                        "inputType": "combo",
+                                        "defaultValue": "Access Key",
+                                        "comboValues": [
+                                            "Access Key",
+                                            "Shared Access Signature",
+                                            "OAuth2"
+                                        ],
+                                        "required": "true",
+                                        "helpTip": "The access key for the storage account."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "accountKey",
+                                        "displayName": "Access Key",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "true",
+                                        "helpTip": "The access key for the storage account.",
+                                        "enableCondition": [
+                                            {
+                                                "accessType": "Access Key"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "sasToken",
+                                        "displayName": "Shared Access Signature Token",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "true",
+                                        "helpTip": "The sas token for the storage account.",
+                                        "enableCondition": [
+                                            {
+                                                "accessType": "Shared Access Signature"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "clientId",
+                                        "displayName": "Client ID",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "true",
+                                        "helpTip": "The client ID of the application.",
+                                        "enableCondition": [
+                                            {
+                                                "accessType": "OAuth2"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "clientSecret",
+                                        "displayName": "Client Secret",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "true",
+                                        "helpTip": "The client secret of the application.",
+                                        "enableCondition": [
+                                            {
+                                                "accessType": "OAuth2"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "tenantId",
+                                        "displayName": "Tenant ID",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "true",
+                                        "helpTip": "The tenant ID of the application.",
+                                        "enableCondition": [
+                                            {
+                                                "accessType": "OAuth2"
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}

@@ -1,0 +1,26 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "title": "List File Systems",
+    "description": "List file systems.",
+    "properties": {
+        "payload": {
+            "type": "object",
+            "description": "List of file systems.",
+            "properties": {
+                "status": {
+                    "type": "boolean",
+                    "description": "Whether the file systems was retrieved successfully."
+                },
+                "result": {
+                    "type": "object",
+                    "description": "Message indicating the result of the operation."
+                }
+            }
+        }
+    },
+    "required": [
+        "payload"
+    ],
+    "additionalProperties": false
+}

@@ -1,0 +1,26 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "title": "List Paths",
+    "description": "List paths.",
+    "properties": {
+        "payload": {
+            "type": "object",
+            "description": "List of paths.",
+            "properties": {
+                "status": {
+                    "type": "boolean",
+                    "description": "Whether the paths was retrieved successfully."
+                },
+                "result": {
+                    "type": "object",
+                    "description": "Message indicating the result of the operation."
+                }
+            }
+        }
+    },
+    "required": [
+        "payload"
+    ],
+    "additionalProperties": false
+}

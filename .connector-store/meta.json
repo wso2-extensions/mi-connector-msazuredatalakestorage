@@ -1,0 +1,111 @@
+{
+    "name": "Azure Data Lake Storage Gen2",
+    "owner": "WSO2",
+    "product": "MI",
+    "category": "Developer Tools",
+    "documentationUrl": "https://mi.docs.wso2.com/en/4.4.0/",
+    "mavenGroupId": "org.wso2.integration.connector",
+    "mavenArtifactId": "mi-connector-azure-data-lake-storage-gen2",
+    "description": "The Azure Data Lake Storage Gen2 Connector allows you to access the Azure Data Lake Storage Service.",
+    "status": "Active",
+    "rank": 1,
+    "type": "Connector",
+    "releases": [
+        {
+            "tagName": "v1.0.0",
+            "products": [
+                "MI 4.4.0"
+            ],
+            "operations": [
+                {
+                    "name":"init",
+                    "description":"Config operation",
+                    "isHidden":true
+                },
+                {
+                    "name":"createFileSystem",
+                    "description":"Create File System",
+                    "isHidden":false
+                },
+                {
+                    "name":"deleteFileSystem",
+                    "description":"Delete File System",
+                    "isHidden":false
+                },
+                {
+                    "name":"listFileSystems",
+                    "description":"List File Systems",
+                    "isHidden":false
+                },
+                {
+                    "name":"createDirectory",
+                    "description":"Create Directory in the file system",
+                    "isHidden":false
+                },
+                {
+                    "name":"deleteDirectory",
+                    "description":"Delete Directory in the file system",
+                    "isHidden":false
+                },
+                {
+                    "name":"renameDirectory",
+                    "description":"Rename Directory in the file system",
+                    "isHidden":false
+                },
+                {
+                    "name":"uploadFile",
+                    "description":"Upload File to the file system",
+                    "isHidden":false
+                },
+                {
+                    "name":"downloadFile",
+                    "description":"Download File from the file system",
+                    "isHidden":false
+                },
+                {
+                    "name":"deleteFile",
+                    "description":"Delete File from the file system",
+                    "isHidden":false
+                },
+                {
+                    "name":"renameFile",
+                    "description":"Rename File in the file system",
+                    "isHidden":false
+                },
+                {
+                    "name":"readFile",
+                    "description":"Read File from the file system",
+                    "isHidden":false
+                },
+                {
+                    "name":"getMetadata",
+                    "description":"Get Metadata of the file system",
+                    "isHidden":false
+                },
+                {
+                    "name":"updateMetadata",
+                    "description":"Update Metadata of the file system",
+                    "isHidden":false
+                },
+                {
+                    "name":"listPaths",
+                    "description":"List Paths of the file system",
+                    "isHidden":false
+                }
+            ],
+            "connections": [
+                {
+                    "name": "azureDataLake",
+                    "description": "Azure Data Lake Storage Gen2 Connection"
+                }
+            ],
+            "isHidden": false
+        }
+    ],
+    "labels": [
+        "azure",
+        "data lake",
+        "storage",
+        "gen2"
+    ]
+}

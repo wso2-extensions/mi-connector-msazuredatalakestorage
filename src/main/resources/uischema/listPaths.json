@@ -1,0 +1,133 @@
+{
+    "connectorName": "msazuredatalakestorage",
+    "operationName": "listPaths",
+    "title": "List Paths of the File System",
+    "help": "<h1>List Paths of the File System</h1> <b>This operation can be used to get all paths of the file system.</b>",
+    "elements": [
+        {
+            "type": "attributeGroup",
+            "value": {
+                "groupName": "General",
+                "elements": [
+                    {
+                        "type": "attribute",
+                        "value": {
+                            "name": "configRef",
+                            "displayName": "Connection",
+                            "inputType": "connection",
+                            "allowedConnectionTypes": [
+                                "MSAzureDataLake"
+                            ],
+                            "defaultType": "connection.msazuredatalakestorage",
+                            "defaultValue": "",
+                            "required": "true",
+                            "helpTip": "Connection to be used"
+                        }
+                    },
+                    {
+                        "type": "attributeGroup",
+                        "value": {
+                            "groupName": "Basic",
+                            "elements": [
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "fileSystemName",
+                                        "displayName": "File System name",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "true",
+                                        "helpTip": "Name of the file system."
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "type": "attributeGroup",
+                        "value": {
+                            "groupName": "Advanced",
+                            "isCollapsed": "true",
+                            "elements": [
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "path",
+                                        "displayName": "Specific Path",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "false",
+                                        "helpTip": "Path of the directory for which paths are to be fetched."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "recursive",
+                                        "displayName": "Recursive",
+                                        "inputType": "checkbox",
+                                        "defaultValue": "false",
+                                        "required": "false",
+                                        "helpTip": "If true, all paths under the specified path are fetched."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "maxResults",
+                                        "displayName": "Max Results",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "false",
+                                        "helpTip": "Specifies the maximum number of blobs to return per page, including all BlobPrefix elements."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "timeout",
+                                        "displayName": "Timeout(seconds)",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "false",
+                                        "helpTip": "Time in seconds after which the operation will time out."
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "attributeGroup",
+            "value": {
+                "groupName": "Response",
+                "elements": [
+                    {
+                        "type": "attribute",
+                        "value": {
+                            "name": "responseVariable",
+                            "displayName": "Response Variable Name",
+                            "inputType": "string",
+                            "deriveResponseVariable": true,
+                            "required": "true",
+                            "helpTip": "Name of the variable to which the output of the operation should be assigned"
+                        }
+                    },
+                    {
+                        "type": "attribute",
+                        "value": {
+                            "name": "overwriteBody",
+                            "displayName": "Overwrite Message Body",
+                            "inputType": "checkbox",
+                            "defaultValue": "false",
+                            "helpTip": "Replace the Message Body in Message Context with the response of the operation (This will remove the payload from the above variable).",
+                            "required": "false"
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}

@@ -1,0 +1,88 @@
+# Connector Descriptor File
+# Specifies the dependencies and repositories required for the connector.
+
+dependencies:
+  - groupId: com.azure
+    artifactId: azure-core
+    version: "1.54.0"
+  - groupId: com.azure
+    artifactId: azure-core-http-netty
+    version: "1.15.10"
+  - groupId: com.azure
+    artifactId: azure-identity
+    version: "1.9.2"
+  - groupId: com.azure
+    artifactId: azure-json
+    version: "1.4.0"
+  - groupId: com.azure
+    artifactId: azure-storage-blob
+    version: "12.29.0"
+  - groupId: com.azure
+    artifactId: azure-storage-common
+    version: "12.28.0"
+  - groupId: com.azure
+    artifactId: azure-storage-file-datalake
+    version: "12.22.0"
+  - groupId: com.azure
+    artifactId: azure-xml
+    version: "1.2.0"
+  - groupId: org.reactivestreams
+    artifactId: reactive-streams
+    version: "1.0.4"
+  - groupId: io.projectreactor
+    artifactId: reactor-core
+    version: "3.7.3"
+  - groupId: io.projectreactor.netty
+    artifactId: reactor-netty-core
+    version: "1.2.3"
+  - groupId: io.projectreactor.netty
+    artifactId: reactor-netty-http
+    version: "1.2.3"
+  - groupId: io.netty.incubator
+    artifactId: netty-incubator-codec-quic
+    version: "0.0.19.Final"
+  - groupId: org.reactivestreams
+    artifactId: reactive-streams
+    version: "1.0.4"
+  - groupId: io.micrometer
+    artifactId: micrometer-commons
+    version: "1.14.4"
+  - groupId: io.netty
+    artifactId: netty-resolver-dns
+    version: "4.1.118.Final"
+  - groupId: io.netty
+    artifactId: netty-common
+    version: "4.1.118.Final"
+  - groupId: io.netty
+    artifactId: netty-handler
+    version: "4.1.118.Final"
+  - groupId: io.netty
+    artifactId: netty-handler-proxy
+    version: "4.1.118.Final"
+  - groupId: io.netty
+    artifactId: netty-buffer
+    version: "4.1.118.Final"
+  - groupId: io.netty
+    artifactId: netty-codec
+    version: "4.1.118.Final"
+  - groupId: io.netty
+    artifactId: netty-codec-http
+    version: "4.1.118.Final"
+  - groupId: io.netty
+    artifactId: netty-codec-http2
+    version: "4.1.118.Final"
+  - groupId: com.microsoft.azure
+    artifactId: msal4j
+    version: "1.19.1"
+  - groupId: com.nimbusds
+    artifactId: oauth2-oidc-sdk
+    version: "11.23.1"
+  - groupId: com.nimbusds
+    artifactId: content-type
+    version: "2.3"
+
+repositories:
+  - id: "wso2-nexus"
+    url: "https://maven.wso2.org/nexus/content/groups/wso2-public/"
+  - id: "wso2-maven2-repository"
+    url: "scp://dist.wso2.org/home/httpd/dist.wso2.org/maven2/"

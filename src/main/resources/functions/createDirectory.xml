@@ -1,0 +1,55 @@
+<!--
+ 	Copyright (c) 2025, WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
+
+    WSO2 LLC. licenses this file to you under the Apache License,
+    Version 2.0 (the "License"); you may not use this file except
+    in compliance with the License.
+    You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing,
+   software distributed under the License is distributed on an
+   "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+   KIND, either express or implied.  See the License for the
+   specific language governing permissions and limitations
+   under the License.
+-->
+<template xmlns="http://ws.apache.org/ns/synapse" name="createDirectory">
+    <parameter name="fileSystemName" description="The name of the file system."/>
+    <parameter name="directoryName" description="The name of the directory."/>
+    <parameter name="responseVariable" description="Response variable name"/>
+    <parameter name="overwriteBody"
+               description="Replace the Message Body in Message Context with the response of the operation."/>
+    <parameter name="metadata" description="The metadata to the directory."/>
+    <parameter name="timeout" description="The timeout for the operation."/>
+    <parameter name="contentLanguage" description="The language of the content."/>
+    <parameter name="contentType" description="The MIME content type of the content."/>
+    <parameter name="contentEncoding" description="Defines the encoding type"/>
+    <parameter name="contentDisposition" description="The value of the Content-Disposition response header."/>
+    <parameter name="cacheControl" description="The value of the Cache-Control response header."/>
+    <parameter name="permissions" description="The permissions of the directory."/>
+    <parameter name="umask" description="The umask of the directory."/>
+    <parameter name="sourceLeaseId" description="The lease ID of the source directory."/>
+    <parameter name="group" description="The group of the directory."/>
+    <parameter name="owner" description="The owner of the directory."/>
+
+    <sequence>
+        <property name="fileSystemName" expression="$func:fileSystemName"/>
+        <property name="directoryName" expression="$func:directoryName"/>
+        <property name="metadata" expression="$func:metadata"/>
+        <property name="timeout" expression="$func:timeout"/>
+        <property name="contentLanguage" expression="$func:contentLanguage"/>
+        <property name="contentType" expression="$func:contentType"/>
+        <property name="contentEncoding" expression="$func:contentEncoding"/>
+        <property name="contentDisposition" expression="$func:contentDisposition"/>
+        <property name="cacheControl" expression="$func:cacheControl"/>
+        <property name="permissions" expression="$func:permissions"/>
+        <property name="umask" expression="$func:umask"/>
+        <property name="sourceLeaseId" expression="$func:sourceLeaseId"/>
+        <property name="group" expression="$func:group"/>
+        <property name="owner" expression="$func:owner"/>
+        <class name="org.wso2.carbon.connector.operations.CreateDirectory"/>
+    </sequence>
+</template>
+

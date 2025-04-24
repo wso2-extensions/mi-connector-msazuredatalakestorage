@@ -1,0 +1,35 @@
+<!--
+ 	Copyright (c) 2025, WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
+
+    WSO2 LLC. licenses this file to you under the Apache License,
+    Version 2.0 (the "License"); you may not use this file except
+    in compliance with the License.
+    You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing,
+   software distributed under the License is distributed on an
+   "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+   KIND, either express or implied.  See the License for the
+   specific language governing permissions and limitations
+   under the License.
+-->
+<template xmlns="http://ws.apache.org/ns/synapse" name="listFileSystems">
+    <parameter name="responseVariable" description="Response variable name"/>
+    <parameter name="overwriteBody"
+               description="Replace the Message Body in Message Context with the response of the operation."/>
+    <parameter name="retrieveMetadata" description="Whether to retrieve metadata."/>
+    <parameter name="retrieveDeleted" description="Whether to retrieve deleted file systems."/>
+    <parameter name="maxResultsPerPage" description="The maximum number of results per page."/>
+    <parameter name="prefix" description="The prefix of the file system name."/>
+    <parameter name="timeout" description="The timeout for the operation."/>
+    <sequence>
+        <property name="prefix" expression="$func:prefix"/>
+        <property name="timeout" expression="$func:timeout"/>
+        <property name="maxResultsPerPage" expression="$func:maxResultsPerPage"/>
+        <property name="retrieveMetadata" expression="$func:retrieveMetadata"/>
+        <property name="retrieveDeleted" expression="$func:retrieveDeleted"/>
+        <class name="org.wso2.carbon.connector.operations.ListFileSystems"/>
+    </sequence>
+</template>

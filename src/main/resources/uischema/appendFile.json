@@ -1,0 +1,220 @@
+{
+    "connectorName": "msazuredatalakestorage",
+    "operationName": "appendFile",
+    "title": "Append File",
+    "help": "<h1>Append File</h1> <b>This operation can be used to append a file.</b>",
+    "elements": [
+        {
+            "type": "attributeGroup",
+            "value": {
+                "groupName": "General",
+                "elements": [
+                    {
+                        "type": "attribute",
+                        "value": {
+                            "name": "configRef",
+                            "displayName": "Connection",
+                            "inputType": "connection",
+                            "allowedConnectionTypes": [
+                                "MSAzureDataLake"
+                            ],
+                            "defaultType": "connection.msazuredatalakestorage",
+                            "defaultValue": "",
+                            "required": "true",
+                            "helpTip": "Connection to be used"
+                        }
+                    },
+                    {
+                        "type": "attributeGroup",
+                        "value": {
+                            "groupName": "Basic",
+                            "elements": [
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "fileSystemName",
+                                        "displayName": "File System name",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "true",
+                                        "helpTip": "Name of the file system where the file will be uploaded."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "filePathToAppend",
+                                        "displayName": "Target Path",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "true",
+                                        "helpTip": "Path of the file to be appended."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "inputType",
+                                        "displayName": "Input Type",
+                                        "inputType": "combo",
+                                        "defaultValue": "Local File",
+                                        "required": "true",
+                                        "helpTip": "Path of the file to be uploaded.",
+                                        "comboValues": [
+                                            "Local File",
+                                            "Text Content"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "localFilePath",
+                                        "displayName": "Local File Path",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "true",
+                                        "helpTip": "File to be uploaded.",
+                                        "enableCondition": [
+                                            {
+                                                "inputType": "Local File"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "textContent",
+                                        "displayName": "Text Content",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "true",
+                                        "helpTip": "Text content to be uploaded (without using a file).",
+                                        "enableCondition": [
+                                            {
+                                                "inputType": "Text Content"
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "type": "attributeGroup",
+                        "value": {
+                            "groupName": "Advanced",
+                            "isCollapsed": "true",
+                            "elements": [
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "flush",
+                                        "displayName": "Flush",
+                                        "inputType": "checkbox",
+                                        "defaultValue": "true",
+                                        "required": "false",
+                                        "helpTip": "Flush the data to the file after appending."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "leaseId",
+                                        "displayName": "Lease Id",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "false",
+                                        "helpTip": "This request will succeed only if the provided leaseId matches the actual lease on the resource"
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "leaseAction",
+                                        "displayName": "Lease Action",
+                                        "inputType": "combo",
+                                        "defaultValue": "None",
+                                        "required": "false",
+                                        "helpTip": "The lease action to perform on the file.",
+                                        "comboValues": [
+                                            "None",
+                                            "Acquire",
+                                            "Auto Renew",
+                                            "Acquire Release",
+                                            "Release"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "leaseDuration",
+                                        "displayName": "Lease Duration",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "false",
+                                        "helpTip": "The lease duration in seconds."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "proposedLeaseId",
+                                        "displayName": "Proposed Lease Id",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "false",
+                                        "helpTip": "A proposed lease ID that can be set when acquiring or changing a lease."
+                                    }
+                                },
+                                {
+                                    "type": "attribute",
+                                    "value": {
+                                        "name": "timeout",
+                                        "displayName": "Timeout(seconds)",
+                                        "inputType": "stringOrExpression",
+                                        "defaultValue": "",
+                                        "required": "false",
+                                        "helpTip": "Time in seconds after which the operation will time out."
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "attributeGroup",
+            "value": {
+                "groupName": "Response",
+                "elements": [
+                    {
+                        "type": "attribute",
+                        "value": {
+                            "name": "responseVariable",
+                            "displayName": "Response Variable Name",
+                            "inputType": "string",
+                            "deriveResponseVariable": true,
+                            "required": "true",
+                            "helpTip": "Name of the variable to which the output of the operation should be assigned"
+                        }
+                    },
+                    {
+                        "type": "attribute",
+                        "value": {
+                            "name": "overwriteBody",
+                            "displayName": "Overwrite Message Body",
+                            "inputType": "checkbox",
+                            "defaultValue": "false",
+                            "helpTip": "Replace the Message Body in Message Context with the response of the operation (This will remove the payload from the above variable).",
+                            "required": "false"
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}
