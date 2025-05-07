@@ -3,12 +3,12 @@
     "owner": "WSO2",
     "product": "MI",
     "category": "Developer Tools",
-    "documentationUrl": "https://mi.docs.wso2.com/en/4.4.0/",
+    "documentationUrl": "https://mi.docs.wso2.com/en/4.4.0/reference/connectors/msazuredatalakestorage-connector/microsoft-azure-data-lake-storage-connector-overview/",
     "mavenGroupId": "org.wso2.integration.connector",
     "mavenArtifactId": "mi-connector-azure-data-lake-storage-gen2",
     "description": "The Azure Data Lake Storage Gen2 Connector allows you to access the Azure Data Lake Storage Service.",
     "status": "Active",
-    "rank": 1,
+    "rank": 20,
     "type": "Connector",
     "releases": [
         {
@@ -48,11 +48,6 @@
                     "isHidden":false
                 },
                 {
-                    "name":"renameDirectory",
-                    "description":"Rename Directory in the file system",
-                    "isHidden":false
-                },
-                {
                     "name":"uploadFile",
                     "description":"Upload File to the file system",
                     "isHidden":false
@@ -68,8 +63,8 @@
                     "isHidden":false
                 },
                 {
-                    "name":"renameFile",
-                    "description":"Rename File in the file system",
+                    "name":"renamePath",
+                    "description":"Rename path of a file or directory in the file system",
                     "isHidden":false
                 },
                 {
@@ -91,6 +86,16 @@
                     "name":"listPaths",
                     "description":"List Paths of the file system",
                     "isHidden":false
+                },
+                {
+                    "name":"appendFile",
+                    "description":"Append text to a file in the file system",
+                    "isHidden":false
+                },
+                {
+                    "name":"flushFile",
+                    "description":"Flush the file after appending in the filesystem.",
+                    "isHidden":false
                 }
             ],
             "connections": [
@@ -104,8 +109,7 @@
     ],
     "labels": [
         "azure",
-        "data lake",
-        "storage",
-        "gen2"
+        "big-data",
+        "storage"
     ]
 }
