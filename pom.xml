@@ -223,6 +223,13 @@
             <version>${azure.netty.version}</version>
         </dependency>
     </dependencies>
+    <scm>
+        <connection>scm:git:https://github.com/wso2-extensions/mi-connector-msazuredatalakestorage.git</connection>
+        <url>https://github.com/wso2-extensions/mi-connector-msazuredatalakestorage.git</url>
+        <developerConnection>scm:git:https://github.com/wso2-extensions/mi-connector-msazuredatalakestorage
+        </developerConnection>
+        <tag>HEAD</tag>
+    </scm>
     <build>
         <plugins>
             <plugin>
