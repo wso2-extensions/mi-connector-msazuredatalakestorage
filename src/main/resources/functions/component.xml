@@ -19,62 +19,77 @@
 <component name="functions" type="synapse/template">
     <subComponents>
         <component name="createFileSystem">
+            <displayName>Create File System</displayName>
             <file>createFileSystem.xml</file>
             <description>Creates a File System into the Azure Data Lake storage Gen2.</description>
         </component>
         <component name="deleteFileSystem">
+            <displayName>Delete File System</displayName>
             <file>deleteFileSystem.xml</file>
             <description>Deletes the File System from the Azure Data Lake storage Gen2.</description>
         </component>
         <component name="listFileSystems">
+            <displayName>List File Systems</displayName>
             <file>listFileSystems.xml</file>
             <description>Gets the list of all File Systems.</description>
         </component>
         <component name="createDirectory">
+            <displayName>Create Directory</displayName>
             <file>createDirectory.xml</file>
             <description>Creates a directory into the Azure Data Lake storage Gen2.</description>
         </component>
         <component name="renamePath">
+            <displayName>Rename Path</displayName>
             <file>renamePath.xml</file>
             <description>Renames the path of the file system</description>
         </component>
         <component name="uploadFile">
+            <displayName>Upload File</displayName>
             <file>uploadFile.xml</file>
             <description>Uploads the File to the directory path within the file system</description>
         </component>
         <component name="updateMetadata">
+            <displayName>Update Metadata</displayName>
             <file>updateMetadata.xml</file>
             <description>Updates the metadata to the file</description>
         </component>
         <component name="getMetadata">
+            <displayName>Get Metadata</displayName>
             <file>getMetadata.xml</file>
             <description>Gets the metadata of the file</description>
         </component>
         <component name="downloadFile">
+            <displayName>Download File</displayName>
             <file>downloadFile.xml</file>
             <description>Downloads the file</description>
         </component>
         <component name="readFile">
+            <displayName>Read File</displayName>
             <file>readFile.xml</file>
             <description>Reads the file</description>
         </component>
         <component name="listPaths">
+            <displayName>List Paths</displayName>
             <file>listPaths.xml</file>
             <description>Reads all paths of the file system</description>
         </component>
         <component name="appendFile">
+            <displayName>Append File</displayName>
             <file>appendFile.xml</file>
             <description>Appends files to the existing file</description>
         </component>
         <component name="flushFile">
+            <displayName>Flush File</displayName>
             <file>flushFile.xml</file>
             <description>Flushes files to the existing file</description>
         </component>
         <component name="deleteFile">
+            <displayName>Delete File</displayName>
             <file>deleteFile.xml</file>
             <description>Deletes the file from the file system</description>
         </component>
         <component name="deleteDirectory">
+            <displayName>Delete Directory</displayName>
             <file>deleteDirectory.xml</file>
             <description>Deletes the directory from the file system</description>
         </component>
