@@ -26,6 +26,7 @@ import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
 import org.apache.synapse.MessageContext;
 import org.apache.synapse.util.InlineExpressionUtil;
+import org.jaxen.JaxenException;
 import org.json.JSONObject;
 import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.connector.util.AbstractAzureMediator;
@@ -47,18 +48,19 @@ import java.util.HashMap;
 public class UploadFile extends AbstractAzureMediator {
 
     @Override
-    public void execute(MessageContext messageContext, String responseVariable, Boolean overwriteBody) {
+    public void execute(MessageContext messageContext, String responseVariable, Boolean overwriteBody)
+            throws JaxenException {
 
         String connectionName = getProperty(messageContext, AzureConstants.CONNECTION_NAME, String.class, false);
-        String fileSystemName =
+        String preprocessedFileSystemName =
                 getMediatorParameter(messageContext, AzureConstants.FILE_SYSTEM_NAME, String.class, false);
-        String filePathToUpload =
+        String preprocessedFilePathToUpload =
                 getMediatorParameter(messageContext, AzureConstants.FILE_PATH_TO_UPLOAD, String.class, false);
         String inputType = getMediatorParameter(messageContext, AzureConstants.INPUT_TYPE, String.class, false);
-        String localFilePath =
+        String preprocessedLocalFilePath =
                 getMediatorParameter(messageContext, AzureConstants.LOCAL_FILE_PATH, String.class,
                         !((AzureConstants.L_LOCAL_FILE_PATH).equals(inputType)));
-        String textContent =
+        String preprocessedTextContent =
                 getMediatorParameter(messageContext, AzureConstants.TEXT_CONTENT, String.class,
                         true);
         String contentLanguage =
@@ -76,6 +78,16 @@ public class UploadFile extends AbstractAzureMediator {
                 getMediatorParameter(messageContext, AzureConstants.MAX_CONCURRENCY, Integer.class, true);
         String metadata = getMediatorParameter(messageContext, AzureConstants.METADATA, String.class, true);
         Integer timeout = getMediatorParameter(messageContext, AzureConstants.TIMEOUT, Integer.class, true);
+
+        String fileSystemName =
+                InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, preprocessedFileSystemName);
+        String filePathToUpload =
+                InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext,
+                        preprocessedFilePathToUpload);
+        String localFilePath =
+                InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, preprocessedLocalFilePath);
+        String textContent =
+                InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, preprocessedTextContent);
 
         Long maxSingleUploadSizeL =
                 maxSingleUploadSize != null ? maxSingleUploadSize.longValue() * 1024L * 1024L : null;

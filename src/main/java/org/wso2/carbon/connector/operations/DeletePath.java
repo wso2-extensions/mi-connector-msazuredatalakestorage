@@ -24,6 +24,8 @@ import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import org.apache.synapse.MessageContext;
+import org.apache.synapse.util.InlineExpressionUtil;
+import org.jaxen.JaxenException;
 import org.json.JSONObject;
 import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.connector.util.AbstractAzureMediator;
@@ -38,12 +40,13 @@ import java.time.Duration;
 public class DeletePath extends AbstractAzureMediator {
 
     @Override
-    public void execute(MessageContext messageContext, String responseVariable, Boolean overwriteBody) {
+    public void execute(MessageContext messageContext, String responseVariable, Boolean overwriteBody)
+            throws JaxenException {
 
         String connectionName = getProperty(messageContext, AzureConstants.CONNECTION_NAME, String.class, false);
-        String fileSystemName =
+        String preprocessedFileSystemName =
                 getMediatorParameter(messageContext, AzureConstants.FILE_SYSTEM_NAME, String.class, false);
-        String directoryName = getMediatorParameter(messageContext, AzureConstants.DIRECTORY_NAME, String.class, false);
+        String preprocessedDirectoryName = getMediatorParameter(messageContext, AzureConstants.DIRECTORY_NAME, String.class, false);
         Integer timeout = getMediatorParameter(messageContext, AzureConstants.TIMEOUT, Integer.class, true);
         Boolean recursive = getMediatorParameter(messageContext, AzureConstants.RECURSIVE, Boolean.class, true);
         String ifNoneMatch = getMediatorParameter(messageContext, AzureConstants.IF_NONE_MATCH, String.class, true);
@@ -53,6 +56,9 @@ public class DeletePath extends AbstractAzureMediator {
         String ifUnmodifiedSince =
                 getMediatorParameter(messageContext, AzureConstants.IF_UNMODIFIED_SINCE, String.class, true);
         String ifMatch = getMediatorParameter(messageContext, AzureConstants.IF_MATCH, String.class, true);
+
+        String fileSystemName = InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, preprocessedFileSystemName);
+        String directoryName = InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, preprocessedDirectoryName);
 
         try {
 

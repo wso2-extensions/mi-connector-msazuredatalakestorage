@@ -27,6 +27,8 @@ import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.models.FileReadResponse;
 import org.apache.synapse.MessageContext;
+import org.apache.synapse.util.InlineExpressionUtil;
+import org.jaxen.JaxenException;
 import org.json.JSONObject;
 import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.connector.util.AbstractAzureMediator;
@@ -42,13 +44,15 @@ import java.time.Duration;
 public class ReadFile extends AbstractAzureMediator {
 
     @Override
-    public void execute(MessageContext messageContext, String responseVariable, Boolean overwriteBody) {
+    public void execute(MessageContext messageContext, String responseVariable, Boolean overwriteBody)
+            throws JaxenException {
 
         String connectionName =
                 getProperty(messageContext, AzureConstants.CONNECTION_NAME, String.class, false);
-        String fileSystemName =
+        String preprocessedFileSystemName =
                 getMediatorParameter(messageContext, AzureConstants.FILE_SYSTEM_NAME, String.class, false);
-        String filePath = getMediatorParameter(messageContext, AzureConstants.FILE_PATH, String.class, false);
+        String preprocessedFilePath =
+                getMediatorParameter(messageContext, AzureConstants.FILE_PATH, String.class, false);
         Integer timeout = getMediatorParameter(messageContext, AzureConstants.TIMEOUT, Integer.class, true);
         Integer count = getMediatorParameter(messageContext, AzureConstants.COUNT, Integer.class, true);
         Integer offset = getMediatorParameter(messageContext, AzureConstants.OFFSET, Integer.class, true);
@@ -61,6 +65,11 @@ public class ReadFile extends AbstractAzureMediator {
         String ifNoneMatch = getMediatorParameter(messageContext, AzureConstants.IF_NONE_MATCH, String.class, true);
         String ifModifiedSince =
                 getMediatorParameter(messageContext, AzureConstants.IF_MODIFIED_SINCE, String.class, true);
+
+        String fileSystemName =
+                InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, preprocessedFileSystemName);
+        String filePath =
+                InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, preprocessedFilePath);
 
         try {
 

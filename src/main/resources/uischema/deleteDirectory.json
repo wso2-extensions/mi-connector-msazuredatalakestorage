@@ -34,7 +34,7 @@
                                     "value": {
                                         "name": "fileSystemName",
                                         "displayName": "File System name",
-                                        "inputType": "stringOrExpression",
+                                        "inputType": "expressionTextArea",
                                         "defaultValue": "",
                                         "required": "true",
                                         "helpTip": "Name of the file system where the directory is located."
@@ -45,7 +45,7 @@
                                     "value": {
                                         "name": "directoryName",
                                         "displayName": "Target Directory Path",
-                                        "inputType": "stringOrExpression",
+                                        "inputType": "expressionTextArea",
                                         "defaultValue": "",
                                         "required": "true",
                                         "helpTip": "Directory path to be deleted."

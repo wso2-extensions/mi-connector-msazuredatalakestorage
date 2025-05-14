@@ -24,6 +24,8 @@ import com.azure.storage.file.datalake.models.LeaseAction;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.options.DataLakeFileFlushOptions;
 import org.apache.synapse.MessageContext;
+import org.apache.synapse.util.InlineExpressionUtil;
+import org.jaxen.JaxenException;
 import org.json.JSONObject;
 import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.connector.util.AbstractAzureMediator;
@@ -38,12 +40,13 @@ import java.time.Duration;
 public class FlushFile extends AbstractAzureMediator {
 
     @Override
-    public void execute(MessageContext messageContext, String responseVariable, Boolean overwriteBody) {
+    public void execute(MessageContext messageContext, String responseVariable, Boolean overwriteBody)
+            throws JaxenException {
 
         String connectionName = getProperty(messageContext, AzureConstants.CONNECTION_NAME, String.class, false);
-        String fileSystemName =
+        String preprocessedFileSystemName =
                 getMediatorParameter(messageContext, AzureConstants.FILE_SYSTEM_NAME, String.class, false);
-        String filePathToFlush =
+        String preprocessedFilePathToFlush =
                 getMediatorParameter(messageContext, AzureConstants.FILE_PATH_TO_FLUSH, String.class, false);
         String contentLanguage =
                 getMediatorParameter(messageContext, AzureConstants.CONTENT_LANGUAGE, String.class, true);
@@ -69,6 +72,11 @@ public class FlushFile extends AbstractAzureMediator {
                 getMediatorParameter(messageContext, AzureConstants.LEASE_DURATION, Integer.class, true);
         Boolean uncommittedDataRetained =
                 getMediatorParameter(messageContext, AzureConstants.UNCOMMITTED_DATA_RETAINED, Boolean.class, true);
+
+        String fileSystemName =
+                InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, preprocessedFileSystemName);
+        String filePathToFlush = InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext,
+                preprocessedFilePathToFlush);
 
         LeaseAction leaseActionConstant = getLeaseAction(leaseAction);
 

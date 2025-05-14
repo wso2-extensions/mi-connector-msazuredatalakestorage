@@ -34,7 +34,7 @@
                                     "value": {
                                         "name": "fileSystemName",
                                         "displayName": "File System name",
-                                        "inputType": "stringOrExpression",
+                                        "inputType": "expressionTextArea",
                                         "defaultValue": "",
                                         "required": "true",
                                         "helpTip": "Name of the file system where the file is located."
@@ -45,7 +45,7 @@
                                     "value": {
                                         "name": "filePathToFlush",
                                         "displayName": "File Path to Flush",
-                                        "inputType": "stringOrExpression",
+                                        "inputType": "expressionTextArea",
                                         "defaultValue": "",
                                         "required": "true",
                                         "helpTip": "Path of the file to flush."

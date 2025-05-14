@@ -34,7 +34,7 @@
                                     "value": {
                                         "name": "fileSystemName",
                                         "displayName": "File System name",
-                                        "inputType": "stringOrExpression",
+                                        "inputType": "expressionTextArea",
                                         "defaultValue": "",
                                         "required": "true",
                                         "helpTip": "Name of the file system where the file will be uploaded."
@@ -45,7 +45,7 @@
                                     "value": {
                                         "name": "filePathToAppend",
                                         "displayName": "Target Path",
-                                        "inputType": "stringOrExpression",
+                                        "inputType": "expressionTextArea",
                                         "defaultValue": "",
                                         "required": "true",
                                         "helpTip": "Path of the file to be appended."
@@ -71,7 +71,7 @@
                                     "value": {
                                         "name": "localFilePath",
                                         "displayName": "Local File Path",
-                                        "inputType": "stringOrExpression",
+                                        "inputType": "expressionTextArea",
                                         "defaultValue": "",
                                         "required": "true",
                                         "helpTip": "File to be uploaded.",
@@ -87,7 +87,7 @@
                                     "value": {
                                         "name": "textContent",
                                         "displayName": "Text Content",
-                                        "inputType": "stringOrExpression",
+                                        "inputType": "expressionTextArea",
                                         "defaultValue": "",
                                         "required": "true",
                                         "helpTip": "Text content to be uploaded (without using a file).",

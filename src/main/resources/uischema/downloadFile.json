@@ -34,7 +34,7 @@
                                     "value": {
                                         "name": "fileSystemName",
                                         "displayName": "File System name",
-                                        "inputType": "stringOrExpression",
+                                        "inputType": "expressionTextArea",
                                         "defaultValue": "",
                                         "required": "true",
                                         "helpTip": "Name of the file system where the file is located."
@@ -45,7 +45,7 @@
                                     "value": {
                                         "name": "filePathToDownload",
                                         "displayName": "Target File",
-                                        "inputType": "stringOrExpression",
+                                        "inputType": "expressionTextArea",
                                         "defaultValue": "",
                                         "required": "true",
                                         "helpTip": "Path of the file to be downloaded."
@@ -56,7 +56,7 @@
                                     "value": {
                                         "name": "downloadLocation",
                                         "displayName": "Download Location",
-                                        "inputType": "stringOrExpression",
+                                        "inputType": "expressionTextArea",
                                         "defaultValue": "",
                                         "required": "true",
                                         "helpTip": "Location where the file is to be downloaded."

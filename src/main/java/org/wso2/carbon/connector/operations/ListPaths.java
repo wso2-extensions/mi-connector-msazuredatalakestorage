@@ -22,6 +22,8 @@ import com.azure.storage.file.datalake.DataLakeFileSystemClient;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.ListPathsOptions;
 import org.apache.synapse.MessageContext;
+import org.apache.synapse.util.InlineExpressionUtil;
+import org.jaxen.JaxenException;
 import org.json.JSONObject;
 import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.connector.util.AbstractAzureMediator;
@@ -38,19 +40,24 @@ import java.util.List;
 public class ListPaths extends AbstractAzureMediator {
 
     @Override
-    public void execute(MessageContext messageContext, String responseVariable, Boolean overwriteBody) {
+    public void execute(MessageContext messageContext, String responseVariable, Boolean overwriteBody)
+            throws JaxenException {
 
         String connectionName =
                 getProperty(messageContext, AzureConstants.CONNECTION_NAME, String.class, false);
-        String fileSystemName =
+        String preprocessedFileSystemName =
                 getMediatorParameter(messageContext, AzureConstants.FILE_SYSTEM_NAME, String.class, false);
         Boolean recursive =
                 getMediatorParameter(messageContext, AzureConstants.RECURSIVE, Boolean.class, false);
-        String path =
+        String preprocessedPath =
                 getMediatorParameter(messageContext, AzureConstants.PATH, String.class, true);
         Integer maxResults =
                 getMediatorParameter(messageContext, AzureConstants.MAX_RESULTS, Integer.class, true);
         Integer timeout = getMediatorParameter(messageContext, AzureConstants.TIMEOUT, Integer.class, true);
+
+        String fileSystemName =
+                InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, preprocessedFileSystemName);
+        String path = InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, preprocessedPath);
 
         try {
 

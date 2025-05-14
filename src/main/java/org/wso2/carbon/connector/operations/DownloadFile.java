@@ -27,6 +27,8 @@ import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.options.ReadToFileOptions;
 import org.apache.synapse.MessageContext;
+import org.apache.synapse.util.InlineExpressionUtil;
+import org.jaxen.JaxenException;
 import org.json.JSONObject;
 import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.connector.util.AbstractAzureMediator;
@@ -42,13 +44,14 @@ import java.time.Duration;
 public class DownloadFile extends AbstractAzureMediator {
 
     @Override
-    public void execute(MessageContext messageContext, String responseVariable, Boolean overwriteBody) {
+    public void execute(MessageContext messageContext, String responseVariable, Boolean overwriteBody)
+            throws JaxenException {
 
         String connectionName =
                 getProperty(messageContext, AzureConstants.CONNECTION_NAME, String.class, false);
-        String fileSystemName =
+        String preprocessedFileSystemName =
                 getMediatorParameter(messageContext, AzureConstants.FILE_SYSTEM_NAME, String.class, false);
-        String filePath =
+        String preprocessedFilePath =
                 getMediatorParameter(messageContext, AzureConstants.FILE_PATH_TO_DOWNLOAD, String.class,
                         false);
         String ifMatch = getMediatorParameter(messageContext, AzureConstants.IF_MATCH, String.class, true);
@@ -61,7 +64,7 @@ public class DownloadFile extends AbstractAzureMediator {
         Integer maxRetryRequests =
                 getMediatorParameter(messageContext, AzureConstants.MAX_RETRY_REQUESTS, Integer.class,
                         true);
-        String downloadFilePath =
+        String preprocessedDownloadFilePath =
                 getMediatorParameter(messageContext, AzureConstants.DOWNLOAD_LOCATION, String.class, false);
         Integer timeout = getMediatorParameter(messageContext, AzureConstants.TIMEOUT, Integer.class, true);
         String leaseId = getMediatorParameter(messageContext, AzureConstants.LEASE_ID, String.class, true);
@@ -71,6 +74,13 @@ public class DownloadFile extends AbstractAzureMediator {
         Integer count = getMediatorParameter(messageContext, AzureConstants.COUNT, Integer.class, true);
         Boolean rangeGetContentMd5 = getMediatorParameter(messageContext, AzureConstants.RANGE_GET_CONTENT_MD5,
                 Boolean.class, true);
+
+        String fileSystemName =
+                InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, preprocessedFileSystemName);
+        String filePath =
+                InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, preprocessedFilePath);
+        String downloadFilePath = InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext,
+                preprocessedDownloadFilePath);
 
         Long blockSizeL = blockSize != null ? blockSize.longValue() * 1024L * 1024L : null;
 
@@ -112,7 +122,7 @@ public class DownloadFile extends AbstractAzureMediator {
                         timeout != null ? Duration.ofSeconds(timeout.longValue()) : null, null);
             }
 
-            if ( response.getStatusCode() == 206) {
+            if (response.getStatusCode() == 206) {
                 JSONObject responseObject = new JSONObject();
                 responseObject.put(AzureConstants.STATUS, true);
                 responseObject.put(AzureConstants.MESSAGE, "Successfully downloaded the file");
