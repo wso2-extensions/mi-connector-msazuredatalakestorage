@@ -25,6 +25,7 @@ import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.google.gson.JsonSyntaxException;
 import org.apache.synapse.MessageContext;
 import org.apache.synapse.util.InlineExpressionUtil;
+import org.jaxen.JaxenException;
 import org.json.JSONObject;
 import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.connector.util.AbstractAzureMediator;
@@ -41,22 +42,29 @@ import java.util.HashMap;
 public class UpdateMetadata extends AbstractAzureMediator {
 
     @Override
-    public void execute(MessageContext messageContext, String responseVariable, Boolean overwriteBody) {
+    public void execute(MessageContext messageContext, String responseVariable, Boolean overwriteBody)
+            throws JaxenException {
 
         String connectionName = getProperty(messageContext, AzureConstants.CONNECTION_NAME, String.class, false);
-        String fileSystemName =
+        String preprocessedFileSystemName =
                 getMediatorParameter(messageContext, AzureConstants.FILE_SYSTEM_NAME, String.class, false);
-        String filePathToAddMetaData =
+        String preprocessedFilePathToAddMetaData =
                 getMediatorParameter(messageContext, AzureConstants.FILE_PATH_TO_ADD_META_DATA, String.class, false);
         String ifMatch = getMediatorParameter(messageContext, AzureConstants.IF_MATCH, String.class, true);
         String ifModifiedSince =
                 getMediatorParameter(messageContext, AzureConstants.IF_MODIFIED_SINCE, String.class, true);
         String ifNoneMatch = getMediatorParameter(messageContext, AzureConstants.IF_NONE_MATCH, String.class, true);
         String metadata = getMediatorParameter(messageContext, AzureConstants.METADATA, String.class, false);
-        Integer timeout = getMediatorParameter(messageContext, AzureConstants.TIMEOUT, Integer.class, true);
         String leaseId = getMediatorParameter(messageContext, AzureConstants.LEASE_ID, String.class, true);
         String ifUnmodifiedSince =
                 getMediatorParameter(messageContext, AzureConstants.IF_UNMODIFIED_SINCE, String.class, true);
+        Integer timeout = getMediatorParameter(messageContext, AzureConstants.TIMEOUT, Integer.class, true);
+
+        String fileSystemName =
+                InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, preprocessedFileSystemName);
+        String filePathToAddMetaData =
+                InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext,
+                        preprocessedFilePathToAddMetaData);
 
         try {
             DataLakeFileClient dataLakeFileClient =

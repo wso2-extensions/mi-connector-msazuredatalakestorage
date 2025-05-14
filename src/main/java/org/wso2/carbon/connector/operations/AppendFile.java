@@ -24,6 +24,8 @@ import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.LeaseAction;
 import com.azure.storage.file.datalake.options.DataLakeFileAppendOptions;
 import org.apache.synapse.MessageContext;
+import org.apache.synapse.util.InlineExpressionUtil;
+import org.jaxen.JaxenException;
 import org.json.JSONObject;
 import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.connector.util.AbstractAzureMediator;
@@ -44,17 +46,19 @@ import java.util.Map;
 public class AppendFile extends AbstractAzureMediator {
 
     @Override
-    public void execute(MessageContext messageContext, String responseVariable, Boolean overwriteBody) {
+    public void execute(MessageContext messageContext, String responseVariable, Boolean overwriteBody)
+            throws JaxenException {
 
         String connectionName = getProperty(messageContext, AzureConstants.CONNECTION_NAME, String.class, false);
-        String fileSystemName =
+        String preprocessedFileSystemName =
                 getMediatorParameter(messageContext, AzureConstants.FILE_SYSTEM_NAME, String.class, false);
-        String filePathToAppend =
+        String preprocessedFilePathToAppend =
                 getMediatorParameter(messageContext, AzureConstants.FILE_PATH_TO_APPEND, String.class, false);
         String inputType = getMediatorParameter(messageContext, AzureConstants.INPUT_TYPE, String.class, false);
-        String localFilePath = getMediatorParameter(messageContext, AzureConstants.LOCAL_FILE_PATH, String.class,
-                !((AzureConstants.L_LOCAL_FILE_PATH).equals(inputType)));
-        String textContent = getMediatorParameter(messageContext, AzureConstants.TEXT_CONTENT, String.class,
+        String preprocessedLocalFilePath =
+                getMediatorParameter(messageContext, AzureConstants.LOCAL_FILE_PATH, String.class,
+                        !((AzureConstants.L_LOCAL_FILE_PATH).equals(inputType)));
+        String preprocessedTextContent = getMediatorParameter(messageContext, AzureConstants.TEXT_CONTENT, String.class,
                 !((AzureConstants.L_TEXT_CONTENT).equals(inputType)));
         Integer timeout = getMediatorParameter(messageContext, AzureConstants.TIMEOUT, Integer.class, true);
         Boolean flush = getMediatorParameter(messageContext, AzureConstants.FLUSH, Boolean.class, true);
@@ -64,6 +68,16 @@ public class AppendFile extends AbstractAzureMediator {
                 getMediatorParameter(messageContext, AzureConstants.LEASE_DURATION, Integer.class, true);
         String proposedLeaseId =
                 getMediatorParameter(messageContext, AzureConstants.PROPOSED_LEASE_ID, String.class, true);
+
+        String fileSystemName =
+                InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, preprocessedFileSystemName);
+        String filePathToAppend =
+                InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext,
+                        preprocessedFilePathToAppend);
+        String localFilePath =
+                InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, preprocessedLocalFilePath);
+        String textContent =
+                InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, preprocessedTextContent);
 
         LeaseAction leaseActionConstant = getLeaseAction(leaseAction);
         long appendSize = 0;

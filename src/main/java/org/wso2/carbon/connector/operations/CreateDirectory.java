@@ -25,6 +25,7 @@ import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import org.apache.synapse.MessageContext;
 import org.apache.synapse.util.InlineExpressionUtil;
+import org.jaxen.JaxenException;
 import org.json.JSONObject;
 import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.connector.util.AbstractAzureMediator;
@@ -41,13 +42,14 @@ import java.util.HashMap;
 public class CreateDirectory extends AbstractAzureMediator {
 
     @Override
-    public void execute(MessageContext messageContext, String responseVariable, Boolean overwriteBody) {
+    public void execute(MessageContext messageContext, String responseVariable, Boolean overwriteBody)
+            throws JaxenException {
 
         String connectionName =
                 getProperty(messageContext, AzureConstants.CONNECTION_NAME, String.class, false);
-        String fileSystemName =
+        String preprocessedFileSystemName =
                 getMediatorParameter(messageContext, AzureConstants.FILE_SYSTEM_NAME, String.class, false);
-        String directoryName =
+        String preprocessedDirectoryName =
                 getMediatorParameter(messageContext, AzureConstants.DIRECTORY_NAME, String.class, false);
         String metadata =
                 getMediatorParameter(messageContext, AzureConstants.METADATA, String.class, true);
@@ -74,6 +76,11 @@ public class CreateDirectory extends AbstractAzureMediator {
                 getMediatorParameter(messageContext, AzureConstants.GROUP, String.class, true);
         String sourceLeaseId =
                 getMediatorParameter(messageContext, AzureConstants.SOURCE_LEASE_ID, String.class, true);
+
+        String fileSystemName =
+                InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, preprocessedFileSystemName);
+        String directoryName =
+                InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, preprocessedDirectoryName);
 
         try {
 

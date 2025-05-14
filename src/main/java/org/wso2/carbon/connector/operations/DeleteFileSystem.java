@@ -23,6 +23,8 @@ import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import org.apache.synapse.MessageContext;
+import org.apache.synapse.util.InlineExpressionUtil;
+import org.jaxen.JaxenException;
 import org.json.JSONObject;
 import org.wso2.carbon.connector.connection.AzureStorageConnectionHandler;
 import org.wso2.carbon.connector.core.ConnectException;
@@ -39,11 +41,12 @@ import java.time.Duration;
 public class DeleteFileSystem extends AbstractAzureMediator {
 
     @Override
-    public void execute(MessageContext messageContext, String responseVariable, Boolean overwriteBody) {
+    public void execute(MessageContext messageContext, String responseVariable, Boolean overwriteBody)
+            throws JaxenException {
 
         String connectionName =
                 getProperty(messageContext, AzureConstants.CONNECTION_NAME, String.class, false);
-        String fileSystemName =
+        String preprocessedFileSystemName =
                 getMediatorParameter(messageContext, AzureConstants.FILE_SYSTEM_NAME, String.class, false);
         String ifMatch = getMediatorParameter(messageContext, AzureConstants.IF_MATCH, String.class, true);
         String ifNoneMatch = getMediatorParameter(messageContext, AzureConstants.IF_NONE_MATCH, String.class, true);
@@ -53,6 +56,9 @@ public class DeleteFileSystem extends AbstractAzureMediator {
         String leaseId = getMediatorParameter(messageContext, AzureConstants.LEASE_ID, String.class, true);
         String ifUnmodifiedSince = getMediatorParameter(messageContext, AzureConstants.IF_UNMODIFIED_SINCE,
                 String.class, true);
+
+        String fileSystemName =
+                InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, preprocessedFileSystemName);
 
         ConnectionHandler handler = ConnectionHandler.getConnectionHandler();
 

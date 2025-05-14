@@ -31,6 +31,7 @@ import org.apache.synapse.commons.json.JsonUtil;
 import org.apache.synapse.core.axis2.Axis2MessageContext;
 import org.apache.synapse.data.connector.ConnectorResponse;
 import org.apache.synapse.data.connector.DefaultConnectorResponse;
+import org.jaxen.JaxenException;
 import org.wso2.carbon.connector.connection.AzureStorageConnectionHandler;
 import org.wso2.carbon.connector.core.AbstractConnector;
 import org.wso2.carbon.connector.core.ConnectException;
@@ -77,7 +78,8 @@ public abstract class AbstractAzureMediator extends AbstractConnector {
                 + AzureConstants.ACCOUNT_KEY_PARAM + accountKey;
     }
 
-    abstract public void execute(MessageContext messageContext, String responseVariable, Boolean overwriteBody);
+    abstract public void execute(MessageContext messageContext, String responseVariable, Boolean overwriteBody)
+            throws JaxenException;
 
     @Override
     public void connect(MessageContext messageContext) {
@@ -87,7 +89,11 @@ public abstract class AbstractAzureMediator extends AbstractConnector {
                                                       );
         Boolean overwriteBody = getMediatorParameter(
                 messageContext, AzureConstants.OVERWRITE_BODY, Boolean.class, false);
-        execute(messageContext, responseVariable, overwriteBody);
+        try {
+            execute(messageContext, responseVariable, overwriteBody);
+        } catch (JaxenException e) {
+            handleException("Error in executing the connector", e, messageContext);
+        }
     }
 
     protected <T> T getMediatorParameter(

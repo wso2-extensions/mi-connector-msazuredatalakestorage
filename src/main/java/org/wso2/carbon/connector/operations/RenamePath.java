@@ -23,6 +23,8 @@ import com.azure.storage.file.datalake.DataLakeFileClient;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import org.apache.synapse.MessageContext;
+import org.apache.synapse.util.InlineExpressionUtil;
+import org.jaxen.JaxenException;
 import org.json.JSONObject;
 import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.connector.util.AbstractAzureMediator;
@@ -37,10 +39,11 @@ import java.time.Duration;
 public class RenamePath extends AbstractAzureMediator {
 
     @Override
-    public void execute(MessageContext messageContext, String responseVariable, Boolean overwriteBody) {
+    public void execute(MessageContext messageContext, String responseVariable, Boolean overwriteBody)
+            throws JaxenException {
 
         String connectionName = getProperty(messageContext, AzureConstants.CONNECTION_NAME, String.class, false);
-        String fileSystemName =
+        String preprocessedFileSystemName =
                 getMediatorParameter(messageContext, AzureConstants.FILE_SYSTEM_NAME, String.class, false);
         String sourceIfModifiedSince =
                 getMediatorParameter(messageContext, AzureConstants.SOURCE_IF_MODIFIED_SINCE, String.class, true);
@@ -56,10 +59,11 @@ public class RenamePath extends AbstractAzureMediator {
         String sourceIfMatch = getMediatorParameter(messageContext, AzureConstants.SOURCE_IF_MATCH, String.class, true);
         String sourceIfNoneMatch =
                 getMediatorParameter(messageContext, AzureConstants.SOURCE_IF_NONE_MATCH, String.class, true);
-        String directoryName = getMediatorParameter(messageContext, AzureConstants.DIRECTORY_NAME, String.class, false);
-        String newDirectoryName =
+        String preprocessedDirectoryName =
+                getMediatorParameter(messageContext, AzureConstants.DIRECTORY_NAME, String.class, false);
+        String preprocessedNewDirectoryName =
                 getMediatorParameter(messageContext, AzureConstants.NEW_DIRECTORY_NAME, String.class, false);
-        String newFileSystemName =
+        String preprocessedNewFileSystemName =
                 getMediatorParameter(messageContext, AzureConstants.NEW_FILE_SYSTEM_NAME, String.class, false);
         Integer timeout = getMediatorParameter(messageContext, AzureConstants.TIMEOUT, Integer.class, true);
         String destinationIfModifiedSince =
@@ -67,6 +71,17 @@ public class RenamePath extends AbstractAzureMediator {
         String destinationIfUnmodifiedSince =
                 getMediatorParameter(messageContext, AzureConstants.DESTINATION_IF_UNMODIFIED_SINCE, String.class,
                         true);
+
+        String fileSystemName =
+                InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, preprocessedFileSystemName);
+        String directoryName =
+                InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, preprocessedDirectoryName);
+        String newDirectoryName =
+                InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext,
+                        preprocessedNewDirectoryName);
+        String newFileSystemName =
+                InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext,
+                        preprocessedNewFileSystemName);
 
         try {
 
