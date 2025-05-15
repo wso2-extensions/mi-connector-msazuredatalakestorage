@@ -74,10 +74,12 @@ public class AppendFile extends AbstractAzureMediator {
         String filePathToAppend =
                 InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext,
                         preprocessedFilePathToAppend);
-        String localFilePath =
-                InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, preprocessedLocalFilePath);
-        String textContent =
-                InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, preprocessedTextContent);
+        String localFilePath = (preprocessedLocalFilePath != null) ?
+                InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, preprocessedLocalFilePath) :
+                null;
+        String textContent = (preprocessedTextContent != null) ?
+                InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, preprocessedTextContent) :
+                null;
 
         LeaseAction leaseActionConstant = getLeaseAction(leaseAction);
         long appendSize = 0;

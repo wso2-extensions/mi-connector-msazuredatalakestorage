@@ -57,7 +57,8 @@ public class ListPaths extends AbstractAzureMediator {
 
         String fileSystemName =
                 InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, preprocessedFileSystemName);
-        String path = InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, preprocessedPath);
+        String path = (preprocessedPath != null) ?
+                InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, preprocessedPath) : null;
 
         try {
 
