@@ -84,10 +84,12 @@ public class UploadFile extends AbstractAzureMediator {
         String filePathToUpload =
                 InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext,
                         preprocessedFilePathToUpload);
-        String localFilePath =
-                InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, preprocessedLocalFilePath);
-        String textContent =
-                InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, preprocessedTextContent);
+        String localFilePath = preprocessedLocalFilePath != null ?
+                InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, preprocessedLocalFilePath) :
+                null;
+        String textContent = preprocessedTextContent != null ?
+                InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, preprocessedTextContent) :
+                null;
 
         Long maxSingleUploadSizeL =
                 maxSingleUploadSize != null ? maxSingleUploadSize.longValue() * 1024L * 1024L : null;
