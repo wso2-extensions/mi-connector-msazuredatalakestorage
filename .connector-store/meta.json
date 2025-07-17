@@ -12,99 +12,1399 @@
     "type": "Connector",
     "releases": [
         {
-            "tagName": "v1.0.2",
+            "tagName": "v1.0.3",
             "products": [
                 "MI 4.4.0"
             ],
             "operations": [
                 {
-                    "name":"init",
-                    "description":"Config operation",
-                    "isHidden":true
+                    "name": "listFileSystems",
+                    "description": "List File Systems",
+                    "params": [
+                        {
+                            "name": "prefix",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Prefix to filter the file systems"
+                        },
+                        {
+                            "name": "retrieveMetadata",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Whether to retrieve metadata or not"
+                        },
+                        {
+                            "name": "retrieveDeleted",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Whether to retrieve deleted or not"
+                        },
+                        {
+                            "name": "timeout",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Timeout in seconds"
+                        },
+                        {
+                            "name": "maxResultsPerPage",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Maximum number of results per page"
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Replace the Message Body in Message Context with the response of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
+                    "isHidden": false
                 },
                 {
-                    "name":"createFileSystem",
-                    "description":"Create File System",
-                    "isHidden":false
+                    "name": "readFile",
+                    "description": "Read File",
+                    "params": [
+                        {
+                            "name": "fileSystemName",
+                            "type": "expressionTextArea",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the file system where the file is located."
+                        },
+                        {
+                            "name": "filePath",
+                            "type": "expressionTextArea",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Path of the file to be read."
+                        },
+                        {
+                            "name": "offset",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Offset(byte) from where the file is to be read."
+                        },
+                        {
+                            "name": "count",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Number of bytes to be read."
+                        },
+                        {
+                            "name": "maxRetryRequests",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Maximum number of retry requests."
+                        },
+                        {
+                            "name": "timeout",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Time in seconds after which the operation will time out."
+                        },
+                        {
+                            "name": "leaseId",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "This request will succeed only if the provided leaseId matches the actual lease on the resource"
+                        },
+                        {
+                            "name": "ifUnmodifiedSince",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The operation will be performed only if the resource has not been modified since the specified time."
+                        },
+                        {
+                            "name": "ifMatch",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The operation will be performed only if the resource's ETag matches the specified ETag value."
+                        },
+                        {
+                            "name": "ifModifiedSince",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The operation will be performed only if the resource has been modified since the specified time."
+                        },
+                        {
+                            "name": "ifNoneMatch",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The operation will be performed only if the resource's ETag does not match the specified ETag value."
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Replace the Message Body in Message Context with the response of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
+                    "isHidden": false
                 },
                 {
-                    "name":"deleteFileSystem",
-                    "description":"Delete File System",
-                    "isHidden":false
+                    "name": "downloadFile",
+                    "description": "Download File",
+                    "params": [
+                        {
+                            "name": "fileSystemName",
+                            "type": "expressionTextArea",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the file system where the file is located."
+                        },
+                        {
+                            "name": "filePathToDownload",
+                            "type": "expressionTextArea",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Path of the file to be downloaded."
+                        },
+                        {
+                            "name": "downloadLocation",
+                            "type": "expressionTextArea",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Location where the file is to be downloaded."
+                        },
+                        {
+                            "name": "leaseId",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "This request will succeed only if the provided leaseId matches the actual lease on the resource"
+                        },
+                        {
+                            "name": "ifUnmodifiedSince",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The operation will be performed only if the resource has not been modified since the specified time."
+                        },
+                        {
+                            "name": "ifMatch",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The operation will be performed only if the resource's ETag matches the specified ETag value."
+                        },
+                        {
+                            "name": "ifModifiedSince",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The operation will be performed only if the resource has been modified since the specified time."
+                        },
+                        {
+                            "name": "ifNoneMatch",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The operation will be performed only if the resource's ETag does not match the specified ETag value."
+                        },
+                        {
+                            "name": "blockSize",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The size of the block in MB."
+                        },
+                        {
+                            "name": "maxConcurrency",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The maximum number of blocks that can be uploaded in parallel."
+                        },
+                        {
+                            "name": "timeout",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Time in milliseconds after which the operation will time out."
+                        },
+                        {
+                            "name": "offset",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Offset(bytes) from where the file is to be read."
+                        },
+                        {
+                            "name": "count",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Number of bytes to be read."
+                        },
+                        {
+                            "name": "maxRetryRequests",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Maximum number of retry requests."
+                        },
+                        {
+                            "name": "rangeGetContentMd5",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Indicates if the content-MD5 header should be returned for a range GET request."
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Replace the Message Body in Message Context with the response of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
+                    "isHidden": false
                 },
                 {
-                    "name":"listFileSystems",
-                    "description":"List File Systems",
-                    "isHidden":false
+                    "name": "deleteFileSystem",
+                    "description": "Delete File System",
+                    "params": [
+                        {
+                            "name": "fileSystemName",
+                            "type": "expressionTextArea",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the file system to be deleted."
+                        },
+                        {
+                            "name": "timeout",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Time in seconds after which the operation will time out."
+                        },
+                        {
+                            "name": "leaseId",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "This request will succeed only if the provided leaseId matches the actual lease on the resource"
+                        },
+                        {
+                            "name": "ifUnmodifiedSince",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The operation will be performed only if the resource has not been modified since the specified time."
+                        },
+                        {
+                            "name": "ifMatch",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The operation will be performed only if the resource's ETag matches the specified ETag value."
+                        },
+                        {
+                            "name": "ifModifiedSince",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The operation will be performed only if the resource has been modified since the specified time."
+                        },
+                        {
+                            "name": "ifNoneMatch",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The operation will be performed only if the resource's ETag does not match the specified ETag value."
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Replace the Message Body in Message Context with the response of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
+                    "isHidden": false
                 },
                 {
-                    "name":"createDirectory",
-                    "description":"Create Directory in the file system",
-                    "isHidden":false
+                    "name": "createDirectory",
+                    "description": "Create Directory",
+                    "params": [
+                        {
+                            "name": "fileSystemName",
+                            "type": "expressionTextArea",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the file system where the directory will be created."
+                        },
+                        {
+                            "name": "directoryName",
+                            "type": "expressionTextArea",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Path of the directory to be created."
+                        },
+                        {
+                            "name": "contentLanguage",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The language of the content."
+                        },
+                        {
+                            "name": "contentType",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The MIME content type of the content."
+                        },
+                        {
+                            "name": "contentEncoding",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Defines the encoding type (e.g., \"gzip\", \"UTF-8\")."
+                        },
+                        {
+                            "name": "contentDisposition",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The value of the Content-Disposition response header."
+                        },
+                        {
+                            "name": "cacheControl",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The value of the Cache-Control response header."
+                        },
+                        {
+                            "name": "timeout",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Time in seconds to wait for the operation to complete."
+                        },
+                        {
+                            "name": "permissions",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Permissions to be set on the directory."
+                        },
+                        {
+                            "name": "umask",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The umask to be set on the directory."
+                        },
+                        {
+                            "name": "sourceLeaseId",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The lease ID specified for the source directory."
+                        },
+                        {
+                            "name": "group",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The group to be set on the directory."
+                        },
+                        {
+                            "name": "owner",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The owner to be set on the directory."
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Replace the Message Body in Message Context with the response of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
+                    "isHidden": false
                 },
                 {
-                    "name":"deleteDirectory",
-                    "description":"Delete Directory in the file system",
-                    "isHidden":false
+                    "name": "getMetadata",
+                    "description": "Get Metadata",
+                    "params": [
+                        {
+                            "name": "fileSystemName",
+                            "type": "expressionTextArea",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the file system where the file is located."
+                        },
+                        {
+                            "name": "filePath",
+                            "type": "expressionTextArea",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Path of the file for which metadata is to be fetched."
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Replace the Message Body in Message Context with the response of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
+                    "isHidden": false
                 },
                 {
-                    "name":"uploadFile",
-                    "description":"Upload File to the file system",
-                    "isHidden":false
+                    "name": "flushFile",
+                    "description": "Flush File",
+                    "params": [
+                        {
+                            "name": "fileSystemName",
+                            "type": "expressionTextArea",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the file system where the file is located."
+                        },
+                        {
+                            "name": "filePathToFlush",
+                            "type": "expressionTextArea",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Path of the file to flush."
+                        },
+                        {
+                            "name": "fileLength",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Length of the file to flush."
+                        },
+                        {
+                            "name": "contentLanguage",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The language of the content."
+                        },
+                        {
+                            "name": "contentType",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The MIME content type of the content."
+                        },
+                        {
+                            "name": "contentEncoding",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Defines the encoding type (e.g., \"gzip\", \"UTF-8\")."
+                        },
+                        {
+                            "name": "contentDisposition",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The value of the Content-Disposition response header."
+                        },
+                        {
+                            "name": "cacheControl",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The value of the Cache-Control response header."
+                        },
+                        {
+                            "name": "leaseId",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "This request will succeed only if the provided leaseId matches the actual lease on the resource"
+                        },
+                        {
+                            "name": "ifUnmodifiedSince",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The operation will be performed only if the resource has not been modified since the specified time."
+                        },
+                        {
+                            "name": "ifMatch",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The operation will be performed only if the resource's ETag matches the specified ETag value."
+                        },
+                        {
+                            "name": "ifModifiedSince",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The operation will be performed only if the resource has been modified since the specified time."
+                        },
+                        {
+                            "name": "ifNoneMatch",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The operation will be performed only if the resource's ETag does not match the specified ETag value."
+                        },
+                        {
+                            "name": "uncommittedDataRetained",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Indicates whether uncommitted data is retained."
+                        },
+                        {
+                            "name": "leaseAction",
+                            "type": "combo",
+                            "required": false,
+                            "defaultValue": "None",
+                            "description": "The lease action to perform on the file. Supported values: None, Acquire, Auto Renew, Acquire Release, Release"
+                        },
+                        {
+                            "name": "leaseDuration",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The lease duration in seconds."
+                        },
+                        {
+                            "name": "proposedLeaseId",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "A proposed lease ID that can be set when acquiring or changing a lease."
+                        },
+                        {
+                            "name": "timeout",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Time in seconds after which the operation will time out."
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Replace the Message Body in Message Context with the response of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
+                    "isHidden": false
                 },
                 {
-                    "name":"downloadFile",
-                    "description":"Download File from the file system",
-                    "isHidden":false
+                    "name": "renamePath",
+                    "description": "Rename Path",
+                    "params": [
+                        {
+                            "name": "fileSystemName",
+                            "type": "expressionTextArea",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the file system where the directory is located."
+                        },
+                        {
+                            "name": "directoryName",
+                            "type": "expressionTextArea",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Path of the directory to be renamed."
+                        },
+                        {
+                            "name": "newFileSystemName",
+                            "type": "expressionTextArea",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the new file system where the directory is to be moved."
+                        },
+                        {
+                            "name": "newDirectoryName",
+                            "type": "expressionTextArea",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "New path of the directory."
+                        },
+                        {
+                            "name": "timeout",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Time in milliseconds after which the operation will time out."
+                        },
+                        {
+                            "name": "sourceLeaseId",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "This request will succeed only if the provided source leaseId matches the actual lease on the resource"
+                        },
+                        {
+                            "name": "sourceIfUnmodifiedSince",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The operation will be performed only if the resource has not been modified since the specified time."
+                        },
+                        {
+                            "name": "sourceIfMatch",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The operation will be performed only if the resource's ETag matches the specified ETag value."
+                        },
+                        {
+                            "name": "sourceIfModifiedSince",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The operation will be performed only if the resource has been modified since the specified time."
+                        },
+                        {
+                            "name": "sourceIfNoneMatch",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The operation will be performed only if the resource's ETag does not match the specified ETag value."
+                        },
+                        {
+                            "name": "destinationLeaseId",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "This request will succeed only if the provided source leaseId matches the actual lease on the resource"
+                        },
+                        {
+                            "name": "destinationIfUnmodifiedSince",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The operation will be performed only if the resource has not been modified since the specified time."
+                        },
+                        {
+                            "name": "destinationIfMatch",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The operation will be performed only if the resource's ETag matches the specified ETag value."
+                        },
+                        {
+                            "name": "destinationIfModifiedSince",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The operation will be performed only if the resource has been modified since the specified time."
+                        },
+                        {
+                            "name": "destinationIfNoneMatch",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The operation will be performed only if the resource's ETag does not match the specified ETag value."
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Replace the Message Body in Message Context with the response of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
+                    "isHidden": false
                 },
                 {
-                    "name":"deleteFile",
-                    "description":"Delete File from the file system",
-                    "isHidden":false
+                    "name": "uploadFile",
+                    "description": "Upload File",
+                    "params": [
+                        {
+                            "name": "fileSystemName",
+                            "type": "expressionTextArea",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the file system where the file will be uploaded."
+                        },
+                        {
+                            "name": "filePathToUpload",
+                            "type": "expressionTextArea",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Path of the file to be uploaded."
+                        },
+                        {
+                            "name": "inputType",
+                            "type": "combo",
+                            "required": true,
+                            "defaultValue": "Local File",
+                            "description": "Path of the file to be uploaded. Supported values: Local File, Text Content"
+                        },
+                        {
+                            "name": "localFilePath",
+                            "type": "expressionTextArea",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "File to be uploaded."
+                        },
+                        {
+                            "name": "textContent",
+                            "type": "expressionTextArea",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Text content to be uploaded (without using a file)."
+                        },
+                        {
+                            "name": "contentLanguage",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The language of the content."
+                        },
+                        {
+                            "name": "contentType",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The MIME content type of the content."
+                        },
+                        {
+                            "name": "contentEncoding",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Defines the encoding type (e.g., \"gzip\", \"UTF-8\")."
+                        },
+                        {
+                            "name": "contentDisposition",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The value of the Content-Disposition response header."
+                        },
+                        {
+                            "name": "cacheControl",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The value of the Cache-Control response header."
+                        },
+                        {
+                            "name": "blockSize",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The size of the block in MB."
+                        },
+                        {
+                            "name": "maxSingleUploadSize",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The maximum size of a single upload in bytes."
+                        },
+                        {
+                            "name": "maxConcurrency",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The maximum number of blocks that can be uploaded in parallel."
+                        },
+                        {
+                            "name": "timeout",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Time in milliseconds after which the operation will time out."
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Replace the Message Body in Message Context with the response of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
+                    "isHidden": false
                 },
                 {
-                    "name":"renamePath",
-                    "description":"Rename path of a file or directory in the file system",
-                    "isHidden":false
+                    "name": "listPaths",
+                    "description": "List Paths of the File System",
+                    "params": [
+                        {
+                            "name": "fileSystemName",
+                            "type": "expressionTextArea",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the file system."
+                        },
+                        {
+                            "name": "path",
+                            "type": "expressionTextArea",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Path of the directory for which paths are to be fetched."
+                        },
+                        {
+                            "name": "recursive",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "If true, all paths under the specified path are fetched."
+                        },
+                        {
+                            "name": "maxResults",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Specifies the maximum number of blobs to return per page, including all BlobPrefix elements."
+                        },
+                        {
+                            "name": "timeout",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Time in seconds after which the operation will time out."
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Replace the Message Body in Message Context with the response of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
+                    "isHidden": false
                 },
                 {
-                    "name":"readFile",
-                    "description":"Read File from the file system",
-                    "isHidden":false
+                    "name": "createFileSystem",
+                    "description": "Create File System",
+                    "params": [
+                        {
+                            "name": "fileSystemName",
+                            "type": "expressionTextArea",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the file system to be created."
+                        },
+                        {
+                            "name": "timeout",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Time in seconds to wait for the operation to complete."
+                        },
+                        {
+                            "name": "accessType",
+                            "type": "combo",
+                            "required": false,
+                            "defaultValue": "NONE",
+                            "description": "The type of public access to be set on the file system. Supported values: NONE, BLOB, CONTAINER"
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Replace the Message Body in Message Context with the response of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
+                    "isHidden": false
                 },
                 {
-                    "name":"getMetadata",
-                    "description":"Get Metadata of the file system",
-                    "isHidden":false
+                    "name": "appendFile",
+                    "description": "Append File",
+                    "params": [
+                        {
+                            "name": "fileSystemName",
+                            "type": "expressionTextArea",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the file system where the file will be uploaded."
+                        },
+                        {
+                            "name": "filePathToAppend",
+                            "type": "expressionTextArea",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Path of the file to be appended."
+                        },
+                        {
+                            "name": "inputType",
+                            "type": "combo",
+                            "required": true,
+                            "defaultValue": "Local File",
+                            "description": "Path of the file to be uploaded. Supported values: Local File, Text Content"
+                        },
+                        {
+                            "name": "localFilePath",
+                            "type": "expressionTextArea",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "File to be uploaded."
+                        },
+                        {
+                            "name": "textContent",
+                            "type": "expressionTextArea",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Text content to be uploaded (without using a file)."
+                        },
+                        {
+                            "name": "flush",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "true",
+                            "description": "Flush the data to the file after appending."
+                        },
+                        {
+                            "name": "leaseId",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "This request will succeed only if the provided leaseId matches the actual lease on the resource"
+                        },
+                        {
+                            "name": "leaseAction",
+                            "type": "combo",
+                            "required": false,
+                            "defaultValue": "None",
+                            "description": "The lease action to perform on the file. Supported values: None, Acquire, Auto Renew, Acquire Release, Release"
+                        },
+                        {
+                            "name": "leaseDuration",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The lease duration in seconds."
+                        },
+                        {
+                            "name": "proposedLeaseId",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "A proposed lease ID that can be set when acquiring or changing a lease."
+                        },
+                        {
+                            "name": "timeout",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Time in seconds after which the operation will time out."
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Replace the Message Body in Message Context with the response of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
+                    "isHidden": false
                 },
                 {
-                    "name":"updateMetadata",
-                    "description":"Update Metadata of the file system",
-                    "isHidden":false
+                    "name": "deleteDirectory",
+                    "description": "Delete Directory",
+                    "params": [
+                        {
+                            "name": "fileSystemName",
+                            "type": "expressionTextArea",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the file system where the directory is located."
+                        },
+                        {
+                            "name": "directoryName",
+                            "type": "expressionTextArea",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Directory path to be deleted."
+                        },
+                        {
+                            "name": "timeout",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Time in seconds after which the operation will time out."
+                        },
+                        {
+                            "name": "recursive",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "true",
+                            "description": "If checked, the contents of the directory will be deleted."
+                        },
+                        {
+                            "name": "leaseId",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "This request will succeed only if the provided leaseId matches the actual lease on the resource"
+                        },
+                        {
+                            "name": "ifUnmodifiedSince",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The operation will be performed only if the resource has not been modified since the specified time."
+                        },
+                        {
+                            "name": "ifMatch",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The operation will be performed only if the resource's ETag matches the specified ETag value."
+                        },
+                        {
+                            "name": "ifModifiedSince",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The operation will be performed only if the resource has been modified since the specified time."
+                        },
+                        {
+                            "name": "ifNoneMatch",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The operation will be performed only if the resource's ETag does not match the specified ETag value."
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Replace the Message Body in Message Context with the response of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
+                    "isHidden": false
                 },
                 {
-                    "name":"listPaths",
-                    "description":"List Paths of the file system",
-                    "isHidden":false
+                    "name": "updateMetadata",
+                    "description": "Update Meta Data",
+                    "params": [
+                        {
+                            "name": "fileSystemName",
+                            "type": "expressionTextArea",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the file system where the file is located."
+                        },
+                        {
+                            "name": "filePathToAddMetaData",
+                            "type": "expressionTextArea",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Path of the file to add meta data."
+                        },
+                        {
+                            "name": "timeout",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Time in seconds after which the operation will time out."
+                        },
+                        {
+                            "name": "leaseId",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "This request will succeed only if the provided leaseId matches the actual lease on the resource"
+                        },
+                        {
+                            "name": "ifUnmodifiedSince",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The operation will be performed only if the resource has not been modified since the specified time."
+                        },
+                        {
+                            "name": "ifMatch",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The operation will be performed only if the resource's ETag matches the specified ETag value."
+                        },
+                        {
+                            "name": "ifModifiedSince",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The operation will be performed only if the resource has been modified since the specified time."
+                        },
+                        {
+                            "name": "ifNoneMatch",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The operation will be performed only if the resource's ETag does not match the specified ETag value."
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Replace the Message Body in Message Context with the response of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
+                    "isHidden": false
                 },
                 {
-                    "name":"appendFile",
-                    "description":"Append text to a file in the file system",
-                    "isHidden":false
-                },
-                {
-                    "name":"flushFile",
-                    "description":"Flush the file after appending in the filesystem.",
-                    "isHidden":false
+                    "name": "deleteFile",
+                    "description": "Delete File",
+                    "params": [
+                        {
+                            "name": "fileSystemName",
+                            "type": "expressionTextArea",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the file system where the directory is located."
+                        },
+                        {
+                            "name": "directoryName",
+                            "type": "expressionTextArea",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "File path to be deleted."
+                        },
+                        {
+                            "name": "timeout",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Time in seconds after which the operation will time out."
+                        },
+                        {
+                            "name": "leaseId",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "This request will succeed only if the provided leaseId matches the actual lease on the resource"
+                        },
+                        {
+                            "name": "ifUnmodifiedSince",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The operation will be performed only if the resource has not been modified since the specified time."
+                        },
+                        {
+                            "name": "ifMatch",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The operation will be performed only if the resource's ETag matches the specified ETag value."
+                        },
+                        {
+                            "name": "ifModifiedSince",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The operation will be performed only if the resource has been modified since the specified time."
+                        },
+                        {
+                            "name": "ifNoneMatch",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The operation will be performed only if the resource's ETag does not match the specified ETag value."
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Replace the Message Body in Message Context with the response of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
+                    "isHidden": false
                 }
             ],
             "connections": [
                 {
-                    "name": "azureDataLake",
-                    "description": "Azure Data Lake Storage Gen2 Connection"
+                    "name": "MSAzureDataLake",
+                    "description": "Azure Data Lake Connector",
+                    "params": [
+                        {
+                            "name": "connectionName",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "AZURE_CONNECTION_ACCESS_KEY",
+                            "description": "The name for the Azure Data Lake connection"
+                        },
+                        {
+                            "name": "accountName",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "The name of the azure storage account."
+                        },
+                        {
+                            "name": "accessType",
+                            "type": "combo",
+                            "required": true,
+                            "defaultValue": "Access Key",
+                            "description": "The access key for the storage account. Supported values: Access Key, Shared Access Signature, OAuth2"
+                        },
+                        {
+                            "name": "accountKey",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "The access key for the storage account."
+                        },
+                        {
+                            "name": "sasToken",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "The sas token for the storage account."
+                        },
+                        {
+                            "name": "clientId",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "The client ID of the application."
+                        },
+                        {
+                            "name": "clientSecret",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "The client secret of the application."
+                        },
+                        {
+                            "name": "tenantId",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "The tenant ID of the application."
+                        }
+                    ]
                 }
-            ],
-            "isHidden": false
+            ]
         }
     ],
     "labels": [
